@@ -15,7 +15,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'docker build -f Dockerfile . -t chatreejs/check-bill-enhanced:latest'
+        sh 'docker build -f Dockerfile . -t ${IMAGE_URL_WITH_TAG}'
       }
     }
 
