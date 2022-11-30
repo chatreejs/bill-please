@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+docker/*
+.angular
+.husky
+.vscode
+.commitlintrc.json
+.dockerignore
+.editorconfig
+.git
+.gitignore
+Dockerfile
+Jenkinsfile
+LICENSE
+README.md
+.DS_Store
+Thumbs.db
