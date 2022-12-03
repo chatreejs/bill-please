@@ -1,0 +1,23 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.75rem 0.5rem;
+  width: 100%;
+
+  .title-wrapper {
+    .title {
+      font-size: 16px;
+      color: #979ca2;
+      margin-bottom: 4px;
+    }
+
+    .value {
+      font-size: 26px;
+    }
+
+    &.text-right {
+      text-align: right;
+    }
+  }
+}
