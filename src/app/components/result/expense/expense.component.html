@@ -1,0 +1,24 @@
+<div class="card">
+  <nz-collapse [nzBordered]="false">
+    <nz-collapse-panel
+      *ngFor="let expense of expenseList"
+      [nzHeader]="payerWrapperTemplate"
+      [nzShowArrow]="true"
+      [ngStyle]="{ background: '#fefefe', padding: '0' }"
+    >
+      <ng-template #payerWrapperTemplate>
+        <div class="payer-wrapper">
+          <div class="payer-list">{{ expense.payer }}</div>
+          <div class="payer-list">฿ {{ expense.total }}</div>
+        </div>
+      </ng-template>
+      <div class="items-wrapper" *ngFor="let item of expense.items">
+        <div class="item-list">
+          <span>{{ item.quantity }}</span
+          >{{ item.name }}
+        </div>
+        <div class="item-list">{{ item.price }}</div>
+      </div>
+    </nz-collapse-panel>
+  </nz-collapse>
+</div>

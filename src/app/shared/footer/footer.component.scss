@@ -1,0 +1,18 @@
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+
+  span {
+    color: #fafafa;
+  }
+
+  a {
+    color: #fafafa;
+    text-decoration: underline;
+    font-weight: 600;
+    margin-left: 0.25rem;
+  }
+}
