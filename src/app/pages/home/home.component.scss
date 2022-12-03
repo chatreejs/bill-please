@@ -1,0 +1,30 @@
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: inherit;
+  margin: 0 auto;
+  filter: var(--card-shadow-filter);
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #fafafa;
+    border-radius: 26px;
+    padding: 24px;
+    min-height: calc(100vh - 320px);
+  }
+}
+
+.bill-title {
+  font-size: 32px;
+  resize: none;
+  padding: 1rem 0;
+}
+
+.button-wrapper {
+  button {
+    width: 100%;
+    border-radius: 24px;
+  }
+}
