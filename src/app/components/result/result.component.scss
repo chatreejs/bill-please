@@ -48,6 +48,13 @@
     }
   }
 
+  .bill-title {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+
   .separator {
     height: 24px;
     width: 100%;
