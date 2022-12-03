@@ -1,13 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BillComponent } from './pages/bill/bill.component';
-import { HomeComponent } from './pages/home/home.component';
-import { ResultComponent } from './pages/result/result.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'bill', component: BillComponent },
-  { path: 'result', component: ResultComponent },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./components/home/home.module').then((m) => m.HomeModule),
+  },
+  {
+    path: 'bill',
+    loadChildren: () =>
+      import('./components/bill/bill.module').then((m) => m.BillModule),
+  },
+  {
+    path: 'result',
+    loadChildren: () =>
+      import('./components/result/result.module').then((m) => m.ResultModule),
+  },
   { path: '**', redirectTo: '' },
 ];
 
