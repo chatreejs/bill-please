@@ -1,6 +1,11 @@
 {
   "name": "check-bill-enhanced",
-  "version": "0.0.0",
+  "description": "This is an app that will help you calculate your expenses and divide them up for your party.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chatreejs/check-bill-enhanced.git"
+  },
+  "version": "0.1.0-beta.1",
   "authors": [
     {
       "name": "Chanon Treemeth",
