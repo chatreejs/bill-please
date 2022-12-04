@@ -1,7 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ModalType } from 'src/app/common/enums';
-import { BillItem } from 'src/app/common/enums/models';
+import { BillItem } from 'src/app/common/models';
 import { v4 as uuidv4 } from 'uuid';
 import { ItemListModalComponent } from './item-list-modal/item-list-modal.component';
 

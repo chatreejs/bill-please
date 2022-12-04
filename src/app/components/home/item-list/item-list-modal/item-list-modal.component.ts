@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { ModalType } from 'src/app/common/enums';
-import { BillItem } from 'src/app/common/enums/models';
+import { BillItem } from 'src/app/common/models';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
