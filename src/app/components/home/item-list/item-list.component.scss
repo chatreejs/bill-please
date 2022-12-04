@@ -1,0 +1,14 @@
+.item-list {
+  margin-bottom: 0.75rem;
+
+  td {
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
+
+.button-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

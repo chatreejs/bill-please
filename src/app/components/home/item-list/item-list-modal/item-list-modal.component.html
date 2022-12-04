@@ -1,0 +1,48 @@
+<form nz-form [formGroup]="itemListForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="12" nzRequired nzFor="name"
+      >ชื่อรายการ
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="error">
+      <input nz-input formControlName="name" id="name" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="12" nzRequired nzFor="quantity"
+      >จำนวน
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="error">
+      <input
+        nz-input
+        formControlName="quantity"
+        id="quantity"
+        type="number"
+        min="0"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="12" nzRequired nzFor="price"
+      >ราคาต่อหน่วย
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="error">
+      <input
+        nz-input
+        formControlName="price"
+        id="price"
+        type="number"
+        min="0"
+      />
+    </nz-form-control>
+  </nz-form-item>
+  <button
+    *ngIf="type == modalType.Update"
+    nz-button
+    nzType="primary"
+    nzBlock
+    nzDanger
+    (click)="deleteItem()"
+  >
+    ลบรายการนี้
+  </button>
+</form>
