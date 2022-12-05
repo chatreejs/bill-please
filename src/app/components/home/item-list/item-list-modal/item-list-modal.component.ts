@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { ModalType } from 'src/app/common/enums';
 import { BillItem } from 'src/app/common/models';
+import { SharedService } from 'src/app/shared/shared.service';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -20,7 +21,11 @@ export class ItemListModalComponent implements OnInit {
     return ModalType;
   }
 
-  constructor(private modal: NzModalRef, private fb: FormBuilder) {}
+  constructor(
+    private modal: NzModalRef,
+    private fb: FormBuilder,
+    private sharedService: SharedService,
+  ) {}
 
   ngOnInit(): void {
     this.itemListForm = this.fb.group({
@@ -65,12 +70,7 @@ export class ItemListModalComponent implements OnInit {
         this.modal.close();
       }
     } else {
-      Object.values(this.itemListForm.controls).forEach((control) => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
+      this.sharedService.markFormGroupAsDirty(this.itemListForm);
     }
   }
 
