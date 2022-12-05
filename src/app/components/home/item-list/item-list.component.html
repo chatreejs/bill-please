@@ -35,6 +35,7 @@
       <tr>
         <th
           *ngIf="isShowCheckbox"
+          [nzWidth]="'12px'"
           [nzChecked]="isAllChecked"
           [nzIndeterminate]="isIndeterminate"
           (nzCheckedChange)="onAllChecked($event)"
