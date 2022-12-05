@@ -93,8 +93,8 @@ export class ItemListComponent {
       nzContent: ItemListModalComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzComponentParams: {
-        type: type,
-        id: id,
+        type,
+        id,
       },
       nzFooter: [
         {
