@@ -1,0 +1,78 @@
+<form nz-form [formGroup]="payerListForm">
+  <nz-form-item>
+    <nz-form-label [nzSm]="6" [nzXs]="12" nzRequired nzFor="name"
+      >ชื่อคนจ่าย
+    </nz-form-label>
+    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="error">
+      <input nz-input formControlName="name" id="name" />
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzSm]="14" [nzXs]="24">
+      <label
+        nz-checkbox
+        formControlName="hasChildren"
+        (ngModelChange)="childrenChange($event)"
+        >มีเพื่อนมาด้วย</label
+      >
+    </nz-form-control>
+  </nz-form-item>
+  <nz-card *ngIf="hasChildren" class="children-form">
+    <form formArrayName="childrenForm">
+      <div *ngFor="let children of childrenForm.controls; let i = index">
+        <ng-container [formGroupName]="i">
+          <nz-form-item>
+            <nz-form-label
+              [nzSm]="6"
+              [nzXs]="12"
+              [nzFor]="'childrenName' + i"
+              nzRequired
+              >ชื่อเพื่อน
+            </nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="error">
+              <div nz-row [nzGutter]="6">
+                <div nz-col [nzSpan]="20">
+                  <input
+                    nz-input
+                    formControlName="name"
+                    [id]="'childrenName' + i"
+                  />
+                </div>
+                <div nz-col [nzSpan]="4">
+                  <button
+                    nz-button
+                    nzType="default"
+                    nzDanger
+                    (click)="removeChildrenForm(i)"
+                  >
+                    <span nz-icon nzType="delete" nzTheme="outline"></span>
+                  </button>
+                </div>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-container>
+      </div>
+      <button
+        nz-button
+        nzType="dashed"
+        nzBlock
+        [nzSize]="'large'"
+        (click)="addChildrenForm()"
+      >
+        <span nz-icon nzType="plus" nzTheme="outline"></span>
+        เพิ่มเพื่อนที่มาด้วย
+      </button>
+    </form>
+  </nz-card>
+  <button
+    *ngIf="type == modalType.Update"
+    nz-button
+    nzType="primary"
+    nzBlock
+    nzDanger
+    (click)="deletePayer()"
+  >
+    ลบรายการนี้
+  </button>
+</form>
