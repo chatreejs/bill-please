@@ -1,1 +1,27 @@
-<p>payer-list works!</p>
+<div class="payer-list-wrapper">
+  <nz-table
+    *ngIf="listOfPayer.length > 0"
+    class="item-list"
+    #payerTable
+    [nzData]="listOfPayer"
+    [nzShowPagination]="false"
+  >
+    <tbody>
+      <tr *ngFor="let data of payerTable.data">
+        <td>{{ data.name }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="button-wrapper">
+    <button
+      nz-button
+      nzType="dashed"
+      nzBlock
+      [nzSize]="'large'"
+      (click)="openPayerListModal(modalType.Create)"
+    >
+      <span nz-icon nzType="plus" nzTheme="outline"></span>
+      เพิ่มคนจ่าย
+    </button>
+  </div>
+</div>
