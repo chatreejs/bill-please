@@ -1,12 +1,17 @@
 .footer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 1rem 0;
 
   span {
     color: #fafafa;
+
+    &.version {
+      margin-top: 0.25rem;
+      font-size: 12px;
+    }
   }
 
   a {

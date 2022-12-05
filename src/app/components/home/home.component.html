@@ -1,16 +1,14 @@
 <div class="card-wrapper">
   <div class="card">
     <div class="card-top">
-      <textarea
+      <input
         class="bill-title"
-        rows="1"
         nz-input
         nzSize="large"
         placeholder="ตั้งชื่อบิล"
         nzBorderless
-        [nzAutosize]="{ minRows: 2, maxRows: 6 }"
         [(ngModel)]="billName"
-      ></textarea>
+      />
       <div class="bill-content">
         <nz-tabset nzCentered>
           <nz-tab [nzTitle]="itemTitleTemplate">
@@ -32,7 +30,14 @@
     </div>
     <div class="card-bottom">
       <div class="button-wrapper">
-        <button nz-button nzSize="large" nzType="primary" (click)="next()">
+        <button
+          nz-button
+          nzSize="large"
+          nzType="primary"
+          nzBlock
+          [disabled]="buttonDisabled"
+          (click)="next()"
+        >
           ต่อไป
           <span nz-icon nzType="right"></span>
         </button>
