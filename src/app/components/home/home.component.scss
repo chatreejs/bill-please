@@ -35,6 +35,10 @@
   font-size: 1rem;
 }
 
+::ng-deep .ant-btn {
+  border-radius: 6px;
+}
+
 @media screen and (min-height: 920px) {
   .card-wrapper {
     .card {
