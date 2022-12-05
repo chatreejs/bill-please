@@ -1,11 +1,28 @@
 <div class="item-list-wrapper">
   <div class="action-button">
+    <button
+      *ngIf="isShowCheckbox"
+      nz-button
+      nz-popconfirm
+      [nzPopconfirmTitle]="
+        setOfCheckedId.size == 0
+          ? 'ต้องการลบรายการทั้งหมด ?'
+          : 'ต้องการลบรายการ ' + setOfCheckedId.size + ' รายการ ?'
+      "
+      [nzOkText]="'ตกลง'"
+      [nzCancelText]="'ยกเลิก'"
+      nzType="default"
+      nzDanger
+      (nzOnConfirm)="deleteItemList()"
+    >
+      {{ setOfCheckedId.size > 0 ? 'ลบรายการที่เลือก' : 'ลบรายการทั้งหมด' }}
+    </button>
     <button nz-button nzType="default" (click)="toggleCheckbox()">
       {{ isShowCheckbox ? 'ยกเลิก' : 'เลือกรายการ' }}
     </button>
-    <button *ngIf="isShowCheckbox" nz-button nzType="default" nzDanger>
-      {{ setOfCheckedId.size > 0 ? 'ลบรายการที่เลือก' : 'ลบรายการทั้งหมด' }}
-    </button>
+    <ng-template #confirmDeleteTemplate>
+      <span nz-icon nzType="question-circle-o" style="color: red"></span>
+    </ng-template>
   </div>
   <nz-table
     *ngIf="listOfBillItem.length > 0"

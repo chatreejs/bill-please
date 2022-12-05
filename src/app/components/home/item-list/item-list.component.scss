@@ -1,5 +1,6 @@
 .action-button {
-  display: inline-flex;
+  display: flex;
+  justify-content: end;
   gap: 6px;
 }
 

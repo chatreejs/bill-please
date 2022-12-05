@@ -7,6 +7,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
@@ -37,6 +38,7 @@ import { PayerListComponent } from './payer-list/payer-list.component';
     NzTableModule,
     NzDividerModule,
     NzFormModule,
+    NzPopconfirmModule,
   ],
 })
 export class HomeModule {}

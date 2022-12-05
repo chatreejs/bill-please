@@ -27,6 +27,12 @@ export class ItemListComponent {
       quantity: 3,
       price: 670,
     },
+    {
+      id: uuidv4(),
+      name: 'ส่วนลด VIP',
+      quantity: 1,
+      price: -100,
+    },
   ];
   setOfCheckedId: Set<string> = new Set<string>();
 
@@ -74,6 +80,11 @@ export class ItemListComponent {
       this.updateCheckedSet(item.id, checked),
     );
     this.refreshCheckedStatus();
+  }
+
+  deleteItemList(): void {
+    console.log(this.setOfCheckedId);
+    this.toggleCheckbox();
   }
 
   openItemListModal(type: ModalType, id?: string): void {
