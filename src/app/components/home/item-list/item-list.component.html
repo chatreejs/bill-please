@@ -1,1 +1,80 @@
-<p>item-list works!</p>
+<div class="table-wrapper">
+  <div class="action-button">
+    <button
+      *ngIf="isShowCheckbox"
+      nz-button
+      nz-popconfirm
+      [nzPopconfirmTitle]="
+        setOfCheckedId.size == 0
+          ? 'ต้องการลบรายการทั้งหมด ?'
+          : 'ต้องการลบรายการ ' + setOfCheckedId.size + ' รายการ ?'
+      "
+      [nzOkText]="'ตกลง'"
+      [nzCancelText]="'ยกเลิก'"
+      nzType="default"
+      nzDanger
+      (nzOnConfirm)="deleteItemList()"
+    >
+      {{ setOfCheckedId.size > 0 ? 'ลบรายการที่เลือก' : 'ลบรายการทั้งหมด' }}
+    </button>
+    <button nz-button nzType="default" (click)="toggleCheckbox()">
+      {{ isShowCheckbox ? 'ยกเลิก' : 'เลือกรายการ' }}
+    </button>
+    <ng-template #confirmDeleteTemplate>
+      <span nz-icon nzType="question-circle-o" style="color: red"></span>
+    </ng-template>
+  </div>
+  <nz-table
+    *ngIf="listOfBillItem.length > 0"
+    class="item-list"
+    #billItemTable
+    [nzData]="listOfBillItem"
+    [nzShowPagination]="false"
+  >
+    <thead>
+      <tr>
+        <th
+          *ngIf="isShowCheckbox"
+          [nzWidth]="'12px'"
+          [nzChecked]="isAllChecked"
+          [nzIndeterminate]="isIndeterminate"
+          (nzCheckedChange)="onAllChecked($event)"
+        ></th>
+        <th>ชื่อ</th>
+        <th nzAlign="right">จำนวน</th>
+        <th nzAlign="right">หน่วยละ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let data of billItemTable.data"
+        (click)="openItemListModal(modalType.Update, data.id)"
+      >
+        <td
+          *ngIf="isShowCheckbox"
+          [nzChecked]="setOfCheckedId.has(data.id)"
+          (nzCheckedChange)="onItemChecked(data.id, $event)"
+        ></td>
+        <td>{{ data.name }}</td>
+        <td nzAlign="right">{{ data.quantity }}</td>
+        <td nzAlign="right">{{ data.price }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div class="button-wrapper">
+    <button
+      nz-button
+      nzType="dashed"
+      nzBlock
+      [nzSize]="'large'"
+      (click)="openItemListModal(modalType.Create)"
+    >
+      <span nz-icon nzType="plus" nzTheme="outline"></span>
+      เพิ่มรายการ
+    </button>
+    <button nz-button nzType="dashed" nzBlock [nzSize]="'large'">
+      <span nz-icon nzType="file-text" nzTheme="outline"></span>
+      เพิ่มรายการจากบิล
+    </button>
+  </div>
+</div>

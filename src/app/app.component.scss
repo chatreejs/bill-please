@@ -27,3 +27,15 @@
     color: #fafafa;
   }
 }
+
+::ng-deep .ant-tabs-tab-btn {
+  font-size: 1rem;
+}
+
+::ng-deep .ant-btn {
+  border-radius: 6px;
+}
+
+::ng-deep .ant-input {
+  border-radius: 8px;
+}

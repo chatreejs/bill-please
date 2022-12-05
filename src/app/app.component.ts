@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { Event, NavigationEnd, Router } from '@angular/router';
 
 @Component({
@@ -14,7 +14,11 @@ export class AppComponent implements OnInit {
     return this.currentUrl !== '/';
   }
 
-  constructor(private router: Router, private location: Location) {
+  constructor(
+    private elementRef: ElementRef,
+    private router: Router,
+    private location: Location,
+  ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationEnd) {
         this.currentUrl = event.url;
@@ -22,7 +26,9 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.elementRef.nativeElement.removeAttribute('ng-version');
+  }
 
   goBack(): void {
     this.location.back();

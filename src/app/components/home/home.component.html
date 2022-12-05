@@ -30,7 +30,14 @@
     </div>
     <div class="card-bottom">
       <div class="button-wrapper">
-        <button nz-button nzSize="large" nzType="primary" (click)="next()">
+        <button
+          nz-button
+          nzSize="large"
+          nzType="primary"
+          nzBlock
+          [disabled]="buttonDisabled"
+          (click)="next()"
+        >
           ต่อไป
           <span nz-icon nzType="right"></span>
         </button>

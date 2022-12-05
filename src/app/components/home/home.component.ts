@@ -9,6 +9,10 @@ import { Router } from '@angular/router';
 export class HomeComponent {
   billName: string = '';
 
+  get buttonDisabled(): boolean {
+    return false;
+  }
+
   constructor(private router: Router) {}
 
   next() {
