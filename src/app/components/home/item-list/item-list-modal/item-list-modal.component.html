@@ -16,6 +16,8 @@
         nz-input
         formControlName="quantity"
         id="quantity"
+        inputmode="numeric"
+        pattern="[0-9]*"
         type="number"
         min="0"
       />
@@ -26,7 +28,14 @@
       >ราคาต่อหน่วย
     </nz-form-label>
     <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="error">
-      <input nz-input formControlName="price" id="price" type="number" />
+      <input
+        nz-input
+        formControlName="price"
+        id="price"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        type="number"
+      />
     </nz-form-control>
   </nz-form-item>
   <button
