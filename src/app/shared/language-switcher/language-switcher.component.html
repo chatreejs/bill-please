@@ -1,0 +1,17 @@
+<a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+  <span class="fi fi-{{ selectedLanguage.countryCode | lowercase }}"></span>
+  {{ selectedLanguage.name }}
+  <span nz-icon nzType="down"></span>
+</a>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu>
+    <li
+      *ngFor="let language of languages"
+      nz-menu-item
+      (click)="changeLanguage(language)"
+    >
+      <span class="fi fi-{{ language.countryCode | lowercase }}"></span>
+      {{ language.name }}
+    </li>
+  </ul>
+</nz-dropdown-menu>

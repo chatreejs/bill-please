@@ -1,9 +1,13 @@
 <form nz-form [formGroup]="payerListForm">
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="12" nzRequired nzFor="name"
-      >ชื่อคนจ่าย
+      >{{ 'home.payerList.modal.form.name' | translate }}
     </nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="error">
+    <nz-form-control
+      [nzSm]="14"
+      [nzXs]="24"
+      [nzErrorTip]="'home.payerList.modal.form.nameError' | translate"
+    >
       <input nz-input formControlName="name" id="name" />
     </nz-form-control>
   </nz-form-item>
@@ -13,7 +17,7 @@
         nz-checkbox
         formControlName="hasChildren"
         (ngModelChange)="childrenChange($event)"
-        >มีเพื่อนมาด้วย</label
+        >{{ 'home.payerList.modal.form.hasChildren' | translate }}</label
       >
     </nz-form-control>
   </nz-form-item>
@@ -27,9 +31,15 @@
               [nzXs]="12"
               [nzFor]="'childrenName' + i"
               nzRequired
-              >ชื่อเพื่อน
+              >{{ 'home.payerList.modal.form.childrenName' | translate }}
             </nz-form-label>
-            <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="error">
+            <nz-form-control
+              [nzSm]="14"
+              [nzXs]="24"
+              [nzErrorTip]="
+                'home.payerList.modal.form.childrenNameError' | translate
+              "
+            >
               <div nz-row [nzGutter]="6">
                 <div nz-col [nzSpan]="20">
                   <input
@@ -61,7 +71,7 @@
         (click)="addChildrenForm()"
       >
         <span nz-icon nzType="plus" nzTheme="outline"></span>
-        เพิ่มเพื่อนที่มาด้วย
+        {{ 'home.payerList.modal.form.addChildren' | translate }}
       </button>
     </form>
   </nz-card>
@@ -73,6 +83,6 @@
     nzDanger
     (click)="deletePayer()"
   >
-    ลบรายการนี้
+    {{ 'home.payerList.modal.form.delete' | translate }}
   </button>
 </form>

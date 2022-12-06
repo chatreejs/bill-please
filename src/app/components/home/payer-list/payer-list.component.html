@@ -6,19 +6,28 @@
       nz-popconfirm
       [nzPopconfirmTitle]="
         setOfCheckedId.size == 0
-          ? 'ต้องการลบคนจ่ายทั้งหมด ?'
-          : 'ต้องการลบคนจ่าย ' + setOfCheckedId.size + ' คน ?'
+          ? ('home.payerList.popup.deleteAll' | translate)
+          : ('home.payerList.popup.deleteSelected'
+            | translate : { count: setOfCheckedId.size })
       "
-      [nzOkText]="'ตกลง'"
-      [nzCancelText]="'ยกเลิก'"
+      [nzOkText]="'common.button.ok' | translate"
+      [nzCancelText]="'common.button.cancel' | translate"
       nzType="default"
       nzDanger
       (nzOnConfirm)="deleteItemList()"
     >
-      {{ setOfCheckedId.size > 0 ? 'ลบคนจ่ายที่เลือก' : 'ลบคนจ่ายทั้งหมด' }}
+      {{
+        setOfCheckedId.size > 0
+          ? ('home.payerList.button.deleteSelected' | translate)
+          : ('home.payerList.button.deleteAll' | translate)
+      }}
     </button>
     <button nz-button nzType="default" (click)="toggleCheckbox()">
-      {{ isShowCheckbox ? 'ยกเลิก' : 'เลือกคนจ่าย' }}
+      {{
+        isShowCheckbox
+          ? ('common.button.cancel' | translate)
+          : ('home.payerList.button.select' | translate)
+      }}
     </button>
     <ng-template #confirmDeleteTemplate>
       <span nz-icon nzType="question-circle-o" style="color: red"></span>
@@ -41,7 +50,7 @@
           (nzCheckedChange)="onAllChecked($event)"
         ></th>
         <th [nzWidth]="'12px'"></th>
-        <th>ชือคนจ่าย</th>
+        <th>{{ 'home.payerList.table.name' | translate }}</th>
       </tr>
     </thead>
     <tbody>
@@ -77,7 +86,7 @@
       (click)="openPayerListModal(modalType.Create)"
     >
       <span nz-icon nzType="plus" nzTheme="outline"></span>
-      เพิ่มคนจ่าย
+      {{ 'home.payerList.button.add' | translate }}
     </button>
   </div>
 </div>
