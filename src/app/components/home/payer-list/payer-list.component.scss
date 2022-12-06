@@ -1,3 +1,5 @@
-.hide {
-  visibility: hidden;
+::ng-deep .hide {
+  button {
+    visibility: hidden;
+  }
 }

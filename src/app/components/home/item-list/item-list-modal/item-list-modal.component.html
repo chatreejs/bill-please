@@ -1,21 +1,31 @@
 <form nz-form [formGroup]="itemListForm">
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="12" nzRequired nzFor="name"
-      >ชื่อรายการ
+      >{{ 'home.itemList.modal.form.name' | translate }}
     </nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="error">
+    <nz-form-control
+      [nzSm]="14"
+      [nzXs]="24"
+      [nzErrorTip]="'home.itemList.modal.form.nameError' | translate"
+    >
       <input nz-input formControlName="name" id="name" />
     </nz-form-control>
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="12" nzRequired nzFor="quantity"
-      >จำนวน
+      >{{ 'home.itemList.modal.form.quantity' | translate }}
     </nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="error">
+    <nz-form-control
+      [nzSm]="14"
+      [nzXs]="24"
+      [nzErrorTip]="'home.itemList.modal.form.quantityError' | translate"
+    >
       <input
         nz-input
         formControlName="quantity"
         id="quantity"
+        inputmode="numeric"
+        pattern="[0-9]*"
         type="number"
         min="0"
       />
@@ -23,10 +33,21 @@
   </nz-form-item>
   <nz-form-item>
     <nz-form-label [nzSm]="6" [nzXs]="12" nzRequired nzFor="price"
-      >ราคาต่อหน่วย
+      >{{ 'home.itemList.modal.form.price' | translate }}
     </nz-form-label>
-    <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="error">
-      <input nz-input formControlName="price" id="price" type="number" />
+    <nz-form-control
+      [nzSm]="14"
+      [nzXs]="24"
+      [nzErrorTip]="'home.itemList.modal.form.priceError' | translate"
+    >
+      <input
+        nz-input
+        formControlName="price"
+        id="price"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        type="number"
+      />
     </nz-form-control>
   </nz-form-item>
   <button
@@ -37,6 +58,6 @@
     nzDanger
     (click)="deleteItem()"
   >
-    ลบรายการนี้
+    {{ 'home.itemList.modal.form.delete' | translate }}
   </button>
 </form>
