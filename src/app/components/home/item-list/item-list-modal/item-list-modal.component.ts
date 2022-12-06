@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { ModalType } from 'src/app/common/enums';
-import { BillItem } from 'src/app/common/models';
 import { SharedService } from 'src/app/shared/shared.service';
+import {
+  BillItem,
+  ModalType,
+} from 'src/app/core';
+
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
