@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { SharedService } from 'src/app/shared/shared.service';
 import {
   BillItem,
+  markAllControlsAsDirty,
   ModalType,
+  updateAllControlValueAndValidity,
 } from 'src/app/core';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -24,11 +25,7 @@ export class ItemListModalComponent implements OnInit {
     return ModalType;
   }
 
-  constructor(
-    private modal: NzModalRef,
-    private fb: FormBuilder,
-    private sharedService: SharedService,
-  ) {}
+  constructor(private modal: NzModalRef, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.itemListForm = this.fb.group({
@@ -73,7 +70,8 @@ export class ItemListModalComponent implements OnInit {
         this.modal.close();
       }
     } else {
-      this.sharedService.markFormGroupAsDirty(this.itemListForm);
+      markAllControlsAsDirty([this.itemListForm]);
+      updateAllControlValueAndValidity([this.itemListForm]);
     }
   }
 
