@@ -6,8 +6,8 @@
       nz-popconfirm
       [nzPopconfirmTitle]="
         setOfCheckedId.size == 0
-          ? 'ต้องการลบรายการทั้งหมด ?'
-          : 'ต้องการลบรายการ ' + setOfCheckedId.size + ' รายการ ?'
+          ? 'ต้องการลบคนจ่ายทั้งหมด ?'
+          : 'ต้องการลบคนจ่าย ' + setOfCheckedId.size + ' คน ?'
       "
       [nzOkText]="'ตกลง'"
       [nzCancelText]="'ยกเลิก'"
@@ -15,10 +15,10 @@
       nzDanger
       (nzOnConfirm)="deleteItemList()"
     >
-      {{ setOfCheckedId.size > 0 ? 'ลบรายการที่เลือก' : 'ลบรายการทั้งหมด' }}
+      {{ setOfCheckedId.size > 0 ? 'ลบคนจ่ายที่เลือก' : 'ลบคนจ่ายทั้งหมด' }}
     </button>
     <button nz-button nzType="default" (click)="toggleCheckbox()">
-      {{ isShowCheckbox ? 'ยกเลิก' : 'เลือกรายการ' }}
+      {{ isShowCheckbox ? 'ยกเลิก' : 'เลือกคนจ่าย' }}
     </button>
     <ng-template #confirmDeleteTemplate>
       <span nz-icon nzType="question-circle-o" style="color: red"></span>
