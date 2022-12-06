@@ -11,7 +11,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 1.75rem;
+  padding-top: 1.5rem;
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
 
   .back-button {
     > a {
@@ -26,6 +28,13 @@
     font-weight: 500;
     color: #fafafa;
   }
+}
+
+.language-switcher {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem 1.75rem;
 }
 
 ::ng-deep .ant-tabs-tab-btn {

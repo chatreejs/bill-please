@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ModalType } from 'src/app/common/enums';
 import { Payer } from 'src/app/common/models';
@@ -43,6 +44,7 @@ export class PayerListComponent implements OnInit {
 
   constructor(
     private modalService: NzModalService,
+    private translate: TranslateService,
     private viewContainerRef: ViewContainerRef,
   ) {}
 
@@ -98,7 +100,11 @@ export class PayerListComponent implements OnInit {
 
   openPayerListModal(type: ModalType, id?: string): void {
     this.modalService.create({
-      nzTitle: type === ModalType.Create ? 'เพิ่มคนจ่าย' : 'แก้ไขคนจ่าย',
+      nzTitle: this.translate.instant(
+        type === ModalType.Create
+          ? 'home.payerList.modal.title.add'
+          : 'home.payerList.modal.title.edit',
+      ),
       nzContent: PayerListModalComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzComponentParams: {
@@ -107,13 +113,13 @@ export class PayerListComponent implements OnInit {
       },
       nzFooter: [
         {
-          label: 'ยกเลิก',
+          label: this.translate.instant('common.button.cancel'),
           onClick: (component) => {
             component?.destroyModal();
           },
         },
         {
-          label: 'บันทึก',
+          label: this.translate.instant('common.button.save'),
           type: 'primary',
           onClick: (component) => {
             component?.savePayer();

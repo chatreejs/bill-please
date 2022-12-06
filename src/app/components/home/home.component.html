@@ -5,7 +5,7 @@
         class="bill-title"
         nz-input
         nzSize="large"
-        placeholder="ตั้งชื่อบิล"
+        [placeholder]="'home.billTitle' | translate"
         nzBorderless
         [(ngModel)]="billName"
       />
@@ -14,14 +14,14 @@
           <nz-tab [nzTitle]="itemTitleTemplate">
             <ng-template #itemTitleTemplate>
               <span nz-icon nzType="unordered-list" nzTheme="outline"></span>
-              รายการ
+              {{ 'home.tab.itemList' | translate }}
             </ng-template>
             <app-item-list></app-item-list>
           </nz-tab>
           <nz-tab [nzTitle]="payerTitleTemplate">
             <ng-template #payerTitleTemplate>
               <span nz-icon nzType="user" nzTheme="outline"></span>
-              คนจ่าย
+              {{ 'home.tab.payerList' | translate }}
             </ng-template>
             <app-payer-list></app-payer-list>
           </nz-tab>
@@ -38,7 +38,7 @@
           [disabled]="buttonDisabled"
           (click)="next()"
         >
-          ต่อไป
+          {{ 'common.button.next' | translate }}
           <span nz-icon nzType="right"></span>
         </button>
       </div>

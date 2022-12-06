@@ -1,0 +1,9 @@
+a {
+  color: white;
+}
+
+li {
+  > span {
+    margin-right: 6px;
+  }
+}

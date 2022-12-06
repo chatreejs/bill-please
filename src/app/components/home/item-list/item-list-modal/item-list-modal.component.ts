@@ -32,10 +32,10 @@ export class ItemListModalComponent implements OnInit {
       id: [null],
       name: ['', Validators.required],
       quantity: [
-        0,
+        null,
         Validators.compose([Validators.required, Validators.min(0)]),
       ],
-      price: [0, Validators.required],
+      price: [null, Validators.required],
     });
     if (this.type === ModalType.Update) {
       this.initFormData();

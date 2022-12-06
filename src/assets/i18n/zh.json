@@ -1,0 +1,81 @@
+{
+	"common": {
+		"button": {
+			"cancel": "取消",
+			"delete": "删除",
+			"next": "下一个",
+			"ok": "好的",
+			"save": "节省"
+		}
+	},
+	"home": {
+		"billTitle": "账单名称",
+		"itemList": {
+			"button": {
+				"add": "添加项目",
+				"addFromBill": "从账单中添加",
+				"deleteAll": "删除所有项目",
+				"deleteSelected": "删除所选",
+				"select": "选择"
+			},
+			"modal": {
+				"form": {
+					"delete": "删除项目",
+					"name": "项目名称",
+					"nameError": "请输入商品名称",
+					"price": "单价",
+					"priceError": "请输入商品价格",
+					"quantity": "数量",
+					"quantityError": "请输入商品数量"
+				},
+				"title": {
+					"add": "添加新项目",
+					"edit": "编辑项目"
+				}
+			},
+			"popup": {
+				"deleteAll": "您要删除所有项目吗？",
+				"deleteSelected": "您要删除选定的 {{count}} 个项目吗？"
+			},
+			"table": {
+				"name": "姓名",
+				"price": "单价",
+				"quantity": "数量"
+			}
+		},
+		"payerList": {
+			"button": {
+				"add": "添加付款人",
+				"deleteAll": "删除所有付款人",
+				"deleteSelected": "删除选定的付款人",
+				"select": "选择付款人"
+			},
+			"modal": {
+				"form": {
+					"addChildren": "添加好友",
+					"childrenName": "好友名称",
+					"childrenNameError": "请输入朋友姓名",
+					"delete": "删除付款人",
+					"hasChildren": "一个朋友来了",
+					"name": "付款人名称",
+					"nameError": "请输入付款人姓名"
+				},
+				"title": {
+					"add": "添加新付款人",
+					"edit": "编辑付款人"
+				}
+			},
+			"popup": {
+				"deleteAll": "您要删除所有付款人吗？",
+				"deleteSelected": "您要删除选定的 {{count}} 个付款人吗？"
+			},
+			"table": {
+				"name": "名称"
+			}
+		},
+		"tab": {
+			"itemList": "物品清单",
+			"payerList": "付款人"
+		}
+	}
+}

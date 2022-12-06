@@ -1,4 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { ModalType } from 'src/app/common/enums';
 import { BillItem } from 'src/app/common/models';
@@ -42,6 +43,7 @@ export class ItemListComponent {
 
   constructor(
     private modalService: NzModalService,
+    private translate: TranslateService,
     private viewContainerRef: ViewContainerRef,
   ) {}
 
@@ -89,7 +91,11 @@ export class ItemListComponent {
 
   openItemListModal(type: ModalType, id?: string): void {
     this.modalService.create({
-      nzTitle: type === ModalType.Create ? 'เพิ่มรายการใหม่' : 'แก้ไขรายการ',
+      nzTitle: this.translate.instant(
+        type === ModalType.Create
+          ? 'home.itemList.modal.title.add'
+          : 'home.itemList.modal.title.edit',
+      ),
       nzContent: ItemListModalComponent,
       nzViewContainerRef: this.viewContainerRef,
       nzComponentParams: {
@@ -98,13 +104,13 @@ export class ItemListComponent {
       },
       nzFooter: [
         {
-          label: 'ยกเลิก',
+          label: this.translate.instant('common.button.cancel'),
           onClick: (component) => {
             component?.destroyModal();
           },
         },
         {
-          label: 'บันทึก',
+          label: this.translate.instant('common.button.save'),
           type: 'primary',
           onClick: (component) => {
             component?.saveItem();

@@ -5,7 +5,7 @@
     "type": "git",
     "url": "https://github.com/chatreejs/check-bill-enhanced.git"
   },
-  "version": "0.1.0-beta.1",
+  "version": "0.1.0-beta.2",
   "authors": [
     {
       "name": "Chanon Treemeth",
@@ -33,6 +33,9 @@
     "@angular/platform-browser-dynamic": "^15.0.0",
     "@angular/router": "^15.0.0",
     "@angular/service-worker": "^15.0.0",
+    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0",
+    "flag-icons": "^6.6.6",
     "ng-zorro-antd": "^14.2.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
