@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { ModalType } from 'src/app/common/enums';
-import { Payer } from 'src/app/common/models';
-import { SharedService } from 'src/app/shared/shared.service';
+import {
+  markAllControlsAsDirty,
+  ModalType,
+  Payer,
+  updateAllControlValueAndValidity,
+} from 'src/app/core';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -26,11 +29,7 @@ export class PayerListModalComponent implements OnInit {
     return this.payerListForm.get('childrenForm') as FormArray;
   }
 
-  constructor(
-    private modal: NzModalRef,
-    private fb: FormBuilder,
-    private sharedService: SharedService,
-  ) {}
+  constructor(private modal: NzModalRef, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.payerListForm = this.fb.group({
@@ -108,7 +107,8 @@ export class PayerListModalComponent implements OnInit {
         this.modal.close();
       }
     } else {
-      this.sharedService.markFormGroupAsDirty(this.payerListForm);
+      markAllControlsAsDirty([this.payerListForm]);
+      updateAllControlValueAndValidity([this.payerListForm]);
     }
   }
 

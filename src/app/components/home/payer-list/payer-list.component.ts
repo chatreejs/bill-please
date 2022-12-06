@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { ModalType } from 'src/app/common/enums';
-import { Payer } from 'src/app/common/models';
+import { ModalType } from 'src/app/core/enums';
+import { Payer } from 'src/app/core/models';
 import { v4 as uuidv4 } from 'uuid';
 import { PayerListModalComponent } from './payer-list-modal/payer-list-modal.component';
 @Component({

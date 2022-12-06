@@ -11,7 +11,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FooterModule, LanguageSwitcherModule } from './shared';
+import { SharedModule } from './shared/shared.module';
 
 import { en_US, NZ_I18N } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -31,8 +31,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     HttpClientModule,
 
-    LanguageSwitcherModule,
-    FooterModule,
+    SharedModule,
 
     NzIconModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
