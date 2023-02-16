@@ -1,5 +1,5 @@
 <h1 align="center">
-  <p align="center">🧾 Check Bill Enhanced</p>
+  <p align="center">🧾 Bill Please</p>
 </h1>
 
 <p align="center">
