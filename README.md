@@ -22,7 +22,7 @@
 
 ## Introduction
 
-Check Bill Enhanced is an app that will help you calculate your expenses and divide them up for your party.
+Bill Please is an app that will help you calculate your expenses and divide them up for your party.
 
 If you want to contribute, please refer to the [contributing guidelines](./CONTRIBUTING.md) of this project.
 
@@ -48,4 +48,4 @@ npm run build
 
 ## License
 
-Check Bill Enhanced is [MIT licensed](./LICENSE).
+Bill Please is [MIT licensed](./LICENSE).
