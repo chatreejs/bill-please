@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_TAG = getDockerTag()
+    VERSION = "0.1.0-alpha.1"
     IMAGE_URL = "chatreejs/bill-please"
     BASE_HREF = "/billplease/"
   }
@@ -18,11 +18,11 @@ pipeline {
       steps {
         script {
           if (env.BRANCH_NAME == 'main') {
-            env.IMAGE_URL_WITH_TAG = "${IMAGE_URL}:${DOCKER_TAG}"
+            env.IMAGE_URL_WITH_TAG = "${IMAGE_URL}:${VERSION}"
           } else {
             def now = new Date()
             BUILD_DATE = now.format("yyyyMMdd", TimeZone.getTimeZone('UTC'))
-            env.IMAGE_URL_WITH_TAG = "${IMAGE_URL}:${DOCKER_TAG}-${BUILD_DATE}"
+            env.IMAGE_URL_WITH_TAG = "${IMAGE_URL}:${VERSION}-${BUILD_DATE}"
           }
         }
       }
@@ -71,9 +71,4 @@ pipeline {
     }
   }
 
-}
-
-def getDockerTag() {
-  def tag = sh script: "git describe --tags `git rev-list --tags --max-count=1`", returnStdout: true
-  return tag.trim()
 }
