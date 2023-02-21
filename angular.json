@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "check-bill-enhanced": {
+    "bill-please": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -78,10 +78,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "check-bill-enhanced:build:production"
+              "browserTarget": "bill-please:build:production"
             },
             "development": {
-              "browserTarget": "check-bill-enhanced:build:development"
+              "browserTarget": "bill-please:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -89,7 +89,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "check-bill-enhanced:build"
+            "browserTarget": "bill-please:build"
           }
         },
         "test": {

@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     DOCKER_TAG = getDockerTag()
-    IMAGE_URL = "chatreejs/check-bill-enhanced"
+    IMAGE_URL = "chatreejs/bill-please"
     BASE_HREF = "/billplease/"
   }
 

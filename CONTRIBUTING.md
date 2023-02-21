@@ -10,13 +10,13 @@ Check Bill Enhanced is an open-source project. If you want to contribute to the 
 
 Install [npm](https://www.npmjs.com/get-npm) and [Node.js](https://nodejs.org/en/download/) If you haven't
 
-1. Fork and clone the [repository](https://github.com/chatreejs/check-bill-enhanced)
+1. Fork and clone the [repository](https://github.com/chatreejs/bill-please)
    ```bash
    git clone [fork_repo_url]
    ```
 2. Add [upstream](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/configuring-a-remote-for-a-fork) remote. E.g.
    ```bash
-   git remote add upstream git@github.com:chatreejs/check-bill-enhanced.git
+   git remote add upstream git@github.com:chatreejs/bill-please.git
    ```
 3. Make sure you have the latest version of the default branch
    ```bash

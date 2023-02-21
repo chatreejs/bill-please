@@ -3,20 +3,20 @@
 </h1>
 
 <p align="center">
-  <a href="https://jenkins.chatreejs.com/job/chatreejs/job/check-bill-enhanced/job/main/" target="_blank">
-    <img src="https://jenkins.chatreejs.com/job/chatreejs/job/check-bill-enhanced/job/main/badge/icon" alt="Build Status">
+  <a href="https://jenkins.chatreejs.com/job/chatreejs/job/bill-please/job/main/" target="_blank">
+    <img src="https://jenkins.chatreejs.com/job/chatreejs/job/bill-please/job/main/badge/icon" alt="Build Status">
   </a>
-  <a href="https://github.com/chatreejs/check-bill-enhanced/releases"
+  <a href="https://github.com/chatreejs/bill-please/releases"
     target="_blank">
-    <img src="https://img.shields.io/github/v/release/chatreejs/check-bill-enhanced?include_prereleases&sort=semver" alt="Release">
+    <img src="https://img.shields.io/github/v/release/chatreejs/bill-please?include_prereleases&sort=semver" alt="Release">
   </a>
-  <a href="https://hub.docker.com/r/chatreejs/check-bill-enhanced"
+  <a href="https://hub.docker.com/r/chatreejs/bill-please"
     target="_blank">
-    <img src="https://img.shields.io/docker/pulls/chatreejs/check-bill-enhanced" alt="Docker Pulls">
+    <img src="https://img.shields.io/docker/pulls/chatreejs/bill-please" alt="Docker Pulls">
   </a>
-  <a href="https://hub.docker.com/r/chatreejs/check-bill-enhanced"
+  <a href="https://hub.docker.com/r/chatreejs/bill-please"
     target="_blank">
-    <img src="https://img.shields.io/docker/image-size/chatreejs/check-bill-enhanced" alt="Docker Image Size">
+    <img src="https://img.shields.io/docker/image-size/chatreejs/bill-please" alt="Docker Image Size">
   </a>
 </p>
 
