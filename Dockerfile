@@ -9,20 +9,10 @@ RUN npm install
 COPY . /app
 RUN npm run ng -- build --configuration production --base-href $BASE_HREF
 
-FROM nginx:alpine
-COPY nginx/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist /usr/share/nginx/html
+FROM nginxinc/nginx-unprivileged:1.23-alpine
 
-WORKDIR /app
-
-RUN chown -R nginx:nginx /app && chmod -R 755 /app && \
-  chown -R nginx:nginx /var/cache/nginx && \
-  chown -R nginx:nginx /var/log/nginx && \
-  chown -R nginx:nginx /etc/nginx/conf.d
-RUN touch /var/run/nginx.pid && \
-  chown -R nginx:nginx /var/run/nginx.pid
-
-USER nginx
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist/ClientApp /usr/share/nginx/html
 
 EXPOSE 80
 
