@@ -8,13 +8,7 @@ pipeline {
   }
 
   stages {
-    stage('Quality Check') {
-      steps {
-        sh 'echo "Quality Check"'
-      }
-    }
-
-    stage('Setup Environment') {
+    stage('Environment Setup') {
       steps {
         script {
           if (env.BRANCH_NAME == 'main') {
@@ -28,19 +22,31 @@ pipeline {
       }
     }
 
-    stage('Build') {
+    stage('Unit Test') {
+      steps {
+        sh 'echo "Test"'
+      }
+    }
+
+    stage('Static Code Scan') {
+      steps {
+        sh 'echo "Scan"'
+      }
+    }
+
+    stage('Build Docker Image') {
       steps {
         sh 'docker build --build-arg BASE_HREF=${BASE_HREF} -f Dockerfile . -t ${IMAGE_URL_WITH_TAG}'
       }
     }
 
-    stage('Scan Image') {
+    stage('Image Vulnerability Scan') {
       steps {
         sh 'trivy image --severity HIGH,CRITICAL --no-progress ${IMAGE_URL_WITH_TAG}'
       }
     }
 
-    stage('Clear dangling image') {
+    stage('Image Cleanup') {
       steps {
         sh 'docker container prune -f && docker image prune -f'
       }
