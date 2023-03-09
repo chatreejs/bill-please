@@ -1,4 +1,4 @@
-FROM node:14-alpine AS build
+FROM node:14.21.3-alpine3.17 AS build
 
 ARG BASE_HREF=/
 
@@ -11,8 +11,8 @@ RUN npm run ng -- build --configuration production --base-href $BASE_HREF
 
 FROM nginxinc/nginx-unprivileged:1.23-alpine
 
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist/ClientApp /usr/share/nginx/html
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80
 
