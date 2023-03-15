@@ -1,9 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'node:16.19-alpine3.17'
-    }
-  }
+  agent any
 
   environment {
     VERSION = "0.1.0-alpha.1"
