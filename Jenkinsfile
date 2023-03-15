@@ -29,6 +29,11 @@ pipeline {
     }
 
     stage('Static Code Scan') {
+      agent {
+        docker {
+          image 'node:16.19-alpine3.17'
+        }
+      }
       steps {
         script {
           def scannerHome = tool 'SonarScanner'
