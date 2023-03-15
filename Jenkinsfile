@@ -33,9 +33,8 @@ pipeline {
         script {
           def scannerHome = tool 'SonarScanner'
           withSonarQubeEnv('SonarQube') {
-            docker.image('node:16.19-alpine3.17').inside {
-              sh "node --version"
-              sh "${scannerHome}/bin/sonar-scanner"
+            docker.image('node:16.19-alpine3.17').inside("-v ${scannerHome}:/opt/sonarscanner") {
+              sh "/opt/sonarscanner/bin/sonar-scanner"
             }
           }
         }
