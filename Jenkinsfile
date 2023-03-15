@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent none
 
   environment {
     VERSION = "0.1.0-alpha.1"
@@ -68,7 +68,7 @@ pipeline {
           sh 'docker login -u $USERNAME -p $PASSWORD'
           sh 'docker push $IMAGE_URL_WITH_TAG'
         }
-        sh 'docker container prune -f && docker image prune -f'
+        sh 'docker container prune -a && docker image prune -a'
       }
     }
   }
