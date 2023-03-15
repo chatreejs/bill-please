@@ -31,7 +31,7 @@ pipeline {
     stage('Static Code Scan') {
       agent {
         docker {
-          image 'node:16.19-alpine3.17'
+          image 'node:16.19'
         }
       }
       steps {
