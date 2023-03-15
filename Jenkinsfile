@@ -30,7 +30,10 @@ pipeline {
 
     stage('Static Code Scan') {
       steps {
-        sh 'echo "Scan"'
+        def scannerHome = tool 'SonarScanner'
+        withSonarQubeEnv('SonarQube') {
+          sh "${scannerHome}/bin/sonar-scanner"
+        }
       }
     }
 
@@ -46,12 +49,6 @@ pipeline {
       }
     }
 
-    stage('Image Cleanup') {
-      steps {
-        sh 'docker container prune -f && docker image prune -f'
-      }
-    }
-
     stage('Push to registry') {
       when {
         anyOf {
@@ -64,6 +61,7 @@ pipeline {
           sh 'docker login -u $USERNAME -p $PASSWORD'
           sh 'docker push $IMAGE_URL_WITH_TAG'
         }
+        sh 'docker container prune -f && docker image prune -f'
       }
     }
   }
