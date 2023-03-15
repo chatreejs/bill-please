@@ -1,5 +1,9 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'node:16.19-alpine3.17'
+    }
+  }
 
   environment {
     VERSION = "0.1.0-alpha.1"
@@ -28,17 +32,15 @@ pipeline {
       }
     }
 
-    agent {
-      docker {
-        image 'node:16.19-alpine3.17'
-      }
-    }
     stage('Static Code Scan') {
       steps {
         script {
           def scannerHome = tool 'SonarScanner'
           withSonarQubeEnv('SonarQube') {
-            sh "${scannerHome}/bin/sonar-scanner"
+            docker.image('node:16.19-alpine3.17').inside {
+              sh "node --version"
+              sh "${scannerHome}/bin/sonar-scanner"
+            }
           }
         }
       }
