@@ -29,17 +29,15 @@ pipeline {
     }
 
     stage('Static Code Scan') {
-      steps {
-        agent {
-          docker {
-            image 'sonarsource/sonar-scanner-cli:latest'
-            args '-v $PWD:/workspace -w /workspace'
-          }
+      agent {
+        docker {
+          image 'sonarsource/sonar-scanner-cli:latest'
+          args '-v $PWD:/workspace -w /workspace'
         }
-        steps {
-          withSonarQubeEnv('SonarQube Server') {
-            sh 'sonar-scanner'
-          }
+      }
+      steps {
+        withSonarQubeEnv('SonarQube Server') {
+          sh 'sonar-scanner'
         }
       }
     }
