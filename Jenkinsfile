@@ -30,16 +30,15 @@ pipeline {
 
     stage('Static Code Scan') {
       steps {
-        script {
-          def scannerHome = tool 'SonarScanner'
-          withSonarQubeEnv('SonarQube') {
-            docker.image('node:16.19-alpine3.17').inside("-v ${scannerHome}:/opt/sonarscanner") {
-              sh "/opt/sonarscanner/bin/sonar-scanner"
-            }
+        docker.image('sonarsource/sonar-scanner-cli:latest').inside {
+          withCredentials([
+            string(credentialsId: 'sonarqube-host', variable: 'SONAR_HOST_URL'),
+            string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')
+          ]) {
+            sh 'sonar-scanner -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN'
           }
         }
       }
-    }
 
     stage('Build Docker Image') {
       steps {
