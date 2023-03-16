@@ -66,7 +66,7 @@ pipeline {
           sh 'docker login -u $USERNAME -p $PASSWORD'
           sh 'docker push $IMAGE_URL_WITH_TAG'
         }
-        sh 'docker container prune -a && docker image prune -a'
+        sh 'docker container prune -f && docker image prune -a'
       }
     }
   }
