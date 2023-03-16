@@ -30,9 +30,15 @@ pipeline {
 
     stage('Static Code Scan') {
       steps {
-        script {
-          docker.image('sonarsource/sonar-scanner-cli:latest').inside('-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""') {
-            sh "sonarscanner"
+        agent {
+          docker {
+            image 'sonarsource/sonar-scanner-cli:latest'
+            args '-v $PWD:/workspace -w /workspace'
+          }
+        }
+        steps {
+          withSonarQubeEnv('SonarQube Server') {
+            sh 'sonar-scanner'
           }
         }
       }
