@@ -75,7 +75,7 @@ pipeline {
         branch 'develop'
       }
       steps {
-        build job: 'bill-please-manifest-dev', parameters: [string(name: 'IMAGE_TAG', value: "${VERSION}-${BUILD_DATE}")]
+        build job: 'chatreejs/job/GitOps/job/bill-please-manifest-dev', parameters: [string(name: 'IMAGE_TAG', value: "${VERSION}-${BUILD_DATE}")]
       }
     }
   }
