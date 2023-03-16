@@ -15,7 +15,7 @@ pipeline {
             env.IMAGE_URL_WITH_TAG = "${IMAGE_URL}:${VERSION}"
           } else {
             def now = new Date()
-            BUILD_DATE = now.format("yyyyMMdd", TimeZone.getTimeZone('UTC'))
+            env.BUILD_DATE = now.format("yyyyMMdd", TimeZone.getTimeZone('UTC'))
             env.IMAGE_URL_WITH_TAG = "${IMAGE_URL}:${VERSION}-${BUILD_DATE}"
           }
         }
@@ -67,6 +67,15 @@ pipeline {
           sh 'docker push $IMAGE_URL_WITH_TAG'
         }
         sh 'docker container prune -f && docker image prune -a'
+      }
+    }
+
+    stage('Deploy to Kubernetes') {
+      when {
+        branch 'develop'
+      }
+      steps {
+        build job: 'bill-please-manifest-dev', parameters: [string(name: 'IMAGE_TAG', value: "${VERSION}-${BUILD_DATE}")]
       }
     }
   }
