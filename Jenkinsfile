@@ -30,11 +30,11 @@ pipeline {
 
     stage('Static Code Scan') {
       steps {
-        docker.image('sonarsource/sonar-scanner-cli:latest').inside {
-          withCredentials([
+        withCredentials([
             string(credentialsId: 'sonarqube-host', variable: 'SONAR_HOST_URL'),
             string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')
-          ]) {
+        ]) {
+          docker.image('sonarsource/sonar-scanner-cli:latest').inside {
             sh 'sonar-scanner -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN'
           }
         }
