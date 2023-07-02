@@ -2,6 +2,7 @@ pipeline {
   agent any
 
   environment {
+    VERSION = "0.1.0-alpha.1"
     IMAGE_URL = "chatreejs/bill-please"
     BASE_HREF = "/billplease/"
   }
@@ -12,7 +13,7 @@ pipeline {
         script {
           def now = new Date()
           env.BUILD_DATE = now.format("yyyyMMdd", TimeZone.getTimeZone('UTC'))
-          env.BUILD_VERSION = "build-${BUILD_DATE}-${BUILD_NUMBER}"
+          env.BUILD_VERSION = "${VERSION}-${BUILD_DATE}-${BUILD_NUMBER}"
         }
       }
     }
