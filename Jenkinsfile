@@ -9,6 +9,12 @@ pipeline {
   }
 
   stages {
+    stage('Prepare Env') {
+      steps {
+        sh 'export BUILD_VERSION=${BUILD_VERSION}'
+      }
+    }
+
     stage('Static Code Scan') {
       when { expression { ENV in ['develop'] } }
       agent {
@@ -64,7 +70,7 @@ pipeline {
       }
     }
 
-    stage('Clear image') {
+    stage('Clear Image') {
       when { expression { ENV in ['develop'] } }
       steps {
         sh 'docker rmi $IMAGE_URL_WITH_TAG'
