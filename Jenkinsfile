@@ -11,9 +11,7 @@ pipeline {
   stages {
     stage('Static Code Scan') {
       when {
-        anyOf {
-          branch 'develop'
-        }
+        branch 'develop'
       }
       agent {
         docker {
@@ -30,9 +28,7 @@ pipeline {
 
     stage('Build Docker Image') {
       when {
-        anyOf {
-          branch 'develop'
-        }
+        branch 'develop'
       }
       steps {
         sh 'docker build --build-arg BASE_HREF=${BASE_HREF} -f Dockerfile . -t ${IMAGE_URL}:${BUILD_VERSION}'
@@ -41,9 +37,7 @@ pipeline {
 
     stage('Image Vulnerability Scan') {
       when {
-        anyOf {
-          branch 'develop'
-        }
+        branch 'develop'
       }
       agent {
         docker {
@@ -67,9 +61,7 @@ pipeline {
 
     stage('Push to registry') {
       when {
-        anyOf {
-          branch 'develop'
-        }
+        branch 'develop'
       }
       steps {
         withCredentials([usernamePassword(credentialsId: 'docker-hub-credential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
@@ -82,9 +74,7 @@ pipeline {
 
     stage('Clear image') {
       when {
-        anyOf {
-          branch 'develop'
-        }
+        branch 'develop'
       }
       steps {
         sh 'docker rmi $IMAGE_URL_WITH_TAG'
