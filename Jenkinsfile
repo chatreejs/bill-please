@@ -9,10 +9,12 @@ pipeline {
   stages {
     stage('Prepare Env') {
       steps {
+        script {
         if (env.BRANCH_NAME == 'main') {
           env.BUILD_VERSION = "latest"
         } else {
         env.BUILD_VERSION = "build-" + new Date().format('yyyMMdd', TimeZone.getTimeZone('UTC')) + "-" + env.BUILD_NUMBER
+        }
         }
       }
     }
