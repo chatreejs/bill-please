@@ -1,34 +1,20 @@
+BUILD_VERSION = "build-" + new Date().format('yyyMMdd', TimeZone.getTimeZone('UTC')) + "-" + env.BUILD_NUMBER
+
 pipeline {
   agent any
 
   environment {
-    VERSION = "0.1.0-alpha.1"
     IMAGE_URL = "chatreejs/bill-please"
     BASE_HREF = "/billplease/"
   }
 
   stages {
-    stage('Environment Setup') {
-      steps {
-        script {
-          if (env.BRANCH_NAME == 'main') {
-            env.IMAGE_URL_WITH_TAG = "${IMAGE_URL}:${VERSION}"
-          } else {
-            def now = new Date()
-            env.BUILD_DATE = now.format("yyyyMMdd", TimeZone.getTimeZone('UTC'))
-            env.IMAGE_URL_WITH_TAG = "${IMAGE_URL}:${VERSION}-${BUILD_DATE}"
-          }
+    stage('Static Code Scan') {
+      when {
+        anyOf {
+          branch 'develop'
         }
       }
-    }
-
-    stage('Unit Test') {
-      steps {
-        sh 'echo "Test"'
-      }
-    }
-
-    stage('Static Code Scan') {
       agent {
         docker {
           image 'sonarsource/sonar-scanner-cli:latest'
@@ -43,21 +29,45 @@ pipeline {
     }
 
     stage('Build Docker Image') {
+      when {
+        anyOf {
+          branch 'develop'
+        }
+      }
       steps {
-        sh 'docker build --build-arg BASE_HREF=${BASE_HREF} -f Dockerfile . -t ${IMAGE_URL_WITH_TAG}'
+        sh 'docker build --build-arg BASE_HREF=${BASE_HREF} -f Dockerfile . -t ${IMAGE_URL}:${BUILD_VERSION}'
       }
     }
 
     stage('Image Vulnerability Scan') {
+      when {
+        anyOf {
+          branch 'develop'
+        }
+      }
+      agent {
+        docker {
+          image 'aquasec/trivy:latest'
+          args '-v /var/run/docker.sock:/var/run/docker.sock -v trivy_cache:/.cache --entrypoint="" -u root --privileged'
+        }
+      }
       steps {
-        sh 'trivy image --severity HIGH,CRITICAL --no-progress ${IMAGE_URL_WITH_TAG}'
+        sh 'trivy image --format template --template \"@/contrib/html.tpl\" --output report.html --severity HIGH,CRITICAL --no-progress ${IMAGE_URL}:${BUILD_VERSION}'
+
+        publishHTML target : [
+          allowMissing: true,
+          alwaysLinkToLastBuild: false,
+          keepAll: true,
+          reportDir: '.',
+          reportFiles: 'report.html',
+          reportName: 'Trivy Scan Report',
+        ]
       }
     }
 
     stage('Push to registry') {
       when {
         anyOf {
-          branch 'main'
           branch 'develop'
         }
       }
@@ -70,22 +80,33 @@ pipeline {
       }
     }
 
+    stage('Clear image') {
+      when {
+        anyOf {
+          branch 'develop'
+        }
+      }
+      steps {
+        sh 'docker rmi $IMAGE_URL_WITH_TAG'
+      }
+    }
+
     stage('Deploy to Kubernetes') {
       when {
         branch 'develop'
       }
       steps {
-        build job: 'chatreejs/GitOps/bill-please-manifest-dev', parameters: [string(name: 'IMAGE_TAG', value: "${VERSION}-${BUILD_DATE}")]
+        build job: 'chatreejs/GitOps/bill-please-manifest-dev', parameters: [string(name: 'IMAGE_TAG', value: "${IMAGE_URL}:${BUILD_VERSION}")]
       }
     }
   }
 
   post {
     success {
-      discordSend description: "Duration: ${currentBuild.durationString}", link: env.BUILD_URL, result: currentBuild.currentResult, title: "${JOB_NAME} - # ${BUILD_NUMBER}", footer: "${currentBuild.getBuildCauses()[0].shortDescription}",webhookURL: 'https://discord.com/api/webhooks/1038846192844541973/zWWNg0uc-FZYGf3ffwo9kc-gtYHRjjCiZIz6U_DNhxcOcShnx5AyyKtKfhH08uUj9f3r'
+      discordSend description: "Duration: ${currentBuild.durationString}", link: env.BUILD_URL, result: currentBuild.currentResult, title: "${JOB_NAME} - # ${BUILD_VERSION}", footer: "${currentBuild.getBuildCauses()[0].shortDescription}",webhookURL: "https://discord.com/api/webhooks/${DISCORD_WEBHOOK_ID}/${DISCORD_WEBHOOK_TOKEN}"
     }
     failure {
-      discordSend description: "Duration: ${currentBuild.durationString}", link: env.BUILD_URL, result: currentBuild.currentResult, title: "${JOB_NAME} - # ${BUILD_NUMBER}", footer: "${currentBuild.getBuildCauses()[0].shortDescription}",webhookURL: 'https://discord.com/api/webhooks/1038846192844541973/zWWNg0uc-FZYGf3ffwo9kc-gtYHRjjCiZIz6U_DNhxcOcShnx5AyyKtKfhH08uUj9f3r'
+      discordSend description: "Duration: ${currentBuild.durationString}", link: env.BUILD_URL, result: currentBuild.currentResult, title: "${JOB_NAME} - # ${BUILD_VERSION}", footer: "${currentBuild.getBuildCauses()[0].shortDescription}",webhookURL: "https://discord.com/api/webhooks/${DISCORD_WEBHOOK_ID}/${DISCORD_WEBHOOK_TOKEN}"
     }
   }
 
