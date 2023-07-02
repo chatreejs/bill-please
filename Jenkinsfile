@@ -89,6 +89,7 @@ pipeline {
         build job: 'chatreejs/GitOps/bill-please-manifest-dev', parameters: [string(name: 'IMAGE_TAG', value: "${IMAGE_URL}:${BUILD_VERSION}")]
       }
     }
+
   }
 
   post {
