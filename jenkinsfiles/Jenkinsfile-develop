@@ -4,25 +4,11 @@ pipeline {
   environment {
     IMAGE_URL = "chatreejs/bill-please"
     BASE_HREF = "/billplease/"
+    BUILD_VERSION = "build-" + new Date().format('yyyMMdd', TimeZone.getTimeZone('UTC')) + "-" + env.BUILD_NUMBER
   }
 
   stages {
-    stage('Prepare Env') {
-      steps {
-        script {
-        if (env.BRANCH_NAME == 'main') {
-          env.BUILD_VERSION = "latest"
-        } else {
-        env.BUILD_VERSION = "build-" + new Date().format('yyyMMdd', TimeZone.getTimeZone('UTC')) + "-" + env.BUILD_NUMBER
-        }
-        }
-      }
-    }
-
     stage('Static Code Scan') {
-      when {
-        expression { env.BRANCH_NAME in ['develop'] }
-      }
       agent {
         docker {
           image 'sonarsource/sonar-scanner-cli:latest'
@@ -37,18 +23,12 @@ pipeline {
     }
 
     stage('Build Docker Image') {
-      when {
-        expression { env.BRANCH_NAME in ['develop'] }
-      }
       steps {
         sh 'docker build --build-arg BASE_HREF=${BASE_HREF} -f Dockerfile . -t ${IMAGE_URL}:${BUILD_VERSION}'
       }
     }
 
     stage('Image Vulnerability Scan') {
-      when {
-        expression { env.BRANCH_NAME in ['develop'] }
-      }
       agent {
         docker {
           image 'aquasec/trivy:latest'
@@ -70,31 +50,22 @@ pipeline {
     }
 
     stage('Push to registry') {
-      when {
-        expression { env.BRANCH_NAME in ['develop'] }
-      }
       steps {
         withCredentials([usernamePassword(credentialsId: 'docker-hub-credential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh 'docker login -u $USERNAME -p $PASSWORD'
-          sh 'docker push $IMAGE_URL_WITH_TAG'
+          sh 'docker push ${IMAGE_URL}:${BUILD_VERSION}'
         }
         sh 'docker container prune -f && docker image prune -a'
       }
     }
 
     stage('Clear Image') {
-      when {
-        expression { env.BRANCH_NAME in ['develop'] }
-      }
       steps {
-        sh 'docker rmi $IMAGE_URL_WITH_TAG'
+        sh 'docker rmi ${IMAGE_URL}:${BUILD_VERSION}'
       }
     }
 
     stage('Deploy to Kubernetes') {
-      when {
-        expression { env.BRANCH_NAME in ['develop'] }
-      }
       steps {
         build job: 'chatreejs/GitOps/bill-please-manifest-dev', parameters: [string(name: 'IMAGE_TAG', value: "${IMAGE_URL}:${BUILD_VERSION}")]
       }
