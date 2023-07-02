@@ -10,9 +10,7 @@ pipeline {
 
   stages {
     stage('Static Code Scan') {
-      when {
-        branch 'develop'
-      }
+      when { expression { ENV in ['develop'] } }
       agent {
         docker {
           image 'sonarsource/sonar-scanner-cli:latest'
@@ -27,18 +25,14 @@ pipeline {
     }
 
     stage('Build Docker Image') {
-      when {
-        branch 'develop'
-      }
+      when { expression { ENV in ['develop'] } }
       steps {
         sh 'docker build --build-arg BASE_HREF=${BASE_HREF} -f Dockerfile . -t ${IMAGE_URL}:${BUILD_VERSION}'
       }
     }
 
     stage('Image Vulnerability Scan') {
-      when {
-        branch 'develop'
-      }
+      when { expression { ENV in ['develop'] } }
       agent {
         docker {
           image 'aquasec/trivy:latest'
@@ -60,9 +54,7 @@ pipeline {
     }
 
     stage('Push to registry') {
-      when {
-        branch 'develop'
-      }
+      when { expression { ENV in ['develop'] } }
       steps {
         withCredentials([usernamePassword(credentialsId: 'docker-hub-credential', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh 'docker login -u $USERNAME -p $PASSWORD'
@@ -73,18 +65,14 @@ pipeline {
     }
 
     stage('Clear image') {
-      when {
-        branch 'develop'
-      }
+      when { expression { ENV in ['develop'] } }
       steps {
         sh 'docker rmi $IMAGE_URL_WITH_TAG'
       }
     }
 
     stage('Deploy to Kubernetes') {
-      when {
-        branch 'develop'
-      }
+      when { expression { ENV in ['develop'] } }
       steps {
         build job: 'chatreejs/GitOps/bill-please-manifest-dev', parameters: [string(name: 'IMAGE_TAG', value: "${IMAGE_URL}:${BUILD_VERSION}")]
       }
