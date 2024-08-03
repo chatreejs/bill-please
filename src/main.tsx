@@ -7,5 +7,5 @@ import './index.css';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter basename="/bill-please">
     <App />
-  </BrowserRouter>,
+  </BrowserRouter>
 );
