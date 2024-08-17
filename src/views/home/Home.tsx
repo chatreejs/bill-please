@@ -1,12 +1,20 @@
-import { UnorderedListOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  RightOutlined,
+  UnorderedListOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { BillCard } from '@components';
-import { Input, Tabs, TabsProps } from 'antd';
+import { Button, Input, Tabs, TabsProps } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ItemTable from './components/ItemTable';
 import PayerTable from './components/PayerTable';
 
-const BilContent = styled.div``;
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
 
 const Home: React.FC = () => {
   const [billName, setBillName] = useState<string>('');
@@ -50,7 +58,7 @@ const Home: React.FC = () => {
               padding: '1rem 0',
             }}
           />
-          <BilContent>
+          <div>
             <Tabs
               defaultActiveKey="1"
               items={tabItems}
@@ -58,10 +66,17 @@ const Home: React.FC = () => {
               activeKey={activeTab}
               centered
             />
-          </BilContent>
+          </div>
         </>
       }
-      bottom={<div>Bottom</div>}
+      bottom={
+        <ButtonWrapper>
+          <Button type="primary" size="large">
+            Next
+            <RightOutlined />
+          </Button>
+        </ButtonWrapper>
+      }
     />
   );
 };

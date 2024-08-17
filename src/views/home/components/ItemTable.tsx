@@ -3,6 +3,8 @@ import { Button } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 
+const ActionButton = styled.div``;
+
 const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,6 +14,7 @@ const ButtonWrapper = styled.div`
 const ItemTable: React.FC = () => {
   return (
     <>
+      <ActionButton></ActionButton>
       <ButtonWrapper>
         <Button type="dashed" size="large" icon={<PlusOutlined />}>
           Add Item
