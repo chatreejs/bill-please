@@ -23,6 +23,7 @@
       "@components": ["./src/components"],
       "@config": ["./src/config"],
       "@context": ["./src/context"],
+      "@interfaces": ["./src/interfaces"],
       "@enums": ["./src/enums"],
       "@hooks": ["./src/hooks"],
       "@models": ["./src/models"],

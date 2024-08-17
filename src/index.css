@@ -10,19 +10,26 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
 body {
   margin: 0;
+  font-size: 14px;
   font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    San Francisco,
-    Segoe UI,
-    Roboto,
-    Helvetica Neue,
-    sans-serif;
+    Outfit,
+    Kanit,
+    sans-serif,
+    -apple-system;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #fcfcfc;
+  background: #2c9c91;
+  overflow-x: unset;
+  user-select: none;
+  --card-shadow-filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.1));
 }
 
 code {
