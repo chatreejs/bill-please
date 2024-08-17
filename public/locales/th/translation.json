@@ -1,0 +1,82 @@
+{
+  "common": {
+    "button": {
+      "cancel": "ยกเลิก",
+      "delete": "ลบ",
+      "next": "ต่อไป",
+      "ok": "ตกลง",
+      "save": "บันทึก"
+    }
+  },
+  "home": {
+    "billTitle": "ตั้งชื่อบิล",
+    "itemList": {
+      "button": {
+        "add": "เพิ่มรายการ",
+        "addFromBill": "เพิ่มรายการจากบิล",
+        "deleteAll": "ลบรายการทั้งหมด",
+        "deleteSelected": "ลบรายการที่เลือก",
+        "select": "เลือกรายการ"
+      },
+      "modal": {
+        "form": {
+          "delete": "ลบรายการ",
+          "name": "ชื่อรายการ",
+          "nameError": "กรุณาใส่ชื่อรายการ",
+          "price": "ราคาต่อหน่วย",
+          "priceError": "กรุณาใส่ราคาสินค้า",
+          "quantity": "จำนวน",
+          "quantityError": "กรุณาใส่จำนวน"
+        },
+        "title": {
+          "add": "เพิ่มรายการใหม่",
+          "edit": "แก้ไขรายการ"
+        }
+      },
+      "popup": {
+        "deleteTitle": "ลบรายการ",
+        "deleteAll": "คุณต้องการลบรายการทั้งหมดหรือไม่",
+        "deleteSelected": "คุณต้องการลบ {{count}} รายการที่เลือกหรือไม่"
+      },
+      "table": {
+        "name": "ชื่อ",
+        "price": "ราคาต่อหน่วย",
+        "quantity": "จำนวน"
+      }
+    },
+    "payerList": {
+      "button": {
+        "add": "เพิ่มคนจ่าย",
+        "deleteAll": "ลบคนจ่ายทั้งหมด",
+        "deleteSelected": "ลบคนจ่ายที่เลือก",
+        "select": "เลือกคนจ่าย"
+      },
+      "modal": {
+        "form": {
+          "addChildren": "เพิ่มเพื่อน",
+          "childrenName": "ชื่อเพื่อน",
+          "childrenNameError": "กรุณาใส่ชื่อเพื่อน",
+          "delete": "ลบคนจ่าย",
+          "hasChildren": "มีเพื่อนมาด้วย",
+          "name": "ชื่อคนจ่าย",
+          "nameError": "กรุณาใส่ชื่อคนจ่าย"
+        },
+        "title": {
+          "add": "เพิ่มคนจ่ายใหม่",
+          "edit": "แก้ไขคนจ่าย"
+        }
+      },
+      "popup": {
+        "deleteAll": "คุณต้องการลบคนจ่ายทั้งหมดหรือไม่",
+        "deleteSelected": "คุณต้องการลบคนจ่าย {{count}} คนหรือไม่"
+      },
+      "table": {
+        "name": "ชื่อ"
+      }
+    },
+    "tab": {
+      "itemList": "รายการ",
+      "payerList": "คนจ่าย"
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { Language } from '@interfaces';
 import { Dropdown } from 'antd';
 import 'flag-icons/css/flag-icons.min.css';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 const LanguageSwitcherDropdown = styled.div`
@@ -12,6 +13,7 @@ const LanguageSwitcherDropdown = styled.div`
 `;
 
 const LanguageSwitcher: React.FC = () => {
+  const { i18n } = useTranslation();
   const [languageStorage, setLanguageStorage] = useBrowserStorage<string>(
     'language',
     '',
@@ -22,21 +24,25 @@ const LanguageSwitcher: React.FC = () => {
     {
       code: 'en-US',
       countryCode: 'us',
+      languageCode: 'en',
       name: 'English (US)',
     },
     {
       code: 'th-TH',
       countryCode: 'th',
+      languageCode: 'th',
       name: 'ไทย',
     },
     {
       code: 'zh-CN',
       countryCode: 'cn',
+      languageCode: 'zh',
       name: '中文',
     },
     {
       code: 'ja-JP',
       countryCode: 'jp',
+      languageCode: 'ja',
       name: '日本語',
     },
   ];
@@ -44,14 +50,16 @@ const LanguageSwitcher: React.FC = () => {
   useEffect(() => {
     let language: Language;
     if (languageStorage) {
-      language = languages.find((lang) => lang.code === languageStorage);
+      language = languages.find(
+        (lang) => lang.languageCode === languageStorage,
+      );
     } else {
       const browserLanguage = navigator.language;
       language = languages.find((lang) => lang.code === browserLanguage);
     }
-
     setSelectedLanguage(language || languages[0]);
-    setLanguageStorage(language.code || languages[0].code);
+    setLanguageStorage(language.languageCode || languages[0].languageCode);
+    i18n.changeLanguage(language.languageCode || languages[0].languageCode);
   }, []);
 
   return (
@@ -64,7 +72,8 @@ const LanguageSwitcher: React.FC = () => {
           icon: <span className={`fi fi-${lang.countryCode}`}></span>,
           onClick: () => {
             setSelectedLanguage(lang);
-            setLanguageStorage(lang.code);
+            setLanguageStorage(lang.languageCode);
+            i18n.changeLanguage(lang.languageCode);
           },
         })),
       }}
