@@ -12,6 +12,7 @@ export default {
     '@components': '<rootDir>/src/components',
     '@config': '<rootDir>/src/config',
     '@context': '<rootDir>/src/context',
+    '@interfaces': '<rootDir>/src/interfaces',
     '@enums': '<rootDir>/src/enums',
     '@hooks': '<rootDir>/src/hooks',
     '@models': '<rootDir>/src/models',

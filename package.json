@@ -31,9 +31,16 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.4.0",
+    "@fontsource/kanit": "^5.0.20",
+    "@fontsource/outfit": "^5.0.13",
+    "@fontsource/pacifico": "^5.0.13",
+    "antd": "^5.20.0",
+    "flag-icons": "^7.2.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.0"
+    "react-router-dom": "^6.26.0",
+    "styled-components": "^6.1.12"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.23.5",
