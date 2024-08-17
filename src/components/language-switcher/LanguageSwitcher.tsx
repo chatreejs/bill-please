@@ -1,6 +1,6 @@
 import { DownOutlined } from '@ant-design/icons';
 import { useBrowserStorage } from '@hooks';
-import { Language } from '@interfaces';
+import { ILanguage } from '@interfaces';
 import { Dropdown } from 'antd';
 import 'flag-icons/css/flag-icons.min.css';
 import React, { useEffect, useState } from 'react';
@@ -19,8 +19,8 @@ const LanguageSwitcher: React.FC = () => {
     '',
     'local',
   );
-  const [selectedLanguage, setSelectedLanguage] = useState<Language>();
-  const languages: Language[] = [
+  const [selectedLanguage, setSelectedLanguage] = useState<ILanguage>();
+  const languages: ILanguage[] = [
     {
       code: 'en-US',
       countryCode: 'us',
@@ -48,7 +48,7 @@ const LanguageSwitcher: React.FC = () => {
   ];
 
   useEffect(() => {
-    let language: Language;
+    let language: ILanguage;
     if (languageStorage) {
       language = languages.find(
         (lang) => lang.languageCode === languageStorage,
