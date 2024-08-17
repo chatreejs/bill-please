@@ -6,30 +6,47 @@ import {
 import { BillCard } from '@components';
 import { Button, Input, Tabs, TabsProps } from 'antd';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import ItemTable from './components/ItemTable';
 import PayerTable from './components/PayerTable';
 
-const ButtonWrapper = styled.div`
+export const ActionButton = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+`;
+
+export const TableWrapper = styled.div`
+  margin-bottom: 0.75rem;
+
+  td {
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+`;
+
+export const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 `;
 
 const Home: React.FC = () => {
+  const { t } = useTranslation();
   const [billName, setBillName] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>('item');
 
   const tabItems: TabsProps['items'] = [
     {
       key: 'item',
-      label: 'Item',
+      label: t('home.tab.itemList'),
       icon: <UnorderedListOutlined />,
       children: <ItemTable />,
     },
     {
       key: 'payer',
-      label: 'Payer',
+      label: t('home.tab.payerList'),
       icon: <UserOutlined />,
       children: <PayerTable />,
     },
@@ -37,7 +54,6 @@ const Home: React.FC = () => {
 
   const updateBillName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBillName(e.target.value);
-    console.log(billName);
   };
 
   const onTabClick = (key: string) => {
@@ -50,7 +66,7 @@ const Home: React.FC = () => {
         <>
           <Input
             size="large"
-            placeholder="Bill name"
+            placeholder={t('home.billTitle')}
             variant="borderless"
             onChange={updateBillName}
             style={{
@@ -72,7 +88,7 @@ const Home: React.FC = () => {
       bottom={
         <ButtonWrapper>
           <Button type="primary" size="large">
-            Next
+            {t('common.button.next')}
             <RightOutlined />
           </Button>
         </ButtonWrapper>
