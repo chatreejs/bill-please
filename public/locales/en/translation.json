@@ -67,11 +67,13 @@
         }
       },
       "popup": {
+        "deleteTitle": "Delete payer",
         "deleteAll": "Do you want to delete all payer(s)?",
         "deleteSelected": "Do you want to delete selected {{count}} payer(s) ?"
       },
       "table": {
-        "name": "Name"
+        "name": "Name",
+        "andFriend": "and friend"
       }
     },
     "tab": {

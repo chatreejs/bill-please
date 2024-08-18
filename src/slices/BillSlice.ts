@@ -38,10 +38,24 @@ const billSlice = createSlice({
     addPayer(state, action: PayloadAction<IPayer>) {
       state.payers.push(action.payload);
     },
+    editPayer(state, action: PayloadAction<IPayer>) {
+      const index = state.payers.findIndex(
+        (payer) => payer.id === action.payload.id,
+      );
+      state.payers[index] = action.payload;
+    },
     removePayer(state, action: PayloadAction<string>) {
       state.payers = state.payers.filter(
         (payer) => payer.id !== action.payload,
       );
+    },
+    removePayers(state, action: PayloadAction<string[]>) {
+      state.payers = state.payers.filter(
+        (payer) => !action.payload.includes(payer.id),
+      );
+    },
+    removeAllPayers(state) {
+      state.payers = [];
     },
   },
 });
@@ -55,5 +69,8 @@ export const {
   removeItems,
   removeAllItems,
   addPayer,
+  editPayer,
   removePayer,
+  removePayers,
+  removeAllPayers,
 } = billSlice.actions;

@@ -40,16 +40,17 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
   const saveItem = () => {
     form
       .validateFields()
-      .then((values) => {
+      .then(() => {
+        const formData = form.getFieldsValue(true) as IBillItemForm;
         if (mode === ModalType.Create) {
-          dispatch(addItem({ ...values, id: uuidv4() }));
+          dispatch(addItem({ ...formData, id: uuidv4() }));
         } else {
-          dispatch(editItem({ ...values, id: itemId }));
+          dispatch(editItem({ ...formData, id: itemId }));
         }
         onClose();
       })
       .catch((error) => {
-        console.log(error);
+        return;
       });
   };
 
@@ -67,7 +68,11 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
         form.setFieldsValue(initialValues);
       }
     }
-  });
+
+    return () => {
+      form.resetFields();
+    };
+  }, [isOpen, mode, itemId]);
 
   return (
     <Modal

@@ -69,6 +69,7 @@
         }
       },
       "popup": {
+        "deleteTitle": "删除付款人",
         "deleteAll": "您要删除所有付款人吗？",
         "deleteSelected": "您要删除选定的 {{count}} 个付款人吗？"
       },
