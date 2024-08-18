@@ -3,40 +3,20 @@ import {
   UnorderedListOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { BillCard } from '@components';
+import { BillCard, ButtonWrapper } from '@components';
 import { RootState } from '@config';
 import { setTitle } from '@slices';
 import { Button, Input, Tabs, TabsProps } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import ItemTable from './components/ItemTable';
 import PayerTable from './components/PayerTable';
 
-export const ActionButton = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  gap: 6px;
-`;
-
-export const TableWrapper = styled.div`
-  margin-bottom: 0.75rem;
-
-  td {
-    font-size: 0.875rem;
-    cursor: pointer;
-  }
-`;
-
-export const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
 const Home: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const billTitle = useSelector((state: RootState) => state.bill.title);
   const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState<string>('item');
@@ -92,7 +72,13 @@ const Home: React.FC = () => {
       }
       bottom={
         <ButtonWrapper>
-          <Button type="primary" size="large">
+          <Button
+            type="primary"
+            size="large"
+            onClick={() => {
+              navigate('/mapping');
+            }}
+          >
             {t('common.button.next')}
             <RightOutlined />
           </Button>

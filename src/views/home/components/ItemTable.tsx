@@ -6,11 +6,12 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { ActionButtonWrapper, ButtonWrapper, TableWrapper } from '@components';
 import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItem } from '@interfaces';
 import { removeAllItems, removeItems } from '@slices';
-import { ActionButton, ButtonWrapper, TableWrapper } from '../Home';
+
 import ItemListModal from './ItemListModal';
 
 const ItemTable: React.FC = () => {
@@ -65,7 +66,7 @@ const ItemTable: React.FC = () => {
   return (
     <>
       {billItems.length > 0 && (
-        <ActionButton>
+        <ActionButtonWrapper>
           {isShowCheckbox && (
             <Popconfirm
               title={t('home.itemList.popup.deleteTitle')}
@@ -92,7 +93,7 @@ const ItemTable: React.FC = () => {
               ? t('common.button.cancel')
               : t('home.itemList.button.select')}
           </Button>
-        </ActionButton>
+        </ActionButtonWrapper>
       )}
       {billItems.length > 0 && (
         <TableWrapper>

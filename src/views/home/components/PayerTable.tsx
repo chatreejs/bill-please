@@ -1,4 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
+import { ActionButtonWrapper, ButtonWrapper, TableWrapper } from '@components';
 import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IPayer } from '@interfaces';
@@ -9,7 +10,7 @@ import { TableRowSelection } from 'antd/es/table/interface';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { ActionButton, ButtonWrapper, TableWrapper } from '../Home';
+
 import PayerListModal from './PayerListModal';
 
 const PayerTable: React.FC = () => {
@@ -66,7 +67,7 @@ const PayerTable: React.FC = () => {
   return (
     <>
       {billPayers.length > 0 && (
-        <ActionButton>
+        <ActionButtonWrapper>
           {isShowCheckbox && (
             <Popconfirm
               title={t('home.payerList.popup.deleteTitle')}
@@ -93,7 +94,7 @@ const PayerTable: React.FC = () => {
               ? t('common.button.cancel')
               : t('home.payerList.button.select')}
           </Button>
-        </ActionButton>
+        </ActionButtonWrapper>
       )}
       {billPayers.length > 0 && (
         <TableWrapper>
