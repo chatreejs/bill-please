@@ -69,6 +69,7 @@
         }
       },
       "popup": {
+        "deleteTitle": "支払人を削除",
         "deleteAll": "すべての支払人を削除しますか?",
         "deleteSelected": "選択した {{count}} 支払人を削除しますか?"
       },
