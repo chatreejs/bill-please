@@ -1,8 +1,16 @@
-import { BackButton, Footer, LanguageSwitcher, Logo } from '@components';
+import {
+  BackButton,
+  Footer,
+  LanguageSwitcher,
+  Logo,
+  SplashSpinner,
+} from '@components';
 import { App as AntApp, ConfigProvider } from 'antd';
 
-import { AppRoutes as Router, store } from '@config';
+import { persistor, AppRoutes as Router, store } from '@config';
+import { Suspense } from 'react';
 import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import styled from 'styled-components';
 
 const MainWrapper = styled.div`
@@ -42,21 +50,25 @@ const App: React.FC = () => {
         },
       }}
     >
-      <Provider store={store}>
-        <AntApp>
-          <MainWrapper>
-            <ProductLogoWrapper>
-              <BackButton show={true} />
-              <Logo systemName="Bill Please" showEnvBadge={false} />
-            </ProductLogoWrapper>
-            <LanguageSwitcherWrapper>
-              <LanguageSwitcher />
-            </LanguageSwitcherWrapper>
-            <Router />
-            <Footer />
-          </MainWrapper>
-        </AntApp>
-      </Provider>
+      <Suspense fallback={<SplashSpinner />}>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <AntApp>
+              <MainWrapper>
+                <ProductLogoWrapper>
+                  <BackButton show={true} />
+                  <Logo systemName="Bill Please" showEnvBadge={false} />
+                </ProductLogoWrapper>
+                <LanguageSwitcherWrapper>
+                  <LanguageSwitcher />
+                </LanguageSwitcherWrapper>
+                <Router />
+                <Footer />
+              </MainWrapper>
+            </AntApp>
+          </PersistGate>
+        </Provider>
+      </Suspense>
     </ConfigProvider>
   );
 };

@@ -2,15 +2,14 @@ import { FileTextOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, Table } from 'antd';
 import Column from 'antd/es/table/Column';
 import { TableRowSelection } from 'antd/es/table/interface';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 
 import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItem } from '@interfaces';
-import { addItem, removeAllItems, removeItems } from '@slices';
+import { removeAllItems, removeItems } from '@slices';
 import { ActionButton, ButtonWrapper, TableWrapper } from '../Home';
 import ItemListModal from './ItemListModal';
 
@@ -62,13 +61,6 @@ const ItemTable: React.FC = () => {
     setIsModalVisible(false);
     setSelectedItemId(undefined);
   };
-
-  useEffect(() => {
-    dispatch(addItem({ id: uuidv4(), name: 'Item 1', price: 50, quantity: 1 }));
-    dispatch(
-      addItem({ id: uuidv4(), name: 'Item 2', price: 25.75, quantity: 2 }),
-    );
-  }, []);
 
   return (
     <>

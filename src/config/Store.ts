@@ -1,11 +1,25 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { billReducer } from '@slices';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/es/storage';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+};
+
+const rootReducer = combineReducers({
+  bill: billReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    bill: billReducer,
-  },
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== 'production',
 });
+
+export const persistor = persistStore(store);
 
 // Type definitions for the root state and dispatch function
 export type RootState = ReturnType<typeof store.getState>;
