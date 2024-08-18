@@ -1,0 +1,84 @@
+{
+  "common": {
+    "button": {
+      "cancel": "キャンセル",
+      "delete": "削除",
+      "next": "次",
+      "ok": "OK",
+      "save": "保存する"
+    }
+  },
+  "home": {
+    "billTitle": "請求書名",
+    "itemList": {
+      "button": {
+        "add": "アイテムを追加",
+        "addFromBill": "請求書から追加",
+        "deleteAll": "すべてのアイテムを削除",
+        "deleteSelected": "選択を削除します",
+        "select": "選択"
+      },
+      "modal": {
+        "form": {
+          "delete": "アイテムを削除",
+          "name": "項目名",
+          "nameDuplicated": "このアイテム名は既に存在します",
+          "nameError": "アイテム名を入力してください",
+          "price": "単価",
+          "priceError": "商品価格を入力してください",
+          "quantity": "量",
+          "quantityError": "商品の数量を入力してください"
+        },
+        "title": {
+          "add": "新しいアイテムを追加",
+          "edit": "アイテムを編集"
+        }
+      },
+      "popup": {
+        "deleteAll": "すべてのアイテムを削除しますか？",
+        "deleteSelected": "選択した {{count}} 個のアイテムを削除しますか?"
+      },
+      "table": {
+        "name": "名",
+        "price": "単価",
+        "quantity": "量"
+      }
+    },
+    "payerList": {
+      "button": {
+        "add": "支払人を追加",
+        "deleteAll": "すべての支払人を削除",
+        "deleteSelected": "選択した支払人を削除",
+        "select": "支払人を選択"
+      },
+      "modal": {
+        "form": {
+          "addChildren": "友人を追加する",
+          "childrenName": "友達の名前",
+          "childrenNameDuplicated": "このフレンド名は既に存在します",
+          "childrenNameError": "フレンド名を入力してください",
+          "delete": "支払人を削除",
+          "hasChildren": "友達が一緒に来ました",
+          "name": "支払人名",
+          "nameDuplicated": "この支払人名は既に存在します",
+          "nameError": "支払人名を入力してください"
+        },
+        "title": {
+          "add": "新しい支払人を追加",
+          "edit": "支払人を編集"
+        }
+      },
+      "popup": {
+        "deleteAll": "すべての支払人を削除しますか?",
+        "deleteSelected": "選択した {{count}} 支払人を削除しますか?"
+      },
+      "table": {
+        "name": "名"
+      }
+    },
+    "tab": {
+      "itemList": "項目",
+      "payerList": "支払人"
+    }
+  }
+}
