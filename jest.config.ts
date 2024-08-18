@@ -17,6 +17,7 @@ export default {
     '@hooks': '<rootDir>/src/hooks',
     '@models': '<rootDir>/src/models',
     '@services': '<rootDir>/src/services',
+    '@slices': '<rootDir>/src/slices',
     '@utils': '<rootDir>/src/utils',
     '@views': '<rootDir>/src/views',
   },

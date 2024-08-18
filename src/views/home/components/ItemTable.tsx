@@ -1,33 +1,31 @@
 import { FileTextOutlined, PlusOutlined } from '@ant-design/icons';
-import { IBillItem, IRecord } from '@interfaces';
 import { Button, Popconfirm, Table } from 'antd';
 import Column from 'antd/es/table/Column';
 import { TableRowSelection } from 'antd/es/table/interface';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+
+import { RootState } from '@config';
+import { ModalType } from '@enums';
+import { IBillItem } from '@interfaces';
+import { addItem, removeAllItems, removeItems } from '@slices';
 import { ActionButton, ButtonWrapper, TableWrapper } from '../Home';
+import ItemListModal from './ItemListModal';
 
 const ItemTable: React.FC = () => {
   const { t } = useTranslation();
+  const billItems = useSelector((state: RootState) => state.bill.items);
+  const dispatch = useDispatch();
+
   const [isShowCheckbox, setIsShowCheckbox] = useState<boolean>(false);
   const [selectedRowKeys, setSelectedRowKeys] =
     useState<React.Key[]>(undefined);
-  const [billItems, setBillItems] = useState<(IBillItem & IRecord)[]>([
-    {
-      id: '1',
-      key: '1',
-      name: 'Item 1',
-      price: 1000,
-      quantity: 2,
-    },
-    {
-      id: '2',
-      key: '2',
-      name: 'Item 2',
-      price: 2000,
-      quantity: 1,
-    },
-  ]);
+
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [modalMode, setModalMode] = useState<ModalType>(ModalType.Create);
+  const [selectedItemId, setSelectedItemId] = useState<string>(undefined);
 
   const toggleCheckbox = () => {
     setIsShowCheckbox(!isShowCheckbox);
@@ -44,14 +42,37 @@ const ItemTable: React.FC = () => {
   };
 
   const deleteItemList = () => {
-    if (selectedRowKeys?.length > 0) {
-      console.log('Delete selected items: ', selectedRowKeys);
+    if (selectedRowKeys.length === 0) {
+      dispatch(removeAllItems());
+      setSelectedRowKeys([]);
+    } else if (selectedRowKeys?.length > 0) {
+      const idList = selectedRowKeys.map((key) => key.toString());
+      dispatch(removeItems(idList));
+      setSelectedRowKeys([]);
     }
   };
 
+  const openModal = (mode: ModalType, id?: string) => {
+    setModalMode(mode);
+    setIsModalVisible(true);
+    setSelectedItemId(id);
+  };
+
+  const closeModal = () => {
+    setIsModalVisible(false);
+    setSelectedItemId(undefined);
+  };
+
+  useEffect(() => {
+    dispatch(addItem({ id: uuidv4(), name: 'Item 1', price: 50, quantity: 1 }));
+    dispatch(
+      addItem({ id: uuidv4(), name: 'Item 2', price: 25.75, quantity: 2 }),
+    );
+  }, []);
+
   return (
     <>
-      {billItems.length > -1 && (
+      {billItems.length > 0 && (
         <ActionButton>
           {isShowCheckbox && (
             <Popconfirm
@@ -87,6 +108,14 @@ const ItemTable: React.FC = () => {
             dataSource={billItems}
             pagination={false}
             rowSelection={isShowCheckbox ? rowSelection : undefined}
+            rowKey={(record) => record.id}
+            onRow={(record) => {
+              return {
+                onClick: () => {
+                  openModal(ModalType.Edit, record.id);
+                },
+              };
+            }}
           >
             <Column
               title={t('home.itemList.table.name')}
@@ -112,13 +141,24 @@ const ItemTable: React.FC = () => {
         </TableWrapper>
       )}
       <ButtonWrapper>
-        <Button type="dashed" size="large" icon={<PlusOutlined />}>
+        <Button
+          type="dashed"
+          size="large"
+          icon={<PlusOutlined />}
+          onClick={() => openModal(ModalType.Create)}
+        >
           {t('home.itemList.button.add')}
         </Button>
         <Button type="dashed" size="large" icon={<FileTextOutlined />} disabled>
           {t('home.itemList.button.addFromBill')}
         </Button>
       </ButtonWrapper>
+      <ItemListModal
+        mode={modalMode}
+        isOpen={isModalVisible}
+        itemId={selectedItemId}
+        onClose={() => closeModal()}
+      />
     </>
   );
 };

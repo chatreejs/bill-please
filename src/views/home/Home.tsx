@@ -4,9 +4,12 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { BillCard } from '@components';
+import { RootState } from '@config';
+import { setTitle } from '@slices';
 import { Button, Input, Tabs, TabsProps } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import ItemTable from './components/ItemTable';
 import PayerTable from './components/PayerTable';
@@ -34,7 +37,8 @@ export const ButtonWrapper = styled.div`
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
-  const [billName, setBillName] = useState<string>('');
+  const billTitle = useSelector((state: RootState) => state.bill.title);
+  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState<string>('item');
 
   const tabItems: TabsProps['items'] = [
@@ -53,7 +57,7 @@ const Home: React.FC = () => {
   ];
 
   const updateBillName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBillName(e.target.value);
+    dispatch(setTitle(e.target.value));
   };
 
   const onTabClick = (key: string) => {
@@ -73,6 +77,7 @@ const Home: React.FC = () => {
               fontSize: '28px',
               padding: '1rem 0',
             }}
+            value={billTitle}
           />
           <div>
             <Tabs
