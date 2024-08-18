@@ -1,8 +1,9 @@
 import { BackButton, Footer, LanguageSwitcher, Logo } from '@components';
 import { App as AntApp, ConfigProvider } from 'antd';
 
+import { AppRoutes as Router, store } from '@config';
+import { Provider } from 'react-redux';
 import styled from 'styled-components';
-import Router from './config/routes';
 
 const MainWrapper = styled.div`
   display: flex;
@@ -41,19 +42,21 @@ const App: React.FC = () => {
         },
       }}
     >
-      <AntApp>
-        <MainWrapper>
-          <ProductLogoWrapper>
-            <BackButton show={true} />
-            <Logo systemName="Bill Please" showEnvBadge={false} />
-          </ProductLogoWrapper>
-          <LanguageSwitcherWrapper>
-            <LanguageSwitcher />
-          </LanguageSwitcherWrapper>
-          <Router />
-          <Footer />
-        </MainWrapper>
-      </AntApp>
+      <Provider store={store}>
+        <AntApp>
+          <MainWrapper>
+            <ProductLogoWrapper>
+              <BackButton show={true} />
+              <Logo systemName="Bill Please" showEnvBadge={false} />
+            </ProductLogoWrapper>
+            <LanguageSwitcherWrapper>
+              <LanguageSwitcher />
+            </LanguageSwitcherWrapper>
+            <Router />
+            <Footer />
+          </MainWrapper>
+        </AntApp>
+      </Provider>
     </ConfigProvider>
   );
 };

@@ -1,7 +1,7 @@
 import { IBillItem } from './bill-item';
 import { IPayer } from './payer';
 
-export interface IBill {
+export interface IBillState {
   title: string;
   items: IBillItem[];
   payers: IPayer[];
