@@ -7,9 +7,10 @@ import {
 } from '@components';
 import { App as AntApp, ConfigProvider } from 'antd';
 
-import { persistor, AppRoutes as Router, store } from '@config';
-import { Suspense } from 'react';
+import { AppRoutes, persistor, store } from '@config';
+import { Suspense, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import styled from 'styled-components';
 
@@ -39,6 +40,13 @@ const LanguageSwitcherWrapper = styled.div`
 `;
 
 const App: React.FC = () => {
+  const [isShowBackButton, setIsShowBackButton] = useState<boolean>(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsShowBackButton(location.pathname !== '/');
+  }, [location]);
+
   return (
     <ConfigProvider
       theme={{
@@ -56,13 +64,13 @@ const App: React.FC = () => {
             <AntApp>
               <MainWrapper>
                 <ProductLogoWrapper>
-                  <BackButton show={true} />
+                  <BackButton show={isShowBackButton} />
                   <Logo systemName="Bill Please" showEnvBadge={false} />
                 </ProductLogoWrapper>
                 <LanguageSwitcherWrapper>
                   <LanguageSwitcher />
                 </LanguageSwitcherWrapper>
-                <Router />
+                <AppRoutes />
                 <Footer />
               </MainWrapper>
             </AntApp>

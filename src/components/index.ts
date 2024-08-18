@@ -4,3 +4,6 @@ export { default as Footer } from './footer/Footer';
 export { default as LanguageSwitcher } from './language-switcher/LanguageSwitcher';
 export { default as Logo } from './logo/Logo';
 export { default as SplashSpinner } from './splash-spinner/SplashSpinner';
+export * from './ui/ActionButtonWrapper';
+export * from './ui/ButtonWrapper';
+export * from './ui/TableWrapper';

@@ -80,5 +80,8 @@
       "itemList": "Item",
       "payerList": "Payer"
     }
+  },
+  "mapping": {
+    "title": "Which item belong to ?"
   }
 }
