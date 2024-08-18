@@ -83,5 +83,13 @@
   },
   "mapping": {
     "title": "Which item belong to ?"
+  },
+  "result": {
+    "total": "Total",
+    "people": "People",
+    "expenseList": "Expense List",
+    "qr": {
+      "scanToPay": "Scan to pay"
+    }
   }
 }
