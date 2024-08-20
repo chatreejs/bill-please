@@ -22,27 +22,23 @@ const LanguageSwitcher: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<ILanguage>();
   const languages: ILanguage[] = [
     {
-      code: 'en-US',
+      code: 'en',
       countryCode: 'us',
-      languageCode: 'en',
       name: 'English (US)',
     },
     {
-      code: 'th-TH',
+      code: 'th',
       countryCode: 'th',
-      languageCode: 'th',
       name: 'ไทย',
     },
     {
-      code: 'zh-CN',
+      code: 'zh',
       countryCode: 'cn',
-      languageCode: 'zh',
       name: '中文',
     },
     {
-      code: 'ja-JP',
+      code: 'ja',
       countryCode: 'jp',
-      languageCode: 'ja',
       name: '日本語',
     },
   ];
@@ -50,16 +46,14 @@ const LanguageSwitcher: React.FC = () => {
   useEffect(() => {
     let language: ILanguage;
     if (languageStorage) {
-      language = languages.find(
-        (lang) => lang.languageCode === languageStorage,
-      );
+      language = languages.find((lang) => lang.code === languageStorage);
     } else {
-      const browserLanguage = navigator.language;
+      const browserLanguage = navigator.language.split('-')[0];
       language = languages.find((lang) => lang.code === browserLanguage);
     }
     setSelectedLanguage(language || languages[0]);
-    setLanguageStorage(language.languageCode || languages[0].languageCode);
-    i18n.changeLanguage(language.languageCode || languages[0].languageCode);
+    setLanguageStorage(language.code || languages[0].code);
+    i18n.changeLanguage(language.code || languages[0].code);
   }, []);
 
   return (
@@ -72,8 +66,8 @@ const LanguageSwitcher: React.FC = () => {
           icon: <span className={`fi fi-${lang.countryCode}`}></span>,
           onClick: () => {
             setSelectedLanguage(lang);
-            setLanguageStorage(lang.languageCode);
-            i18n.changeLanguage(lang.languageCode);
+            setLanguageStorage(lang.code);
+            i18n.changeLanguage(lang.code);
           },
         })),
       }}
