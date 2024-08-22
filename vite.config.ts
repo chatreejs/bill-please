@@ -10,7 +10,17 @@ export default defineConfig({
     outDir: 'build',
   },
   base: '/bill-please',
-  plugins: [react(), EnvironmentPlugin('all'), viteTsconfigPaths(), VitePWA()],
+  plugins: [
+    react(),
+    EnvironmentPlugin('all'),
+    viteTsconfigPaths(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      devOptions: {
+        enabled: true,
+      },
+    }),
+  ],
   server: {
     port: 3000,
     open: true,
