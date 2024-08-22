@@ -40,7 +40,7 @@
       },
       "table": {
         "name": "姓名",
-        "price": "单价",
+        "price": "总价",
         "quantity": "数量"
       }
     },

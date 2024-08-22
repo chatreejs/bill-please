@@ -22,7 +22,8 @@ const billSlice = createSlice({
       const index = state.items.findIndex(
         (item) => item.id === action.payload.id,
       );
-      state.items[index] = action.payload;
+      const total = action.payload.price * action.payload.quantity;
+      state.items[index] = { ...action.payload, total };
     },
     removeItem(state, action: PayloadAction<string>) {
       state.items = state.items.filter((item) => item.id !== action.payload);
