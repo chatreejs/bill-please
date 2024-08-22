@@ -26,8 +26,6 @@ const PayerTable: React.FC = () => {
   const [modalMode, setModalMode] = useState<ModalType>(ModalType.Create);
   const [selectedPayerId, setSelectedPayerId] = useState<string>(undefined);
 
-  console.log(billPayers);
-
   const toggleCheckbox = () => {
     setIsShowCheckbox(!isShowCheckbox);
     setSelectedRowKeys([]);
