@@ -150,7 +150,7 @@ const ItemTable: React.FC = () => {
         mode={modalMode}
         isOpen={isModalVisible}
         itemId={selectedItemId}
-        onClose={() => closeModal()}
+        onClose={closeModal}
       />
     </>
   );

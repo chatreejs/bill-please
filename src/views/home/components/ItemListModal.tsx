@@ -82,8 +82,8 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
           : t('home.itemList.modal.title.edit')
       }
       open={isOpen}
-      onOk={() => saveItem()}
-      onCancel={() => onClose()}
+      onOk={saveItem}
+      onCancel={onClose}
       okText={t('common.button.save')}
       cancelText={t('common.button.cancel')}
     >
