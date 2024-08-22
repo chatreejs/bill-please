@@ -40,7 +40,7 @@
       },
       "table": {
         "name": "Name",
-        "price": "Unit Price",
+        "price": "Total Price",
         "quantity": "Quantity"
       }
     },

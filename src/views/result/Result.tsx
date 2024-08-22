@@ -114,7 +114,7 @@ const Result: React.FC = () => {
   useEffect(() => {
     let total = 0;
     billItems.forEach((item) => {
-      total += item.price;
+      total += item.total;
     });
     setTotal(total);
   }, [billItems]);

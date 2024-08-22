@@ -123,8 +123,8 @@ const ItemTable: React.FC = () => {
             />
             <Column
               title={t('home.itemList.table.price')}
-              key="price"
-              dataIndex="price"
+              key="total"
+              dataIndex="total"
               align="right"
               render={(price: number) => {
                 return price.toFixed(2);

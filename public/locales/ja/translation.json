@@ -40,7 +40,7 @@
       },
       "table": {
         "name": "名",
-        "price": "単価",
+        "price": "合計金額",
         "quantity": "量"
       }
     },
