@@ -111,7 +111,7 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
               },
             ]}
           >
-            <InputNumber step="0.01" min={0} />
+            <InputNumber min={1} />
           </Form.Item>
           <Form.Item
             name="price"
@@ -123,7 +123,7 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
               },
             ]}
           >
-            <InputNumber step="0.01" />
+            <InputNumber min={0.01} step="0.01" />
           </Form.Item>
         </Form>
         {mode === ModalType.Edit && (
