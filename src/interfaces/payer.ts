@@ -1,7 +1,7 @@
 export interface IPayer {
   id: string;
   name: string;
-  friend: IPayerChildren[];
+  friend?: IPayerChildren[];
 }
 
 export interface IPayerChildren {
