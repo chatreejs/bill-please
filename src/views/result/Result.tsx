@@ -142,7 +142,7 @@ const Result: React.FC = () => {
       </CardTop>
       <Separator />
       <CardBottom>
-        <QRCode />
+        <QRCode promptpayId="0806956194" />
       </CardBottom>
     </CardWrapper>
   );
