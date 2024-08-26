@@ -49,7 +49,7 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
         }
         onClose();
       })
-      .catch((error) => {
+      .catch(() => {
         return;
       });
   };
@@ -86,6 +86,7 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
       onCancel={onClose}
       okText={t('common.button.save')}
       cancelText={t('common.button.cancel')}
+      forceRender
     >
       <FormWrapper>
         <Form name="itemListForm" form={form} layout="vertical" size="large">
@@ -111,7 +112,7 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
               },
             ]}
           >
-            <InputNumber min={1} />
+            <InputNumber min={1} style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item
             name="price"
@@ -123,7 +124,7 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
               },
             ]}
           >
-            <InputNumber min={0.01} step="0.01" />
+            <InputNumber min={0.01} step="0.01" style={{ width: '100%' }} />
           </Form.Item>
         </Form>
         {mode === ModalType.Edit && (
