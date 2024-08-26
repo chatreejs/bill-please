@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { v4 as uuidv4 } from 'uuid';
+import { uuidv7 } from 'uuidv7';
 
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { RootState } from '@config';
@@ -51,12 +51,12 @@ const PayerListModal: React.FC<Props> = ({
           formData.friend = [];
         } else {
           formData.friend = formData.friend.map((item) => ({
-            id: item.id || uuidv4(),
+            id: item.id || uuidv7(),
             name: item.name,
           }));
         }
         if (mode === ModalType.Create) {
-          dispatch(addPayer({ ...formData, id: uuidv4() }));
+          dispatch(addPayer({ ...formData, id: uuidv7() }));
         } else {
           dispatch(editPayer({ ...formData, id: payerId }));
         }
