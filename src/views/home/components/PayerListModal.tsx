@@ -62,7 +62,7 @@ const PayerListModal: React.FC<Props> = ({
         }
         onClose();
       })
-      .catch((error) => {
+      .catch(() => {
         return;
       });
   };
@@ -125,12 +125,12 @@ const PayerListModal: React.FC<Props> = ({
             {t('home.payerList.modal.form.hasChildren')}
           </Checkbox>
           {isHasFriend && (
-            <Card style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+            <Card style={{ marginTop: '1rem' }}>
               <Form.List name="friend">
                 {(fields, { add, remove }) => (
                   <>
                     {fields.map(({ key, name, ...restField }) => (
-                      <Flex key={key} justify="space-between">
+                      <Flex key={key} justify="space-between" gap={'6px'}>
                         <Form.Item
                           {...restField}
                           key={key}
@@ -143,6 +143,7 @@ const PayerListModal: React.FC<Props> = ({
                               ),
                             },
                           ]}
+                          style={{ width: '100%' }}
                         >
                           <Input
                             size="middle"
@@ -183,6 +184,7 @@ const PayerListModal: React.FC<Props> = ({
             icon={<DeleteOutlined />}
             onClick={() => deletePayer()}
             danger
+            style={{ marginTop: '1rem' }}
           >
             {t('home.payerList.modal.form.delete')}
           </Button>
