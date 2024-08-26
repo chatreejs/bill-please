@@ -15,7 +15,11 @@ const QRCodeWrapper = styled.div`
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
 `;
 
-const QRCode: React.FC = () => {
+interface Props {
+  promptpayId: string;
+}
+
+const QRCode: React.FC<Props> = ({ promptpayId }) => {
   const { t } = useTranslation();
 
   return (
@@ -23,7 +27,7 @@ const QRCode: React.FC = () => {
       <div>{t('result.qr.scanToPay')}</div>
       <div>
         <img
-          src="https://boofcv.org/images/thumb/3/35/Example_rendered_qrcode.png/400px-Example_rendered_qrcode.png"
+          src={`https://promptpay.io/${promptpayId}.png`}
           alt="QR Code"
           style={{ width: '100px' }}
         />
