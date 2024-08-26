@@ -49,6 +49,7 @@ const ItemTable: React.FC = () => {
       const idList = selectedRowKeys.map((key) => key.toString());
       dispatch(removeItems(idList));
       setSelectedRowKeys([]);
+      toggleCheckbox();
     }
   };
 
