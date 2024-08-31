@@ -137,7 +137,7 @@ const ExpenseList: React.FC = () => {
                     return (
                       <PayerWrapper key={payer.id}>
                         <PayerText>{payer.name}</PayerText>
-                        <PayerText>{expense.total}</PayerText>
+                        <PayerText>{expense.total.toFixed(2)}</PayerText>
                       </PayerWrapper>
                     );
                   }
@@ -157,7 +157,7 @@ const ExpenseList: React.FC = () => {
                           <Divider dashed={true} style={{ margin: '8px 0' }} />
                           <PayerWrapper key={payer.id}>
                             <PayerText>{friend.payerName}</PayerText>
-                            <PayerText>{friend.total}</PayerText>
+                            <PayerText>{friend.total.toFixed(2)}</PayerText>
                           </PayerWrapper>
                           <ExpenseItemList expense={friend} />
                         </ItemChildrenWrapper>
