@@ -1,3 +1,4 @@
+import { Flex } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
 import packageJson from '../../../package.json';
@@ -11,18 +12,19 @@ const FooterWrapper = styled.div`
 
   span {
     color: #fafafa;
-
-    &.version {
-      margin-top: 0.25rem;
-      font-size: 12px;
-    }
+    margin-top: 0.25rem;
+    font-size: 12px;
   }
 
   a {
     color: #fafafa;
     text-decoration: underline;
+  }
+
+  a.gh-username {
+    color: #fafafa;
+    text-decoration: underline;
     font-weight: 600;
-    margin-left: 0.25rem;
   }
 `;
 
@@ -35,14 +37,28 @@ const Footer: React.FC = () => {
         <span>
           Made with ❤️ by
           <a
+            className="gh-username"
             href="https://github.com/chatreejs"
             target="_blank"
             rel="noopener noreferrer"
+            style={{ marginLeft: '0.25rem' }}
           >
             Chatree.js
           </a>
         </span>
-        <span className="version">Bill Please Version {version}</span>
+        <Flex gap={6}>
+          <span>Bill Please Version {version}</span>
+          <span>|</span>
+          <span>
+            <a
+              href="https://github.com/chatreejs/bill-please/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Report Issue
+            </a>
+          </span>
+        </Flex>
       </FooterWrapper>
     </>
   );
