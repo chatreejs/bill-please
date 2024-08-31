@@ -17,7 +17,7 @@ const BackButton: React.FC<BackButtonProps> = ({ show }) => {
     const currentRoute = location.pathname;
     const index = routes.indexOf(currentRoute);
     if (index > 0) {
-      navigate(routes[index - 1]);
+      navigate(routes[index - 1], { replace: true });
     }
   };
 

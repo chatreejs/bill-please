@@ -122,7 +122,7 @@ const BillItemMapping: React.FC = () => {
             type="primary"
             size="large"
             onClick={() => {
-              navigate('/result');
+              navigate('/result', { replace: true });
             }}
           >
             {t('common.button.next')}
