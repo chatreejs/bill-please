@@ -18,7 +18,7 @@ const CardBody = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: #fafafa;
+  background: #faf9f6;
   border-radius: 26px;
   padding: 24px;
   min-height: 70vh;

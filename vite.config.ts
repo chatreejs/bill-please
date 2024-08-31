@@ -15,6 +15,7 @@ export default defineConfig({
     EnvironmentPlugin('all'),
     viteTsconfigPaths(),
     VitePWA({
+      injectRegister: 'auto',
       registerType: 'autoUpdate',
     }),
   ],
