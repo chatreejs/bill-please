@@ -138,7 +138,7 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
               },
             ]}
           >
-            <InputNumber min={0.01} step="0.01" style={{ width: '100%' }} />
+            <InputNumber style={{ width: '100%' }} />
           </Form.Item>
         </Form>
         {mode === ModalType.Edit && (
