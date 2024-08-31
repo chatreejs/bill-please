@@ -6,7 +6,7 @@ const SplashSpinnerWrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #fff;
+  background: #2c9c91;
 `;
 
 const spinnerAnimation = keyframes`
@@ -49,7 +49,7 @@ const Spinner = styled.div`
     content: '';
     position: absolute;
     border-radius: 50px;
-    box-shadow: 0 0 0 3px inset #000;
+    box-shadow: 0 0 0 3px inset #fff;
     animation: ${spinnerAnimation} 2.5s infinite;
   }
 

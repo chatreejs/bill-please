@@ -1,11 +1,12 @@
+import { QrcodeOutlined } from '@ant-design/icons';
 import { Button, Flex, Form, Input, QRCode } from 'antd';
+import generatePayload from 'promptpay-qr';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { QrcodeOutlined } from '@ant-design/icons';
 import { useBrowserStorage } from '@hooks';
-import generatePayload from 'promptpay-qr';
-import PromptPayLogo from '../../../../assets/PromptPay-logo.png';
+import PromptPayLogo from '../../../../assets/images/PromptPay-logo.png';
+import ThaiQRPayment from '../../../../assets/images/thai-qr-payment.png';
 
 interface PromptPayForm {
   promptPayId: string;
@@ -71,24 +72,30 @@ const PromptPayQRCode: React.FC = () => {
         </Flex>
       )}
       {isSubmit && (
-        <Flex
-          vertical
-          justify="center"
-          align="center"
-          onClick={() => setIsSubmit(false)}
-        >
+        <Flex vertical justify="center" align="center" gap={8}>
           <div>{t('result.payment.qr.scanToPay')}</div>
+          <img
+            src={ThaiQRPayment}
+            alt="ThaiQRPayment"
+            style={{ width: '160px' }}
+          />
           <img
             src={PromptPayLogo}
             alt="PromptPayLogo"
-            style={{ width: '100px' }}
+            style={{ width: '64px' }}
           />
           <QRCode
             type={'svg'}
             bordered={false}
             value={qrCodePayload ?? '-'}
-            size={90}
+            size={160}
           />
+          <span
+            style={{ fontSize: 12, textDecoration: 'underline' }}
+            onClick={() => setIsSubmit(false)}
+          >
+            Change QR Code
+          </span>
         </Flex>
       )}
     </>
