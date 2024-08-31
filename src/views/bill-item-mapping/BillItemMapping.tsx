@@ -2,7 +2,7 @@ import { RightOutlined } from '@ant-design/icons';
 import { BillCard, ButtonWrapper } from '@components';
 import { RootState } from '@config';
 import { Button, Card, Tag, Typography } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -20,8 +20,8 @@ const BillItemMapping: React.FC = () => {
     (state: RootState) => state.bill.itemMapping,
   );
 
-  const [isModalVisible, setIsModalVisible] = React.useState<boolean>(false);
-  const [selectedItemId, setSelectedItemId] = React.useState<string>(undefined);
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [selectedItemId, setSelectedItemId] = useState<string>();
 
   const getPayerNameList = (payerIds: string[]) => {
     const payerNameList: string[] = [];
@@ -78,7 +78,7 @@ const BillItemMapping: React.FC = () => {
           </div>
           <BillItemMappingModal
             isOpen={isModalVisible}
-            itemId={selectedItemId}
+            itemId={selectedItemId!}
             onClose={closeModal}
           />
         </>

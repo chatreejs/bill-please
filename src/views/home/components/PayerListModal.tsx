@@ -58,7 +58,7 @@ const PayerListModal: React.FC<Props> = ({
         if (mode === ModalType.Create) {
           dispatch(addPayer({ ...formData, id: uuidv7() }));
         } else {
-          dispatch(editPayer({ ...formData, id: payerId }));
+          dispatch(editPayer({ ...formData, id: payerId! }));
         }
         onClose();
       })
@@ -68,16 +68,16 @@ const PayerListModal: React.FC<Props> = ({
   };
 
   const deletePayer = () => {
-    dispatch(removePayer(payerId));
+    dispatch(removePayer(payerId!));
     onClose();
   };
 
   useEffect(() => {
     if (isOpen) {
       if (mode === ModalType.Edit && payerId) {
-        const payer = billPayers.find((item) => item.id === payerId);
+        const payer = billPayers.find((item) => item.id === payerId)!;
         form.setFieldsValue(payer);
-        if (payer.friend.length > 0) {
+        if (payer.friend && payer.friend.length > 0) {
           setIsHasFriend(true);
         }
       } else {

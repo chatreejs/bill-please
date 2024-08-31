@@ -8,6 +8,6 @@ export interface IBillItem {
 
 export interface IBillItemForm {
   name: string;
-  quantity: number;
-  price: number;
+  quantity?: number;
+  price?: number;
 }

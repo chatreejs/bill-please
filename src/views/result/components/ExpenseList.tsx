@@ -43,7 +43,7 @@ const ExpenseList: React.FC = () => {
     const expenseList: IExpense[] = [];
 
     billPayers.forEach((payer) => {
-      let expense: IExpense = {
+      const expense: IExpense = {
         payerId: payer.id,
         total: 0,
         items: [],
@@ -59,10 +59,10 @@ const ExpenseList: React.FC = () => {
 
         if (!billItem) return;
 
-        let itemQuantity = billItem.quantity;
-        let payerCount = item.payerId.length;
-        const total = billItem.total / payerCount;
-        let expenseItem: IExpenseItem = {
+        const itemQuantity = billItem.quantity;
+        const payerCount = item.payerId.length;
+        const total = billItem.total! / payerCount;
+        const expenseItem: IExpenseItem = {
           itemName: billItem.name,
           itemQuantity: itemQuantity,
           itemTotalPrice: total,

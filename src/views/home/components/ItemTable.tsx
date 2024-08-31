@@ -20,12 +20,11 @@ const ItemTable: React.FC = () => {
   const dispatch = useDispatch();
 
   const [isShowCheckbox, setIsShowCheckbox] = useState<boolean>(false);
-  const [selectedRowKeys, setSelectedRowKeys] =
-    useState<React.Key[]>(undefined);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [modalMode, setModalMode] = useState<ModalType>(ModalType.Create);
-  const [selectedItemId, setSelectedItemId] = useState<string>(undefined);
+  const [selectedItemId, setSelectedItemId] = useState<string>();
 
   const toggleCheckbox = () => {
     setIsShowCheckbox(!isShowCheckbox);

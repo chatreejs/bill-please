@@ -10,7 +10,7 @@ const useBrowserStorage = <T,>(
   const [storedValue, setStoredValue] = useState<T>(() => {
     const item = storage.getItem(key);
     try {
-      return item ? JSON.parse(item) : initialValue;
+      return item ? (JSON.parse(item) as T) : initialValue;
     } catch (error: unknown) {
       console.warn(
         `Failed to parse stored value for key: ${key}.\nContinuing with default value.`,
@@ -31,11 +31,13 @@ const useBrowserStorage = <T,>(
         value instanceof Function ? value(storedValue) : value;
       storage.setItem(key, JSON.stringify(valueToStore));
     } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       console.error(`Failed to store value '${value}' for key: ${key}.`);
     }
   };
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const storageEventHandler = (event: StorageEvent) => {
       if (event.storageArea === storage && event.key === key) {
         if (event.newValue === null) {
