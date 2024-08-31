@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '@config';
-import { IExpense, IExpenseItem } from '@interfaces';
+import { IExpense, IExpenseChildren, IExpenseItem } from '@interfaces';
 
 const PayerWrapper = styled.div`
   display: flex;
@@ -30,6 +30,13 @@ const ItemWrapper = styled.div`
   }
 `;
 
+const ItemChildrenWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-left: 1rem;
+`;
+
 const ExpenseList: React.FC = () => {
   const billPayers = useSelector((state: RootState) => state.bill.payers);
   const billItems = useSelector((state: RootState) => state.bill.items);
@@ -47,6 +54,7 @@ const ExpenseList: React.FC = () => {
         payerId: payer.id,
         total: 0,
         items: [],
+        friend: [],
       };
       const items = billItemMapping.filter((mapping) =>
         mapping.payerId.includes(payer.id),
@@ -70,6 +78,42 @@ const ExpenseList: React.FC = () => {
 
         expense.total += total;
         expense.items.push(expenseItem);
+      });
+
+      const friendIds = payer.friend?.map((friend) => friend.id);
+      friendIds?.forEach((friendId) => {
+        const friendExpense: IExpenseChildren = {
+          payerId: friendId,
+          payerName:
+            payer.friend?.find((friend) => friend.id === friendId)?.name ?? '',
+          total: 0,
+          items: [],
+        };
+        const friendItems = billItemMapping.filter((mapping) =>
+          mapping.payerId.includes(friendId),
+        );
+
+        friendItems.forEach((item) => {
+          const billItem = billItems.find(
+            (billItem) => billItem.id === item.itemId,
+          );
+
+          if (!billItem) return;
+
+          const itemQuantity = billItem.quantity;
+          const payerCount = item.payerId.length;
+          const total = billItem.total! / payerCount;
+          const expenseItem: IExpenseItem = {
+            itemName: billItem.name,
+            itemQuantity: itemQuantity,
+            itemTotalPrice: total,
+          };
+
+          friendExpense.total += total;
+          friendExpense.items.push(expenseItem);
+        });
+        expense.friend?.push(friendExpense);
+        expense.total += friendExpense.total;
       });
       expenseList.push(expense);
     });
@@ -114,17 +158,39 @@ const ExpenseList: React.FC = () => {
           >
             {expenseList.map((expense) => {
               if (expense.payerId === payer.id) {
-                return expense.items.map((item, index) => {
-                  return (
-                    <ItemWrapper key={index}>
-                      <Flex gap={'12px'}>
-                        <div>{item.itemQuantity}</div>
-                        <div>{item.itemName}</div>
-                      </Flex>
-                      <div>{item.itemTotalPrice}</div>
-                    </ItemWrapper>
-                  );
-                });
+                return (
+                  <>
+                    {expense.items.map((item) => {
+                      return (
+                        <ItemWrapper key={item.itemName}>
+                          <Flex gap={'12px'}>
+                            <div>{item.itemQuantity}</div>
+                            <div>{item.itemName}</div>
+                          </Flex>
+                          <div>{item.itemTotalPrice}</div>
+                        </ItemWrapper>
+                      );
+                    })}
+                    {expense.friend?.map((friend) => {
+                      return (
+                        <ItemChildrenWrapper key={friend.payerId}>
+                          <div>{friend.payerName}</div>
+                          {friend.items.map((item) => {
+                            return (
+                              <ItemWrapper key={item.itemName}>
+                                <Flex gap={'12px'}>
+                                  <div>{item.itemQuantity}</div>
+                                  <div>{item.itemName}</div>
+                                </Flex>
+                                <div>{item.itemTotalPrice}</div>
+                              </ItemWrapper>
+                            );
+                          })}
+                        </ItemChildrenWrapper>
+                      );
+                    })}
+                  </>
+                );
               }
             })}
           </Collapse.Panel>
