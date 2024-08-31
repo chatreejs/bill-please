@@ -47,7 +47,7 @@ const Footer: React.FC = () => {
           </a>
         </span>
         <Flex gap={6}>
-          <span>Bill Please Version {version}</span>
+          <span>v{version}</span>
           <span>|</span>
           <span>
             <a
