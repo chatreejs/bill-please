@@ -1,10 +1,16 @@
-import { Collapse, Flex } from 'antd';
+import { Collapse, Divider } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '@config';
-import { IExpense, IExpenseChildren, IExpenseItem } from '@interfaces';
+import {
+  IBillItemMapping,
+  IExpense,
+  IExpenseChildren,
+  IExpenseItem,
+} from '@interfaces';
+import ExpenseItemList from './expense/ExpenseItemList';
 
 const PayerWrapper = styled.div`
   display: flex;
@@ -13,21 +19,12 @@ const PayerWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   cursor: pointer;
-
-  > div {
-    font-size: 16px;
-    font-weight: 400;
-    color: #000;
-  }
 `;
 
-const ItemWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-
-  div > span:first-child {
-    margin-right: 1rem;
-  }
+const PayerText = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
 `;
 
 const ItemChildrenWrapper = styled.div`
@@ -61,22 +58,10 @@ const ExpenseList: React.FC = () => {
       );
 
       items.forEach((item) => {
-        const billItem = billItems.find(
-          (billItem) => billItem.id === item.itemId,
-        );
+        const expenseItem = calculateExpanse(item);
+        if (!expenseItem) return;
 
-        if (!billItem) return;
-
-        const itemQuantity = billItem.quantity;
-        const payerCount = item.payerId.length;
-        const total = billItem.total! / payerCount;
-        const expenseItem: IExpenseItem = {
-          itemName: billItem.name,
-          itemQuantity: itemQuantity,
-          itemTotalPrice: total,
-        };
-
-        expense.total += total;
+        expense.total += expenseItem.itemTotalPrice;
         expense.items.push(expenseItem);
       });
 
@@ -94,22 +79,10 @@ const ExpenseList: React.FC = () => {
         );
 
         friendItems.forEach((item) => {
-          const billItem = billItems.find(
-            (billItem) => billItem.id === item.itemId,
-          );
+          const expenseItem = calculateExpanse(item);
+          if (!expenseItem) return;
 
-          if (!billItem) return;
-
-          const itemQuantity = billItem.quantity;
-          const payerCount = item.payerId.length;
-          const total = billItem.total! / payerCount;
-          const expenseItem: IExpenseItem = {
-            itemName: billItem.name,
-            itemQuantity: itemQuantity,
-            itemTotalPrice: total,
-          };
-
-          friendExpense.total += total;
+          friendExpense.total += expenseItem.itemTotalPrice;
           friendExpense.items.push(expenseItem);
         });
         expense.friend?.push(friendExpense);
@@ -118,6 +91,22 @@ const ExpenseList: React.FC = () => {
       expenseList.push(expense);
     });
     setExpenseList(expenseList);
+  };
+
+  const calculateExpanse = (item: IBillItemMapping) => {
+    const billItem = billItems.find((billItem) => billItem.id === item.itemId);
+
+    if (!billItem) return;
+
+    const itemQuantity = billItem.quantity;
+    const payerCount = item.payerId.length;
+    const total = billItem.total! / payerCount;
+    const expenseItem: IExpenseItem = {
+      itemName: billItem.name,
+      itemQuantity: itemQuantity,
+      itemTotalPrice: total,
+    };
+    return expenseItem;
   };
 
   useEffect(() => {
@@ -131,6 +120,7 @@ const ExpenseList: React.FC = () => {
   return (
     <Collapse
       bordered={false}
+      ghost
       style={{
         backgroundColor: 'white',
         boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
@@ -146,8 +136,8 @@ const ExpenseList: React.FC = () => {
                   if (expense.payerId === payer.id) {
                     return (
                       <PayerWrapper key={payer.id}>
-                        <div>{payer.name}</div>
-                        <div>{expense.total}</div>
+                        <PayerText>{payer.name}</PayerText>
+                        <PayerText>{expense.total}</PayerText>
                       </PayerWrapper>
                     );
                   }
@@ -160,32 +150,16 @@ const ExpenseList: React.FC = () => {
               if (expense.payerId === payer.id) {
                 return (
                   <>
-                    {expense.items.map((item) => {
-                      return (
-                        <ItemWrapper key={item.itemName}>
-                          <Flex gap={'12px'}>
-                            <div>{item.itemQuantity}</div>
-                            <div>{item.itemName}</div>
-                          </Flex>
-                          <div>{item.itemTotalPrice}</div>
-                        </ItemWrapper>
-                      );
-                    })}
+                    <ExpenseItemList expense={expense} />
                     {expense.friend?.map((friend) => {
                       return (
                         <ItemChildrenWrapper key={friend.payerId}>
-                          <div>{friend.payerName}</div>
-                          {friend.items.map((item) => {
-                            return (
-                              <ItemWrapper key={item.itemName}>
-                                <Flex gap={'12px'}>
-                                  <div>{item.itemQuantity}</div>
-                                  <div>{item.itemName}</div>
-                                </Flex>
-                                <div>{item.itemTotalPrice}</div>
-                              </ItemWrapper>
-                            );
-                          })}
+                          <Divider dashed={true} style={{ margin: '8px 0' }} />
+                          <PayerWrapper key={payer.id}>
+                            <PayerText>{friend.payerName}</PayerText>
+                            <PayerText>{friend.total}</PayerText>
+                          </PayerWrapper>
+                          <ExpenseItemList expense={friend} />
                         </ItemChildrenWrapper>
                       );
                     })}
