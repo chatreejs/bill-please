@@ -9,7 +9,6 @@
     }
   },
   "home": {
-    "billTitle": "Bill name",
     "itemList": {
       "button": {
         "add": "Add item",

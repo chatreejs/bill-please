@@ -9,7 +9,6 @@
     }
   },
   "home": {
-    "billTitle": "ตั้งชื่อบิล",
     "itemList": {
       "button": {
         "add": "เพิ่มรายการ",
