@@ -1,7 +1,8 @@
 import { RightOutlined } from '@ant-design/icons';
 import { BillCard, ButtonWrapper } from '@components';
 import { RootState } from '@config';
-import { Button, Card, Tag, Typography } from 'antd';
+import { getColorByName } from '@utils';
+import { Button, Card, Flex, Tag, Typography } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -55,24 +56,56 @@ const BillItemMapping: React.FC = () => {
       top={
         <>
           <Title level={2}>{t('mapping.title')}</Title>
-          <Text italic>กรุณาเลือกว่ารายการไหนใครต้องจ่ายบ้าง</Text>
-          <div>
+          <Text italic>{t('mapping.description')}</Text>
+          <div style={{ marginTop: '1rem' }}>
             {billItems.map((item) => (
               <Card
                 key={item.id}
                 style={{ marginBottom: '6px' }}
                 onClick={() => openModal(item.id)}
               >
-                <div>{item.name}</div>
-                <div>
-                  {billItemMappings?.map((mapping) => {
-                    if (mapping.itemId === item.id) {
-                      return getPayerNameList(mapping.payerId).map(
-                        (payerName) => <Tag key={payerName}>{payerName}</Tag>,
-                      );
-                    }
-                  })}
+                <div
+                  style={{ fontSize: 16, fontWeight: 600, marginBottom: '6px' }}
+                >
+                  {item.name}
                 </div>
+                <Flex wrap>
+                  {billItemMappings?.some(
+                    (mapping) => mapping.itemId === item.id,
+                  ) ? (
+                    <>
+                      {billItemMappings?.map((mapping) => {
+                        if (mapping.itemId === item.id) {
+                          return getPayerNameList(mapping.payerId).map(
+                            (payerName) => (
+                              <Tag
+                                style={{
+                                  marginBottom: '8px',
+                                  height: 26,
+                                  fontSize: 16,
+                                }}
+                                key={payerName}
+                                color={getColorByName(payerName)}
+                              >
+                                {payerName}
+                              </Tag>
+                            ),
+                          );
+                        }
+                      })}
+                    </>
+                  ) : (
+                    <Tag
+                      style={{
+                        height: 26,
+                        fontSize: 16,
+                        borderStyle: 'dashed',
+                      }}
+                    >
+                      Empty Payer
+                    </Tag>
+                  )}
+                </Flex>
               </Card>
             ))}
           </div>
