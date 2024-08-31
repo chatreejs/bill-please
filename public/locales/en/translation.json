@@ -82,7 +82,13 @@
     }
   },
   "mapping": {
-    "title": "Which item belong to ?"
+    "title": "Which item belong to ?",
+    "description": "Please select who should pay for which item",
+    "modal": {
+      "title": "Select payer for {{itemName}}",
+      "selectAll": "Select all",
+      "deselectAll": "Deselect all"
+    }
   },
   "result": {
     "total": "Total",

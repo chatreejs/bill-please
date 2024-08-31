@@ -1,7 +1,11 @@
+import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
 import { RootState } from '@config';
+import { IPayer } from '@interfaces';
 import { addBillItemMapping, editBillItemMapping } from '@slices';
-import { Modal, Select } from 'antd';
-import React, { useEffect } from 'react';
+import { getColorByName } from '@utils';
+import { Button, Flex, Modal, Tag } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
 interface Props {
@@ -11,16 +15,16 @@ interface Props {
 }
 
 const BillItemMappingModal: React.FC<Props> = ({ isOpen, itemId, onClose }) => {
+  const { t } = useTranslation();
+  const billItems = useSelector((state: RootState) => state.bill.items);
   const billPayers = useSelector((state: RootState) => state.bill.payers);
   const billItemMappings = useSelector(
     (state: RootState) => state.bill.itemMapping,
   );
   const dispatch = useDispatch();
   const [selectedPayerIds, setSelectedPayerIds] = React.useState<string[]>([]);
-
-  const handleChange = (selectedPayerIds: string[]) => {
-    setSelectedPayerIds(selectedPayerIds);
-  };
+  const [payers, setPayers] = useState<IPayer[]>([]);
+  const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
 
   const getAllPayer = () => {
     const allPayers = [...billPayers];
@@ -34,10 +38,26 @@ const BillItemMappingModal: React.FC<Props> = ({ isOpen, itemId, onClose }) => {
         });
       }
     });
-    return allPayers.map((payer) => ({
-      label: payer.name,
-      value: payer.id,
-    }));
+    return allPayers;
+  };
+
+  const handleTagClick = (payerId: string) => {
+    setSelectedPayerIds((prevSelectedPayerIds) => {
+      if (prevSelectedPayerIds.includes(payerId)) {
+        return prevSelectedPayerIds.filter((id) => id !== payerId);
+      } else {
+        return [...prevSelectedPayerIds, payerId];
+      }
+    });
+  };
+
+  const handleSelectAll = () => {
+    const allPayerIds = payers.map((payer) => payer.id);
+    if (selectedPayerIds.length === allPayerIds.length) {
+      setSelectedPayerIds([]);
+    } else {
+      setSelectedPayerIds(allPayerIds);
+    }
   };
 
   const saveItemMapping = () => {
@@ -79,22 +99,59 @@ const BillItemMappingModal: React.FC<Props> = ({ isOpen, itemId, onClose }) => {
     };
   }, [isOpen, itemId]);
 
+  useEffect(() => {
+    setPayers(getAllPayer());
+  }, []);
+
+  useEffect(() => {
+    const allPayerIds = payers.map((payer) => payer.id);
+    const isAllSelected = selectedPayerIds.length === allPayerIds.length;
+    setIsAllSelected(isAllSelected);
+  }, [selectedPayerIds, payers]);
+
   return (
     <Modal
-      title={'Select payer'}
+      title={t('mapping.modal.title', {
+        itemName: billItems.find((item) => item.id === itemId)?.name,
+      })}
       open={isOpen}
       onOk={saveItemMapping}
       onCancel={onClose}
+      okText={t('common.button.save')}
+      cancelText={t('common.button.cancel')}
     >
-      <Select
-        mode="tags"
-        size="large"
-        style={{ width: '100%' }}
-        placeholder="Please select payer"
-        onChange={handleChange}
-        options={getAllPayer()}
-        value={selectedPayerIds}
-      />
+      <Button onClick={handleSelectAll} style={{ marginBottom: '16px' }}>
+        {isAllSelected
+          ? t('mapping.modal.deselectAll')
+          : t('mapping.modal.selectAll')}
+      </Button>
+      <Flex wrap>
+        {payers.map((payer) => (
+          <Tag
+            key={payer.id}
+            color={
+              selectedPayerIds.includes(payer.id)
+                ? getColorByName(payer.name)
+                : 'default'
+            }
+            bordered={selectedPayerIds.includes(payer.id)}
+            onClick={() => handleTagClick(payer.id)}
+            style={{
+              cursor: 'pointer',
+              marginBottom: '8px',
+              height: 26,
+              fontSize: 16,
+            }}
+          >
+            {selectedPayerIds.includes(payer.id) ? (
+              <CheckOutlined />
+            ) : (
+              <PlusOutlined />
+            )}
+            <span>{payer.name}</span>
+          </Tag>
+        ))}
+      </Flex>
     </Modal>
   );
 };
