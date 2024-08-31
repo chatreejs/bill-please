@@ -88,7 +88,9 @@ const Home: React.FC = () => {
             type="primary"
             size="large"
             onClick={() => {
-              navigate('/mapping');
+              navigate('/mapping', {
+                replace: true,
+              });
             }}
             disabled={isNextButtonDisabled}
           >
