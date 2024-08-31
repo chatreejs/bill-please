@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { PaymentMethod } from '@enums';
 import { useTranslation } from 'react-i18next';
-import PromptPayLogo from '../../../assets/PromptPay-logo.png';
+import PromptPayLogo from '../../../assets/images/PromptPay-logo.png';
 import PromptPayQRCode from './promptpay/PromptPayQRCode';
 
 const PaymentWrapper = styled.div`
@@ -33,13 +33,17 @@ const Payment: React.FC = () => {
     <>
       <PaymentWrapper>
         {selectedPaymentMethod === PaymentMethod.None && (
-          <Flex vertical justify="center" align="center">
+          <Flex vertical justify="center" align="center" gap={6}>
             <div>{t('result.payment.selectPaymentMethod')}</div>
             <div
               role="button"
               onClick={() => onPaymentMethodSelected(PaymentMethod.PromptPay)}
             >
-              <img src={PromptPayLogo} alt="Bank" style={{ width: '64px' }} />
+              <img
+                src={PromptPayLogo}
+                alt="prompt-pay"
+                style={{ width: '84px' }}
+              />
             </div>
           </Flex>
         )}
@@ -49,7 +53,11 @@ const Payment: React.FC = () => {
       </PaymentWrapper>
       {selectedPaymentMethod !== PaymentMethod.None && (
         <span
-          style={{ marginTop: '1rem', textDecoration: 'underline' }}
+          style={{
+            marginTop: '1rem',
+            fontSize: 12,
+            textDecoration: 'underline',
+          }}
           onClick={() => onPaymentMethodSelected(PaymentMethod.None)}
         >
           {t('result.payment.changePaymentMethod')}
