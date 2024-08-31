@@ -130,7 +130,7 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
           </Form.Item>
           <Form.Item
             name="price"
-            label={t('home.itemList.modal.form.price')}
+            label={`${t('home.itemList.modal.form.price')} (${t('home.itemList.modal.form.priceTip')})`}
             rules={[
               {
                 required: true,

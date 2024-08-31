@@ -24,6 +24,7 @@
           "nameError": "Please input item name",
           "price": "Unit Price",
           "priceError": "Please input item price",
+          "priceTip": "Can be negative value e.g. discount",
           "quantity": "Quantity",
           "quantityError": "Please input item quantity"
         },
