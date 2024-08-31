@@ -65,7 +65,7 @@ const App: React.FC = () => {
               <MainWrapper>
                 <ProductLogoWrapper>
                   <BackButton show={isShowBackButton} />
-                  <Logo systemName="Bill Please" showEnvBadge={false} />
+                  <Logo systemName="Bill Please" showEnvBadge={true} />
                 </ProductLogoWrapper>
                 <LanguageSwitcherWrapper>
                   <LanguageSwitcher />
