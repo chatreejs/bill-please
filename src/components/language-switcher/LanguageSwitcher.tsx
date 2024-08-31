@@ -46,14 +46,16 @@ const LanguageSwitcher: React.FC = () => {
   useEffect(() => {
     let language: ILanguage;
     if (languageStorage) {
-      language = languages.find((lang) => lang.code === languageStorage);
+      language =
+        languages.find((lang) => lang.code === languageStorage) ?? languages[0];
     } else {
       const browserLanguage = navigator.language.split('-')[0];
-      language = languages.find((lang) => lang.code === browserLanguage);
+      language =
+        languages.find((lang) => lang.code === browserLanguage) ?? languages[0];
     }
-    setSelectedLanguage(language || languages[0]);
-    setLanguageStorage(language.code || languages[0].code);
-    i18n.changeLanguage(language.code || languages[0].code);
+    setSelectedLanguage(language);
+    setLanguageStorage(language.code);
+    void i18n.changeLanguage(language.code);
   }, []);
 
   return (
@@ -67,7 +69,7 @@ const LanguageSwitcher: React.FC = () => {
           onClick: () => {
             setSelectedLanguage(lang);
             setLanguageStorage(lang.code);
-            i18n.changeLanguage(lang.code);
+            void i18n.changeLanguage(lang.code);
           },
         })),
       }}

@@ -49,23 +49,25 @@ const billSlice = createSlice({
     },
     editPayer(state, action: PayloadAction<IPayer>) {
       // Store old friend id list
-      const oldFriendIds = state.payers
-        .find((payer) => payer.id === action.payload.id)
-        ?.friend.map((friend) => friend.id);
+      const oldFriendIds =
+        state.payers
+          .find((payer) => payer.id === action.payload.id)
+          ?.friend?.map((friend) => friend.id) ?? [];
       const index = state.payers.findIndex(
         (payer) => payer.id === action.payload.id,
       );
       state.payers[index] = action.payload;
-      const newFriendIds = action.payload.friend.map((friend) => friend.id);
+      const newFriendIds =
+        action.payload?.friend?.map((friend) => friend.id) ?? [];
       // Find removed friend id list
-      const removedFriends = oldFriendIds?.filter(
+      const removedFriendIds = oldFriendIds?.filter(
         (id) => !newFriendIds.includes(id),
       );
       // Remove payer from itemMapping by removed friend id list
-      if (removedFriends) {
+      if (removedFriendIds.length > 0) {
         state.itemMapping = state.itemMapping.map((mapping) => {
           const payerId = mapping.payerId.filter(
-            (id) => !removedFriends.includes(id),
+            (id) => !removedFriendIds.includes(id),
           );
           return { ...mapping, payerId };
         });
@@ -73,9 +75,10 @@ const billSlice = createSlice({
     },
     removePayer(state, action: PayloadAction<string>) {
       // store payer id and friend id list
-      const payerIds = state.payers
-        .find((payer) => payer.id === action.payload)
-        ?.friend.map((friend) => friend.id);
+      const payerIds =
+        state.payers
+          .find((payer) => payer.id === action.payload)
+          ?.friend?.map((friend) => friend.id) ?? [];
       payerIds.push(action.payload);
 
       state.payers = state.payers.filter(
@@ -88,17 +91,22 @@ const billSlice = createSlice({
     },
     removePayers(state, action: PayloadAction<string[]>) {
       // store payer id and friend id list
-      const { payerIds, friendIds } = state.payers.reduce(
+      const { payerIds, friendIds } = state.payers.reduce<{
+        payerIds: string[];
+        friendIds: string[];
+      }>(
         (acc, payer) => {
           if (action.payload.includes(payer.id)) {
             acc.payerIds.push(payer.id);
-            acc.friendIds.push(...payer.friend.map((friend) => friend.id));
+            acc.friendIds.push(
+              ...(payer?.friend?.map((friend) => friend.id) ?? []),
+            );
           }
           return acc;
         },
         { payerIds: [], friendIds: [] },
       );
-      const allIds = [...payerIds, ...friendIds];
+      const allIds: string[] = [...payerIds, ...friendIds];
 
       state.payers = state.payers.filter(
         (payer) => !action.payload.includes(payer.id),

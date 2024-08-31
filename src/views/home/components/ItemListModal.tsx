@@ -43,9 +43,23 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
       .then(() => {
         const formData = form.getFieldsValue(true) as IBillItemForm;
         if (mode === ModalType.Create) {
-          dispatch(addItem({ ...formData, id: uuidv7() }));
+          dispatch(
+            addItem({
+              id: uuidv7(),
+              name: formData.name,
+              quantity: formData.quantity!,
+              price: formData.price!,
+            }),
+          );
         } else {
-          dispatch(editItem({ ...formData, id: itemId }));
+          dispatch(
+            editItem({
+              id: itemId!,
+              name: formData.name,
+              quantity: formData.quantity!,
+              price: formData.price!,
+            }),
+          );
         }
         onClose();
       })
@@ -55,14 +69,14 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
   };
 
   const deleteItem = () => {
-    dispatch(removeItem(itemId));
+    dispatch(removeItem(itemId!));
     onClose();
   };
 
   useEffect(() => {
     if (isOpen) {
       if (mode === ModalType.Edit && itemId) {
-        const item = billItems.find((item) => item.id === itemId);
+        const item = billItems.find((item) => item.id === itemId)!;
         form.setFieldsValue(item);
       } else {
         form.setFieldsValue(initialValues);

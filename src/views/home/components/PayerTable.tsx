@@ -19,12 +19,11 @@ const PayerTable: React.FC = () => {
   const dispatch = useDispatch();
 
   const [isShowCheckbox, setIsShowCheckbox] = useState<boolean>(false);
-  const [selectedRowKeys, setSelectedRowKeys] =
-    useState<React.Key[]>(undefined);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [modalMode, setModalMode] = useState<ModalType>(ModalType.Create);
-  const [selectedPayerId, setSelectedPayerId] = useState<string>(undefined);
+  const [selectedPayerId, setSelectedPayerId] = useState<string>();
 
   const toggleCheckbox = () => {
     setIsShowCheckbox(!isShowCheckbox);
@@ -104,13 +103,14 @@ const PayerTable: React.FC = () => {
               expandedRowRender: (record) => {
                 return (
                   <div>
-                    {record.friend.map((friend) => (
+                    {record.friend?.map((friend) => (
                       <Tag key={friend.id}>{friend.name}</Tag>
                     ))}
                   </div>
                 );
               },
-              rowExpandable: (record) => record.friend.length > 0,
+              rowExpandable: (record) =>
+                record.friend ? record.friend.length > 0 : false,
             }}
             rowSelection={isShowCheckbox ? rowSelection : undefined}
             rowKey={(record) => record.id}
@@ -127,7 +127,7 @@ const PayerTable: React.FC = () => {
               key="name"
               dataIndex="name"
               render={(text, record: IPayer) => {
-                if (record.friend.length === 0) {
+                if (record.friend?.length === 0) {
                   return <span>{text}</span>;
                 } else {
                   return (
