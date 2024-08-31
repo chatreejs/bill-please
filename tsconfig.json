@@ -1,22 +1,25 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": false,
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "removeComments": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "noEmit": true,
-    "noFallthroughCasesInSwitch": true,
-    "preserveConstEnums": true,
     "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
     "types": ["node", "vite/client", "jest"],
     "typeRoots": ["node_modules/@types", "src/types"],
     "paths": {
@@ -33,5 +36,6 @@
       "@views": ["./src/views"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

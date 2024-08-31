@@ -16,9 +16,6 @@ export default defineConfig({
     viteTsconfigPaths(),
     VitePWA({
       registerType: 'autoUpdate',
-      devOptions: {
-        enabled: true,
-      },
     }),
   ],
   server: {
