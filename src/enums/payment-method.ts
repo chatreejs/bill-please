@@ -1,4 +1,4 @@
 export enum PaymentMethod {
   None = 'none',
-  PromptPay = 'promptpay',
+  PromptPay = 'PromptPay',
 }
