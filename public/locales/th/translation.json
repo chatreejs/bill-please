@@ -88,8 +88,15 @@
     "total": "ทั้งหมด",
     "people": "จำนวนคน",
     "expenseList": "รายการค่าใช้จ่าย",
-    "qr": {
-      "scanToPay": "สแกน QR เพื่อชำระเงิน"
+    "payment": {
+      "selectPaymentMethod": "เลือกวิธีการชำระเงิน",
+      "changePaymentMethod": "เปลี่ยนวิธีการชำระเงิน",
+      "promptPay": {
+        "inputLabel": "กรุณาใส่หมายเลขโทรศัพท์ / เลขบัตรประชาชน"
+      },
+      "qr": {
+        "scanToPay": "สแกน QR Code เพื่อชำระเงิน"
+      }
     }
   }
 }

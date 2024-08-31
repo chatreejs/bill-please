@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import ExpenseList from './components/ExpenseList';
-import QRCode from './components/QRCode';
+import Payment from './components/Payment';
 
 const CardWrapper = styled.div`
   display: flex;
@@ -142,7 +142,7 @@ const Result: React.FC = () => {
       </CardTop>
       <Separator />
       <CardBottom>
-        <QRCode promptpayId="0806956194" />
+        <Payment />
       </CardBottom>
     </CardWrapper>
   );

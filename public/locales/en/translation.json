@@ -88,8 +88,15 @@
     "total": "Total",
     "people": "People",
     "expenseList": "Expense List",
-    "qr": {
-      "scanToPay": "Scan to pay"
+    "payment": {
+      "selectPaymentMethod": "Select your payment method",
+      "changePaymentMethod": "Change your payment method",
+      "promptPay": {
+        "inputLabel": "Phone number or Thai National ID"
+      },
+      "qr": {
+        "scanToPay": "Scan QR Code to pay"
+      }
     }
   }
 }
