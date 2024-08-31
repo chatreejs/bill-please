@@ -74,6 +74,7 @@ const Home: React.FC = () => {
           </Typography.Title>
           <div>
             <Tabs
+              size="large"
               defaultActiveKey="1"
               items={tabItems}
               onTabClick={onTabClick}
