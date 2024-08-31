@@ -9,7 +9,6 @@
     }
   },
   "home": {
-    "billTitle": "請求書名",
     "itemList": {
       "button": {
         "add": "アイテムを追加",

@@ -6,7 +6,8 @@ import {
 import { BillCard, ButtonWrapper } from '@components';
 import { RootState } from '@config';
 import { setTitle } from '@slices';
-import { Button, Input, Tabs, TabsProps } from 'antd';
+import { Button, Tabs, TabsProps, Typography } from 'antd';
+import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,10 +41,6 @@ const Home: React.FC = () => {
     },
   ];
 
-  const updateBillName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setTitle(e.target.value));
-  };
-
   const onTabClick = (key: string) => {
     setActiveTab(key);
   };
@@ -56,21 +53,25 @@ const Home: React.FC = () => {
     }
   }, [billItems, billPayers]);
 
+  useEffect(() => {
+    if (billTitle === '') {
+      dispatch(setTitle(dayjs().format('YYYY-MM-DD')));
+    }
+  }, [billTitle]);
+
   return (
     <BillCard
       top={
         <>
-          <Input
-            size="large"
-            placeholder={t('home.billTitle')}
-            variant="borderless"
-            onChange={updateBillName}
-            style={{
-              fontSize: '28px',
-              padding: '1rem 0',
+          <Typography.Title
+            level={3}
+            style={{ marginBottom: '1rem' }}
+            editable={{
+              onChange: (value) => dispatch(setTitle(value)),
             }}
-            value={billTitle}
-          />
+          >
+            {billTitle}
+          </Typography.Title>
           <div>
             <Tabs
               defaultActiveKey="1"

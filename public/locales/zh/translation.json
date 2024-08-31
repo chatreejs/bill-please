@@ -9,7 +9,6 @@
     }
   },
   "home": {
-    "billTitle": "账单名称",
     "itemList": {
       "button": {
         "add": "添加项目",

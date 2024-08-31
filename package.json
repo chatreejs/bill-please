@@ -39,6 +39,7 @@
     "@fontsource/pacifico": "^5.0.13",
     "@reduxjs/toolkit": "^2.2.7",
     "antd": "^5.20.0",
+    "dayjs": "^1.11.13",
     "flag-icons": "^7.2.3",
     "i18next": "^23.13.0",
     "i18next-http-backend": "^2.5.2",
