@@ -48,7 +48,13 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['dist/*', 'vite.config.ts', 'eslint.config.js'],
+    ignores: [
+      'dist/*',
+      'vite.config.ts',
+      'eslint.config.js',
+      'babel.config.js',
+      'jest.config.ts',
+    ],
   },
   configPrettier, // For disabling conflicting rules with Prettier, require as the last config
 );
