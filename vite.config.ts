@@ -18,7 +18,6 @@ export default defineConfig({
       base: '/bill-please/',
       registerType: 'autoUpdate',
       workbox: {
-        cleanupOutdatedCaches: false,
         globPatterns: ['**/*.{js,css,html,json,woff2}'],
       },
       manifest: {
