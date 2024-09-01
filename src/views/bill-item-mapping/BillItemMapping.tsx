@@ -1,12 +1,13 @@
 import { RightOutlined } from '@ant-design/icons';
-import { BillCard, ButtonWrapper } from '@components';
-import { RootState } from '@config';
-import { getColorByName } from '@utils';
 import { Button, Card, Flex, Tag, Typography } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
+import { BillCard, ButtonWrapper } from '@components';
+import { RootState } from '@config';
+import { getColorByName } from '@utils';
 import BillItemMappingModal from './components/BillItemMappingModal';
 
 const { Title, Text } = Typography;

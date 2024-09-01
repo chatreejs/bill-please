@@ -1,9 +1,10 @@
-import { RootState } from '@config';
 import { Flex, Typography } from 'antd';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+
+import { RootState } from '@config';
 import ExpenseList from './components/ExpenseList';
 import Payment from './components/Payment';
 

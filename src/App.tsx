@@ -1,3 +1,10 @@
+import { App as AntApp, ConfigProvider } from 'antd';
+import { Suspense, useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
+import styled from 'styled-components';
+
 import {
   BackButton,
   Footer,
@@ -5,14 +12,7 @@ import {
   Logo,
   SplashSpinner,
 } from '@components';
-import { App as AntApp, ConfigProvider } from 'antd';
-
 import { AppRoutes, persistor, store } from '@config';
-import { Suspense, useEffect, useState } from 'react';
-import { Provider } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import { PersistGate } from 'redux-persist/integration/react';
-import styled from 'styled-components';
 
 const MainWrapper = styled.div`
   display: flex;

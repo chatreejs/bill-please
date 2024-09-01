@@ -1,11 +1,12 @@
 import { DownOutlined } from '@ant-design/icons';
-import { useBrowserStorage } from '@hooks';
-import { ILanguage } from '@interfaces';
 import { Dropdown } from 'antd';
 import 'flag-icons/css/flag-icons.min.css';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
+
+import { useBrowserStorage } from '@hooks';
+import { ILanguage } from '@interfaces';
 
 const LanguageSwitcherDropdown = styled.div`
   cursor: pointer;

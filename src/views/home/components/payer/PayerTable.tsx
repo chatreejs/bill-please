@@ -1,9 +1,4 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { ActionButtonWrapper, ButtonWrapper, TableWrapper } from '@components';
-import { RootState } from '@config';
-import { ModalType } from '@enums';
-import { IPayer } from '@interfaces';
-import { removeAllPayers, removePayers } from '@slices';
 import { Button, Popconfirm, Table, Tag } from 'antd';
 import Column from 'antd/es/table/Column';
 import { TableRowSelection } from 'antd/es/table/interface';
@@ -11,6 +6,11 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { ActionButtonWrapper, ButtonWrapper, TableWrapper } from '@components';
+import { RootState } from '@config';
+import { ModalType } from '@enums';
+import { IPayer } from '@interfaces';
+import { removeAllPayers, removePayers } from '@slices';
 import PayerListModal from './PayerListModal';
 
 const PayerTable: React.FC = () => {

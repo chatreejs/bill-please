@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useBrowserStorage } from '@hooks';
-import PromptPayLogo from '../../../../assets/images/PromptPay-logo.png';
-import ThaiQRPayment from '../../../../assets/images/thai-qr-payment.png';
+import PromptPayLogo from '/src/assets/images/PromptPay-logo.png';
+import ThaiQRPayment from '/src/assets/images/thai-qr-payment.png';
 
 interface PromptPayForm {
   promptPayId: string;

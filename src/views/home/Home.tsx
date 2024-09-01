@@ -3,15 +3,16 @@ import {
   UnorderedListOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { BillCard, ButtonWrapper } from '@components';
-import { RootState } from '@config';
-import { setTitle } from '@slices';
 import { Button, Tabs, TabsProps, Typography } from 'antd';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+
+import { BillCard, ButtonWrapper } from '@components';
+import { RootState } from '@config';
+import { setTitle } from '@slices';
 import ItemTable from './components/item/ItemTable';
 import PayerTable from './components/payer/PayerTable';
 
