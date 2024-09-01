@@ -1,6 +1,6 @@
-import { BillItemMapping, Home, Result } from '@views';
-
 import { Navigate, Route, Routes } from 'react-router-dom';
+
+import { BillItemMapping, Home, Result } from '@views';
 
 const AppRoutes: React.FC = () => {
   return (

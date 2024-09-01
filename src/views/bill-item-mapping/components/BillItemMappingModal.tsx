@@ -1,12 +1,13 @@
 import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
-import { RootState } from '@config';
-import { IPayer } from '@interfaces';
-import { addBillItemMapping, editBillItemMapping } from '@slices';
-import { getColorByName } from '@utils';
 import { Button, Flex, Modal, Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { RootState } from '@config';
+import { IPayer } from '@interfaces';
+import { addBillItemMapping, editBillItemMapping } from '@slices';
+import { getColorByName } from '@utils';
 
 interface Props {
   isOpen: boolean;

@@ -11,7 +11,6 @@ import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItem } from '@interfaces';
 import { removeAllItems, removeItems } from '@slices';
-
 import ItemListModal from './ItemListModal';
 
 const ItemTable: React.FC = () => {

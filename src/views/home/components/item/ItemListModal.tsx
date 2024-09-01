@@ -1,3 +1,4 @@
+import { DeleteOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber } from 'antd';
 import Modal from 'antd/es/modal/Modal';
 import React, { useEffect } from 'react';
@@ -6,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { uuidv7 } from 'uuidv7';
 
-import { DeleteOutlined } from '@ant-design/icons';
 import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItemForm } from '@interfaces';

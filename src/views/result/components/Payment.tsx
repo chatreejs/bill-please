@@ -1,11 +1,11 @@
 import { Flex } from 'antd';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 import { PaymentMethod } from '@enums';
-import { useTranslation } from 'react-i18next';
-import PromptPayLogo from '../../../assets/images/PromptPay-logo.png';
 import PromptPayQRCode from './promptpay/PromptPayQRCode';
+import PromptPayLogo from '/src/assets/images/PromptPay-logo.png';
 
 const PaymentWrapper = styled.div`
   display: flex;
