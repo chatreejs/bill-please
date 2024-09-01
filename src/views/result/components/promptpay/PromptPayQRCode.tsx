@@ -91,6 +91,7 @@ const PromptPayQRCode: React.FC = () => {
             size={160}
           />
           <span
+            className="change-qr-code"
             style={{ fontSize: 12, textDecoration: 'underline' }}
             onClick={() => setIsSubmit(false)}
           >

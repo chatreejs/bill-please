@@ -104,6 +104,7 @@
         "scanToPay": "Scan QR Code to pay",
         "changeQRCode": "Change QR Code"
       }
-    }
+    },
+    "share": "Share"
   }
 }
