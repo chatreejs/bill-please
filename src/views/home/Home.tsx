@@ -12,8 +12,8 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import ItemTable from './components/ItemTable';
-import PayerTable from './components/PayerTable';
+import ItemTable from './components/item/ItemTable';
+import PayerTable from './components/payer/PayerTable';
 
 const Home: React.FC = () => {
   const { t } = useTranslation();
