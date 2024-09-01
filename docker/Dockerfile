@@ -1,13 +1,14 @@
 FROM node:18-alpine AS builder
 
 ARG BUILD_CONFIGURATION
+ARG GA_MEASUREMENT_ID
 
 WORKDIR /app
 COPY package.json yarn.lock ./
 
 RUN yarn
 COPY ./ /app/
-RUN yarn build:$BUILD_CONFIGURATION
+RUN export VITE_APP_GA_MEASUREMENT_ID="$GA_MEASUREMENT_ID" && yarn build:"$BUILD_CONFIGURATION"
 
 FROM nginxinc/nginx-unprivileged:1.23-alpine
 

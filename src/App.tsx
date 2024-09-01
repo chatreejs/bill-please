@@ -1,5 +1,6 @@
 import { App as AntApp, ConfigProvider } from 'antd';
 import { Suspense, useEffect, useRef, useState } from 'react';
+import ReactGA from 'react-ga4';
 import { Provider } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -50,6 +51,17 @@ const App: React.FC = () => {
     setIsShowBackButton(location.pathname !== '/');
     setIsShowShareButton(location.pathname === '/result');
   }, [location]);
+
+  useEffect(() => {
+    const gaMeasurementId = process.env.VITE_APP_GA_MEASUREMENT_ID;
+    if (gaMeasurementId === undefined) return;
+    ReactGA.initialize(gaMeasurementId);
+    ReactGA.send({
+      hitType: 'page_view',
+      page: '/home',
+      title: 'Home',
+    });
+  }, []);
 
   return (
     <ConfigProvider
