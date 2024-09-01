@@ -124,6 +124,7 @@ const ExpenseList: React.FC = () => {
         backgroundColor: 'white',
         boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
       }}
+      defaultActiveKey={billPayers.map((payer) => payer.id)}
     >
       {billPayers.map((payer) => {
         return (
