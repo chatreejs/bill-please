@@ -1,11 +1,12 @@
 import { ShareAltOutlined } from '@ant-design/icons';
-import { RootState } from '@config';
 import { Button, Flex } from 'antd';
 import { toPng } from 'html-to-image';
 import React, { RefObject } from 'react';
+import ReactGA from 'react-ga4';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { RootState } from '@config';
 interface Props {
   show: boolean;
   elementRef: RefObject<HTMLDivElement>;
@@ -14,6 +15,15 @@ interface Props {
 const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
   const { t } = useTranslation();
   const billTitle = useSelector((state: RootState) => state.bill.title);
+
+  const onShare = () => {
+    ReactGA.event({
+      category: 'Social Links',
+      action: 'share-bill-button',
+      label: 'Share Bill',
+    });
+    convertHtmlToPng();
+  };
 
   const convertHtmlToPng = () => {
     if (!elementRef.current) {
@@ -43,7 +53,7 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
     <>
       {show && (
         <Flex justify="center" align="center" style={{ paddingTop: 12 }}>
-          <Button style={{ width: '84x' }} onClick={convertHtmlToPng}>
+          <Button style={{ width: '84x' }} onClick={onShare}>
             <ShareAltOutlined />
             {t('result.share')}
           </Button>

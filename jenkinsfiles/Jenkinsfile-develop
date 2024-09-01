@@ -47,7 +47,7 @@ pipeline {
 
     stage('Build Docker Image') {
       steps {
-        sh 'docker build --build-arg BUILD_CONFIGURATION=${BUILD_PROFILE} -f docker/Dockerfile . -t ${IMAGE_URL}:${BUILD_VERSION}'
+        sh 'docker build --build-arg BUILD_CONFIGURATION=${BUILD_PROFILE} --build-arg GA_MEASUREMENT_ID=${GA_MEASUREMENT_ID} -f docker/Dockerfile . -t ${IMAGE_URL}:${BUILD_VERSION}'
       }
     }
 
