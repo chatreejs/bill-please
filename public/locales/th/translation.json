@@ -101,7 +101,8 @@
         "inputLabel": "กรุณาใส่หมายเลขโทรศัพท์ / เลขบัตรประชาชน"
       },
       "qr": {
-        "scanToPay": "สแกน QR Code เพื่อชำระเงิน"
+        "scanToPay": "สแกน QR Code เพื่อชำระเงิน",
+        "changeQRCode": "เปลี่ยน QR Code"
       }
     }
   }

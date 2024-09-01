@@ -101,7 +101,8 @@
         "inputLabel": "Phone number or Thai National ID"
       },
       "qr": {
-        "scanToPay": "Scan QR Code to pay"
+        "scanToPay": "Scan QR Code to pay",
+        "changeQRCode": "Change QR Code"
       }
     }
   }

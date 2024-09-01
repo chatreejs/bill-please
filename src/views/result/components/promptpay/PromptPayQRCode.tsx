@@ -94,7 +94,7 @@ const PromptPayQRCode: React.FC = () => {
             style={{ fontSize: 12, textDecoration: 'underline' }}
             onClick={() => setIsSubmit(false)}
           >
-            Change QR Code
+            {t('result.payment.qr.changeQRCode')}
           </span>
         </Flex>
       )}
