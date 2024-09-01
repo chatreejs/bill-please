@@ -53,6 +53,7 @@ const Payment: React.FC = () => {
       </PaymentWrapper>
       {selectedPaymentMethod !== PaymentMethod.None && (
         <span
+          className="change-payment-method"
           style={{
             marginTop: '1rem',
             fontSize: 12,

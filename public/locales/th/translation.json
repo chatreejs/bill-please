@@ -104,6 +104,7 @@
         "scanToPay": "สแกน QR Code เพื่อชำระเงิน",
         "changeQRCode": "เปลี่ยน QR Code"
       }
-    }
+    },
+    "share": "แชร์บิลนี้"
   }
 }

@@ -1,5 +1,5 @@
 import { App as AntApp, ConfigProvider } from 'antd';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -10,6 +10,7 @@ import {
   Footer,
   LanguageSwitcher,
   Logo,
+  ShareBill,
   SplashSpinner,
 } from '@components';
 import { AppRoutes, persistor, store } from '@config';
@@ -41,10 +42,13 @@ const LanguageSwitcherWrapper = styled.div`
 
 const App: React.FC = () => {
   const [isShowBackButton, setIsShowBackButton] = useState<boolean>(false);
+  const [isShowShareButton, setIsShowShareButton] = useState<boolean>(false);
   const location = useLocation();
+  const billRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIsShowBackButton(location.pathname !== '/');
+    setIsShowShareButton(location.pathname === '/result');
   }, [location]);
 
   return (
@@ -70,7 +74,10 @@ const App: React.FC = () => {
                 <LanguageSwitcherWrapper>
                   <LanguageSwitcher />
                 </LanguageSwitcherWrapper>
-                <AppRoutes />
+                <div id="bill-ref-element" ref={billRef}>
+                  <AppRoutes />
+                </div>
+                <ShareBill show={isShowShareButton} elementRef={billRef} />
                 <Footer />
               </MainWrapper>
             </AntApp>
