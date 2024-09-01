@@ -89,7 +89,7 @@ pipeline {
 
     stage('Deploy to Kubernetes') {
       steps {
-        build job: 'chatreejs/GitOps/bill-please-manifest-dev', parameters: [string(name: 'IMAGE_TAG', value: "${IMAGE_URL}:${BUILD_VERSION}")]
+        build job: 'Chatree.js/Develop/GitOps/bill-please-manifest', parameters: [string(name: 'IMAGE_TAG', value: "${IMAGE_URL}:${BUILD_VERSION}")]
       }
     }
 
