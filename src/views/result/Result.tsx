@@ -124,7 +124,12 @@ const Result: React.FC = () => {
         <SummaryWrapper>
           <SummaryTitle>
             <div className="title">{t('result.total')}</div>
-            <div className="value">{total}</div>
+            <div className="value">
+              {total.toLocaleString(undefined, {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })}
+            </div>
           </SummaryTitle>
           <SummaryTitle className="text-right">
             <div className="title">{t('result.people')}</div>
