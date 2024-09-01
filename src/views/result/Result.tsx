@@ -1,4 +1,5 @@
 import { RootState } from '@config';
+import { Flex, Typography } from 'antd';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -32,14 +33,6 @@ const CardBottom = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 0 0 24px 24px;
-`;
-
-const CardTitle = styled.h1`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
-  width: 100%;
 `;
 
 const SummaryWrapper = styled.div`
@@ -122,7 +115,11 @@ const Result: React.FC = () => {
   return (
     <CardWrapper>
       <CardTop>
-        <CardTitle>{billTitle}</CardTitle>
+        <Flex justify="center" align="center">
+          <Typography.Title level={3} style={{ marginBottom: '1rem' }}>
+            {billTitle}
+          </Typography.Title>
+        </Flex>
         <SummaryWrapper>
           <SummaryTitle>
             <div className="title">{t('result.total')}</div>
