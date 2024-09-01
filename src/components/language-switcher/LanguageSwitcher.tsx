@@ -29,17 +29,7 @@ const LanguageSwitcher: React.FC = () => {
     {
       code: 'th',
       countryCode: 'th',
-      name: 'ไทย',
-    },
-    {
-      code: 'zh',
-      countryCode: 'cn',
-      name: '中文',
-    },
-    {
-      code: 'ja',
-      countryCode: 'jp',
-      name: '日本語',
+      name: 'ภาษาไทย',
     },
   ];
 
