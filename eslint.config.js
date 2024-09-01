@@ -49,7 +49,7 @@ export default tseslint.config(
   },
   {
     ignores: [
-      'dist/*',
+      'build/*',
       'vite.config.ts',
       'eslint.config.js',
       'babel.config.js',
