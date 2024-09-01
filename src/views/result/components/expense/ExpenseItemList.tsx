@@ -29,7 +29,12 @@ const ExpenseItemList: React.FC<Props> = ({ expense }) => {
               <div>{item.itemQuantity}</div>
               <div>{item.itemName}</div>
             </Flex>
-            <div>{item.itemTotalPrice.toFixed(2)}</div>
+            <div>
+              {item.itemTotalPrice.toLocaleString(undefined, {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })}
+            </div>
           </ItemWrapper>
         );
       })}

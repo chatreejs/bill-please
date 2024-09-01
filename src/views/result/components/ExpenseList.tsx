@@ -120,7 +120,6 @@ const ExpenseList: React.FC = () => {
   return (
     <Collapse
       bordered={false}
-      ghost
       style={{
         backgroundColor: 'white',
         boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
@@ -137,7 +136,12 @@ const ExpenseList: React.FC = () => {
                     return (
                       <PayerWrapper key={payer.id}>
                         <PayerText>{payer.name}</PayerText>
-                        <PayerText>{expense.total.toFixed(2)}</PayerText>
+                        <PayerText>
+                          {expense.total.toLocaleString(undefined, {
+                            maximumFractionDigits: 2,
+                            minimumFractionDigits: 2,
+                          })}
+                        </PayerText>
                       </PayerWrapper>
                     );
                   }

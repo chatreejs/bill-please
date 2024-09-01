@@ -126,7 +126,10 @@ const ItemTable: React.FC = () => {
               dataIndex="total"
               align="right"
               render={(price: number) => {
-                return price.toFixed(2);
+                return price.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                });
               }}
             />
           </Table>
