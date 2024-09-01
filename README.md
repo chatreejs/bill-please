@@ -2,15 +2,7 @@
   <p align="center">🧾 Bill-Please</p>
 </h1>
 
-<p align="center">
-  <a href="https://jenkins.chatree.dev/job/Chatree.js/job/Develop/job/bill-please/" target="_blank">
-    <img src="https://jenkins.chatreejs.com/job/chatreejs/job/bill-please/job/main/badge/icon" alt="Build Status">
-  </a>
-  <a href="https://github.com/chatreejs/bill-please/releases"
-    target="_blank">
-    <img src="https://img.shields.io/github/v/release/chatreejs/bill-please?include_prereleases&sort=semver" alt="Release">
-  </a>
-</p>
+[![Build Status](http://jenkins.chatree.dev/job/Chatree.js/job/Develop/job/bill-please/badge/icon)](http://jenkins.chatree.dev/job/Chatree.js/job/Develop/job/bill-please/)
 
 ## Introduction
 
