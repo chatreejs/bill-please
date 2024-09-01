@@ -55,7 +55,9 @@ const BillItemMapping: React.FC = () => {
     <BillCard
       top={
         <>
-          <Title level={2}>{t('mapping.title')}</Title>
+          <Title level={3} style={{ marginBottom: '0.25rem' }}>
+            {t('mapping.title')}
+          </Title>
           <Text italic>{t('mapping.description')}</Text>
           <div style={{ marginTop: '1rem' }}>
             {billItems.map((item) => (
