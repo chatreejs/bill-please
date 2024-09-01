@@ -15,8 +15,44 @@ export default defineConfig({
     EnvironmentPlugin('all'),
     viteTsconfigPaths(),
     VitePWA({
-      injectRegister: 'auto',
+      base: '/bill-please/',
       registerType: 'autoUpdate',
+      workbox: {
+        cleanupOutdatedCaches: false,
+        globPatterns: ['**/*.{js,css,html,json,woff2}'],
+      },
+      manifest: {
+        name: 'Bill Please',
+        short_name: 'Bill Please',
+        description: 'Bill Please Application',
+        theme_color: '#2c9c91',
+        icons: [
+          {
+            src: 'pwa/pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'pwa/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'pwa/pwa-maskable-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+          {
+            src: 'pwa/pwa-maskable-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+        ],
+      },
     }),
   ],
   server: {
