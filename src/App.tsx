@@ -20,7 +20,6 @@ const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 0.5rem;
   width: 100%;
   max-width: 420px;
 `;
@@ -39,6 +38,11 @@ const LanguageSwitcherWrapper = styled.div`
   justify-content: flex-end;
   align-items: center;
   padding: 0.5rem 1.75rem;
+`;
+
+const BillRefStyled = styled.div`
+  padding: 0.5rem;
+  background-color: #2c9c91;
 `;
 
 const App: React.FC = () => {
@@ -86,9 +90,9 @@ const App: React.FC = () => {
                 <LanguageSwitcherWrapper>
                   <LanguageSwitcher />
                 </LanguageSwitcherWrapper>
-                <div id="bill-ref-element" ref={billRef}>
+                <BillRefStyled id="bill-ref-element" ref={billRef}>
                   <AppRoutes />
-                </div>
+                </BillRefStyled>
                 <ShareBill show={isShowShareButton} elementRef={billRef} />
                 <Footer />
               </MainWrapper>

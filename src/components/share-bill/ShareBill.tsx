@@ -1,6 +1,6 @@
 import { ShareAltOutlined } from '@ant-design/icons';
 import { Button, Flex } from 'antd';
-import { toPng } from 'html-to-image';
+import { domToJpeg } from 'modern-screenshot';
 import React, { RefObject } from 'react';
 import ReactGA from 'react-ga4';
 import { useTranslation } from 'react-i18next';
@@ -29,9 +29,15 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
     if (!elementRef.current) {
       return;
     }
-    toPng(elementRef.current, { filter })
+    domToJpeg(elementRef.current, {
+      filter,
+      quality: 1,
+      fetch: {
+        bypassingCache: true,
+      },
+    })
       .then((dataUrl) => {
-        const fileName = `bill-${billTitle.replace(/\s/g, '-')}.png`;
+        const fileName = `bill-${billTitle.replace(/\s/g, '-')}.jpg`;
         const link = document.createElement('a');
         link.download = fileName;
         link.href = dataUrl;
@@ -42,10 +48,10 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
       });
   };
 
-  const filter = (node: HTMLElement) => {
+  const filter = (node: Node) => {
     const exclusionClasses = ['change-qr-code', 'change-payment-method'];
     return !exclusionClasses.some((className) =>
-      node.classList?.contains(className),
+      node.parentElement?.classList.contains(className),
     );
   };
 
