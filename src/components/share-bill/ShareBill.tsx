@@ -22,10 +22,10 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
       action: 'share-bill-button',
       label: 'Share Bill',
     });
-    convertHtmlToPng();
+    convertHtmlToImage();
   };
 
-  const convertHtmlToPng = () => {
+  const convertHtmlToImage = () => {
     if (!elementRef.current) {
       return;
     }
@@ -35,9 +35,10 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
       fetch: {
         bypassingCache: true,
       },
+      scale: 4,
     })
       .then((dataUrl) => {
-        const fileName = `bill-${billTitle.replace(/\s/g, '-')}.jpg`;
+        const fileName = `bill-${billTitle.replace(/\s/g, '-')}.jpeg`;
         const link = document.createElement('a');
         link.download = fileName;
         link.href = dataUrl;
