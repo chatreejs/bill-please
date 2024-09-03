@@ -47,8 +47,8 @@ const PayerTable: React.FC = () => {
       const idList = selectedRowKeys.map((key) => key.toString());
       dispatch(removePayers(idList));
       setSelectedRowKeys([]);
-      toggleCheckbox();
     }
+    toggleCheckbox();
   };
 
   const openModal = (mode: ModalType, id?: string) => {
