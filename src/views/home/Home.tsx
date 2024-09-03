@@ -73,16 +73,14 @@ const Home: React.FC = () => {
           >
             {billTitle}
           </Typography.Title>
-          <div>
-            <Tabs
-              size="large"
-              defaultActiveKey="1"
-              items={tabItems}
-              onTabClick={onTabClick}
-              activeKey={activeTab}
-              centered
-            />
-          </div>
+          <Tabs
+            size="large"
+            defaultActiveKey="1"
+            items={tabItems}
+            onTabClick={onTabClick}
+            activeKey={activeTab}
+            centered
+          />
         </>
       }
       bottom={
