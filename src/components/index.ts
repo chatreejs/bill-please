@@ -7,4 +7,5 @@ export { default as ShareBill } from './share-bill/ShareBill';
 export { default as SplashSpinner } from './splash-spinner/SplashSpinner';
 export * from './ui/ActionButtonWrapper';
 export * from './ui/ButtonWrapper';
+export * from './ui/PayerTag';
 export * from './ui/TableWrapper';

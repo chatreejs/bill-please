@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { BillCard, ButtonWrapper } from '@components';
+import { BillCard, ButtonWrapper, PayerTag } from '@components';
 import { RootState } from '@config';
 import { getColorByName } from '@utils';
 import BillItemMappingModal from './components/BillItemMappingModal';
@@ -68,7 +68,11 @@ const BillItemMapping: React.FC = () => {
                 onClick={() => openModal(item.id)}
               >
                 <div
-                  style={{ fontSize: 16, fontWeight: 600, marginBottom: '6px' }}
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 600,
+                    marginBottom: '12px',
+                  }}
                 >
                   {item.name}
                 </div>
@@ -81,17 +85,17 @@ const BillItemMapping: React.FC = () => {
                         if (mapping.itemId === item.id) {
                           return getPayerNameList(mapping.payerId).map(
                             (payerName) => (
-                              <Tag
+                              <PayerTag
                                 style={{
                                   marginBottom: '8px',
-                                  height: 26,
+                                  height: 30,
                                   fontSize: 16,
                                 }}
                                 key={payerName}
                                 color={getColorByName(payerName)}
                               >
                                 {payerName}
-                              </Tag>
+                              </PayerTag>
                             ),
                           );
                         }
