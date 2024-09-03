@@ -1,5 +1,5 @@
 import { Flex } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import packageJson from '../../../package.json';
@@ -30,38 +30,43 @@ const FooterWrapper = styled.div`
 `;
 
 const Footer: React.FC = () => {
+  const [isShowBuildTime, setIsShowBuildTime] = useState(false);
   const { version } = packageJson;
 
+  const toggleBuildTime = () => {
+    setIsShowBuildTime((prev) => !prev);
+  };
+
   return (
-    <>
-      <FooterWrapper>
+    <FooterWrapper>
+      <span>
+        Made with ❤️ by
+        <a
+          className="gh-username"
+          href="https://github.com/chatreejs"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ marginLeft: '0.25rem' }}
+        >
+          Chatree.js
+        </a>
+      </span>
+      <Flex gap={6}>
+        <span onClick={toggleBuildTime}>
+          {isShowBuildTime ? `v${version} (${BUILD_TIME})` : `v${version}`}
+        </span>
+        <span>|</span>
         <span>
-          Made with ❤️ by
           <a
-            className="gh-username"
-            href="https://github.com/chatreejs"
+            href="https://github.com/chatreejs/bill-please/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
             target="_blank"
             rel="noopener noreferrer"
-            style={{ marginLeft: '0.25rem' }}
           >
-            Chatree.js
+            Report Issue
           </a>
         </span>
-        <Flex gap={6}>
-          <span>v{version}</span>
-          <span>|</span>
-          <span>
-            <a
-              href="https://github.com/chatreejs/bill-please/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Report Issue
-            </a>
-          </span>
-        </Flex>
-      </FooterWrapper>
-    </>
+      </Flex>
+    </FooterWrapper>
   );
 };
 

@@ -10,6 +10,9 @@ export default defineConfig({
     outDir: 'build',
   },
   base: '/bill-please',
+  define: {
+    BUILD_TIME: JSON.stringify(new Date().getTime()),
+  },
   plugins: [
     react(),
     EnvironmentPlugin('all'),
