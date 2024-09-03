@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ActionButtonWrapper, ButtonWrapper, TableWrapper } from '@components';
+import { ActionButtonWrapper, ButtonWrapper, TableCard } from '@components';
 import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IPayer } from '@interfaces';
@@ -95,10 +95,11 @@ const PayerTable: React.FC = () => {
         </ActionButtonWrapper>
       )}
       {billPayers.length > 0 && (
-        <TableWrapper>
+        <TableCard>
           <Table
             dataSource={billPayers}
             pagination={false}
+            size="small"
             expandable={{
               expandedRowRender: (record) => {
                 return (
@@ -139,7 +140,7 @@ const PayerTable: React.FC = () => {
               }}
             />
           </Table>
-        </TableWrapper>
+        </TableCard>
       )}
       <ButtonWrapper>
         <Button

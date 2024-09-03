@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ActionButtonWrapper, ButtonWrapper, TableWrapper } from '@components';
+import { ActionButtonWrapper, ButtonWrapper, TableCard } from '@components';
 import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItem } from '@interfaces';
@@ -95,10 +95,11 @@ const ItemTable: React.FC = () => {
         </ActionButtonWrapper>
       )}
       {billItems.length > 0 && (
-        <TableWrapper>
+        <TableCard>
           <Table
             dataSource={billItems}
             pagination={false}
+            size="small"
             rowSelection={isShowCheckbox ? rowSelection : undefined}
             rowKey={(record) => record.id}
             onRow={(record) => {
@@ -133,7 +134,7 @@ const ItemTable: React.FC = () => {
               }}
             />
           </Table>
-        </TableWrapper>
+        </TableCard>
       )}
       <ButtonWrapper>
         <Button
