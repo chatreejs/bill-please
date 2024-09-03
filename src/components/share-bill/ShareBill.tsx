@@ -1,12 +1,15 @@
-import { ShareAltOutlined } from '@ant-design/icons';
+import { DownloadOutlined, ShareAltOutlined } from '@ant-design/icons';
 import { Button, Flex } from 'antd';
 import { domToJpeg } from 'modern-screenshot';
-import React, { RefObject } from 'react';
+import React, { RefObject, useState } from 'react';
+import { isMobile, isTablet } from 'react-device-detect';
 import ReactGA from 'react-ga4';
 import { useTranslation } from 'react-i18next';
+import { shareOnMobile } from 'react-mobile-share';
 import { useSelector } from 'react-redux';
 
 import { RootState } from '@config';
+import { downloadFile } from '@utils';
 interface Props {
   show: boolean;
   elementRef: RefObject<HTMLDivElement>;
@@ -15,38 +18,58 @@ interface Props {
 const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
   const { t } = useTranslation();
   const billTitle = useSelector((state: RootState) => state.bill.title);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const onShare = () => {
+  const onDownload = async () => {
+    ReactGA.event({
+      category: 'Social Links',
+      action: 'download-bill-button',
+      label: 'Download Bill',
+    });
+
+    const result = await convertHtmlToImage();
+    if (!result) {
+      return;
+    }
+    const fileName = `bill-${billTitle.replace(/\s/g, '-')}.jpeg`;
+    downloadFile(result, fileName);
+  };
+
+  const onShare = async () => {
     ReactGA.event({
       category: 'Social Links',
       action: 'share-bill-button',
       label: 'Share Bill',
     });
-    convertHtmlToImage();
+    const result = await convertHtmlToImage();
+    if (!result) {
+      return;
+    }
+
+    const fileName = `bill-${billTitle.replace(/\s/g, '-')}.jpeg`;
+    shareOnMobile(
+      {
+        title: fileName,
+        images: [result],
+      },
+      (message) => {
+        setErrorMessage(message);
+      },
+    );
   };
 
   const convertHtmlToImage = () => {
     if (!elementRef.current) {
       return;
     }
-    domToJpeg(elementRef.current, {
+    return domToJpeg(elementRef.current, {
       filter,
       quality: 1,
       fetch: {
         bypassingCache: true,
       },
       scale: 4,
-    })
-      .then((dataUrl) => {
-        const fileName = `bill-${billTitle.replace(/\s/g, '-')}.jpeg`;
-        const link = document.createElement('a');
-        link.download = fileName;
-        link.href = dataUrl;
-        link.click();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    });
   };
 
   const filter = (node: Node) => {
@@ -59,11 +82,24 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
   return (
     <>
       {show && (
-        <Flex justify="center" align="center" style={{ paddingTop: 12 }}>
-          <Button style={{ width: '84x' }} onClick={onShare}>
-            <ShareAltOutlined />
-            {t('result.share')}
-          </Button>
+        <Flex
+          vertical
+          justify="center"
+          align="center"
+          style={{ paddingTop: 12 }}
+        >
+          {isMobile || isTablet ? (
+            <Button style={{ width: '84x' }} onClick={() => void onShare()}>
+              <ShareAltOutlined />
+              {t('result.share')}
+            </Button>
+          ) : (
+            <Button style={{ width: '84x' }} onClick={() => void onDownload()}>
+              <DownloadOutlined />
+              {t('result.download')}
+            </Button>
+          )}
+          {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
         </Flex>
       )}
     </>

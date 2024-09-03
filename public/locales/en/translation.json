@@ -105,6 +105,7 @@
         "changeQRCode": "Change QR Code"
       }
     },
-    "share": "Share"
+    "share": "Share",
+    "download": "Download this bill"
   }
 }
