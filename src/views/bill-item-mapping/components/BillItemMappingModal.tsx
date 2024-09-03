@@ -1,9 +1,10 @@
 import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Flex, Modal, Tag } from 'antd';
+import { Button, Flex, Modal } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { PayerTag } from '@components';
 import { RootState } from '@config';
 import { IPayer } from '@interfaces';
 import { addBillItemMapping, editBillItemMapping } from '@slices';
@@ -128,7 +129,7 @@ const BillItemMappingModal: React.FC<Props> = ({ isOpen, itemId, onClose }) => {
       </Button>
       <Flex wrap>
         {payers.map((payer) => (
-          <Tag
+          <PayerTag
             key={payer.id}
             color={
               selectedPayerIds.includes(payer.id)
@@ -139,9 +140,6 @@ const BillItemMappingModal: React.FC<Props> = ({ isOpen, itemId, onClose }) => {
             onClick={() => handleTagClick(payer.id)}
             style={{
               cursor: 'pointer',
-              marginBottom: '8px',
-              height: 26,
-              fontSize: 16,
             }}
           >
             {selectedPayerIds.includes(payer.id) ? (
@@ -150,7 +148,7 @@ const BillItemMappingModal: React.FC<Props> = ({ isOpen, itemId, onClose }) => {
               <PlusOutlined />
             )}
             <span>{payer.name}</span>
-          </Tag>
+          </PayerTag>
         ))}
       </Flex>
     </Modal>
