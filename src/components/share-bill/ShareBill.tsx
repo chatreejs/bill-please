@@ -1,7 +1,7 @@
 import { DownloadOutlined, ShareAltOutlined } from '@ant-design/icons';
 import { Button, Flex } from 'antd';
 import { domToJpeg } from 'modern-screenshot';
-import React, { RefObject, useState } from 'react';
+import React, { RefObject } from 'react';
 import { isMobile, isTablet } from 'react-device-detect';
 import ReactGA from 'react-ga4';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,6 @@ interface Props {
 const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
   const { t } = useTranslation();
   const billTitle = useSelector((state: RootState) => state.bill.title);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const onDownload = async () => {
     ReactGA.event({
@@ -47,15 +46,10 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
     }
 
     const fileName = `bill-${billTitle.replace(/\s/g, '-')}.jpeg`;
-    shareOnMobile(
-      {
-        title: fileName,
-        images: [result],
-      },
-      (message) => {
-        setErrorMessage(message);
-      },
-    );
+    shareOnMobile({
+      title: fileName,
+      images: [result],
+    });
   };
 
   const convertHtmlToImage = () => {
@@ -99,7 +93,6 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
               {t('result.download')}
             </Button>
           )}
-          {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
         </Flex>
       )}
     </>
