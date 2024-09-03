@@ -11,7 +11,7 @@ export default defineConfig({
   },
   base: '/bill-please',
   define: {
-    BUILD_TIME: JSON.stringify(new Date().getTime()),
+    BUILD_DATE: JSON.stringify(new Date()),
   },
   plugins: [
     react(),

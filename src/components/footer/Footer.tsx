@@ -2,6 +2,7 @@ import { Flex } from 'antd';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import dayjs from 'dayjs';
 import packageJson from '../../../package.json';
 
 const FooterWrapper = styled.div`
@@ -30,11 +31,21 @@ const FooterWrapper = styled.div`
 `;
 
 const Footer: React.FC = () => {
-  const [isShowBuildTime, setIsShowBuildTime] = useState(false);
+  const [isShowBuildNumber, setIsShowBuildNumber] = useState(false);
   const { version } = packageJson;
 
-  const toggleBuildTime = () => {
-    setIsShowBuildTime((prev) => !prev);
+  const toggleBuildNumber = () => {
+    setIsShowBuildNumber((prev) => !prev);
+  };
+
+  const getBuildNumber = () => {
+    const minutes = dayjs(BUILD_DATE).diff(
+      dayjs(BUILD_DATE).startOf('day'),
+      'minute',
+    );
+    const formattedDate = dayjs(BUILD_DATE).format('YYMMDD');
+    const intervals = Math.floor(minutes / 2);
+    return `${formattedDate}${intervals}`;
   };
 
   return (
@@ -52,8 +63,10 @@ const Footer: React.FC = () => {
         </a>
       </span>
       <Flex gap={6}>
-        <span onClick={toggleBuildTime}>
-          {isShowBuildTime ? `v${version} (${BUILD_TIME})` : `v${version}`}
+        <span onClick={toggleBuildNumber}>
+          {isShowBuildNumber
+            ? `v${version} (${getBuildNumber()})`
+            : `v${version}`}
         </span>
         <span>|</span>
         <span>
