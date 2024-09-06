@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  font-size: 14px;
+  font-family:
+    Outfit,
+    Kanit,
+    sans-serif,
+    -apple-system;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #2c9c91;
+  overflow-x: unset;
+  user-select: none;
+  --card-shadow-filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.1));
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

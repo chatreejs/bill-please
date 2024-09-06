@@ -1,0 +1,111 @@
+{
+  "common": {
+    "button": {
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "next": "Next",
+      "ok": "Ok",
+      "save": "Save"
+    }
+  },
+  "home": {
+    "itemList": {
+      "button": {
+        "add": "Add item",
+        "addFromBill": "Add from bill",
+        "deleteAll": "Delete all items",
+        "deleteSelected": "Delete selected item(s)",
+        "select": "Select item(s)"
+      },
+      "modal": {
+        "form": {
+          "delete": "Delete item",
+          "name": "Item name",
+          "nameError": "Please input item name",
+          "price": "Unit Price",
+          "priceError": "Please input item price",
+          "priceTip": "Can be negative value e.g. discount",
+          "quantity": "Quantity",
+          "quantityError": "Please input item quantity"
+        },
+        "title": {
+          "add": "Add new item",
+          "edit": "Edit item"
+        }
+      },
+      "popup": {
+        "deleteTitle": "Delete item",
+        "deleteAll": "Do you want to delete all item(s) ?",
+        "deleteSelected": "Do you want to delete selected {{count}} item(s) ?"
+      },
+      "table": {
+        "name": "Name",
+        "price": "Total Price",
+        "quantity": "Quantity"
+      }
+    },
+    "payerList": {
+      "button": {
+        "add": "Add payer",
+        "deleteAll": "Delete all payers",
+        "deleteSelected": "Delete selected payer(s)",
+        "select": "Select payer(s)"
+      },
+      "modal": {
+        "form": {
+          "addChildren": "Add friend",
+          "childrenName": "Friend name",
+          "childrenNameError": "Please input friend name",
+          "delete": "Delete payer",
+          "hasChildren": "a friend came with",
+          "name": "Payer name",
+          "nameError": "Please input payer name"
+        },
+        "title": {
+          "add": "Add new payer",
+          "edit": "Edit payer"
+        }
+      },
+      "popup": {
+        "deleteTitle": "Delete payer",
+        "deleteAll": "Do you want to delete all payer(s)?",
+        "deleteSelected": "Do you want to delete selected {{count}} payer(s) ?"
+      },
+      "table": {
+        "name": "Name",
+        "andFriend": "and friend"
+      }
+    },
+    "tab": {
+      "itemList": "Item",
+      "payerList": "Payer"
+    }
+  },
+  "mapping": {
+    "title": "Which item belong to ?",
+    "description": "Please select who should pay for which item",
+    "modal": {
+      "title": "Select payer for {{itemName}}",
+      "selectAll": "Select all",
+      "deselectAll": "Deselect all"
+    }
+  },
+  "result": {
+    "total": "Total",
+    "people": "People",
+    "expenseList": "Expense List",
+    "payment": {
+      "selectPaymentMethod": "Select your payment method",
+      "changePaymentMethod": "Change your payment method",
+      "promptPay": {
+        "inputLabel": "Phone number or Thai National ID"
+      },
+      "qr": {
+        "scanToPay": "Scan QR Code to pay",
+        "changeQRCode": "Change QR Code"
+      }
+    },
+    "share": "Share",
+    "download": "Download this bill"
+  }
+}
