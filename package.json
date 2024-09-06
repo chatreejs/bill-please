@@ -17,10 +17,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "start:develop": "env-cmd -f .env.develop vite",
     "build": "tsc && vite build",
-    "build:develop": "tsc && env-cmd -f .env.develop vite build",
-    "build:prod": "tsc && env-cmd -f .env.prod vite build",
     "preview": "vite preview",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -74,7 +71,6 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
-    "env-cmd": "^10.1.0",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.34.1",
