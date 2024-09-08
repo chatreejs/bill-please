@@ -13,7 +13,6 @@ LICENSE @chatreejs
 
 .github/ @chatreejs
 node_modules/ @chatreejs
-public/ @chatreejs
 
 ## Special cases
 
