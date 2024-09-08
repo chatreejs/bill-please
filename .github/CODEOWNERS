@@ -1,0 +1,28 @@
+# Codeowners file for Bill Please repository
+
+# This file defines the code owners for the Bill Please repository. Code owners are responsible for reviewing and approving any changes to the code in their respective areas
+
+## Files
+
+README.md @chatreejs
+.gitignore @chatreejs
+LICENSE @chatreejs
+.github/workflows/ @chatreejs
+
+## Directories
+
+.github/ @chatreejs
+node_modules/ @chatreejs
+public/ @chatreejs
+
+## Special cases
+
+# Any changes to the CODEOWNERS file must be approved by @chatreejs
+
+# Any changes to the .gitattributes file must be approved by @chatreejs
+
+# Any changes to the .gitignore file must be approved by @chatreejs
+
+## Contact information
+
+# If you have any questions about the CODEOWNERS file, please contact @chatreejs
