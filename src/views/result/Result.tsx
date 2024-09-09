@@ -125,10 +125,12 @@ const Result: React.FC = () => {
           <SummaryTitle>
             <div className="title">{t('result.total')}</div>
             <div className="value">
-              {total.toLocaleString(undefined, {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })}
+              {total <= 0
+                ? 0
+                : total.toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 2,
+                  })}
             </div>
           </SummaryTitle>
           <SummaryTitle className="text-right">
