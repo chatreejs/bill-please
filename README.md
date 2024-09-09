@@ -10,6 +10,10 @@ Bill-Please is an app that will help you calculate your expenses and split them 
 
 If you want to contribute, please refer to the [contributing guidelines](./CONTRIBUTING.md) of this project.
 
+## Live Demo
+
+Visit https://bill-please.chatree.dev to see the live demo!
+
 ## Can I contribute?
 
 Yes!

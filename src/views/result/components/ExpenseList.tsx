@@ -138,10 +138,12 @@ const ExpenseList: React.FC = () => {
                       <PayerWrapper key={payer.id}>
                         <PayerText>{payer.name}</PayerText>
                         <PayerText>
-                          {expense.total.toLocaleString(undefined, {
-                            maximumFractionDigits: 2,
-                            minimumFractionDigits: 2,
-                          })}
+                          {expense.total <= 0
+                            ? 0
+                            : expense.total.toLocaleString(undefined, {
+                                maximumFractionDigits: 2,
+                                minimumFractionDigits: 2,
+                              })}
                         </PayerText>
                       </PayerWrapper>
                     );
@@ -162,7 +164,9 @@ const ExpenseList: React.FC = () => {
                           <Divider dashed={true} style={{ margin: '8px 0' }} />
                           <PayerWrapper key={payer.id}>
                             <PayerText>{friend.payerName}</PayerText>
-                            <PayerText>{friend.total.toFixed(2)}</PayerText>
+                            <PayerText>
+                              {friend.total <= 0 ? 0 : friend.total.toFixed(2)}
+                            </PayerText>
                           </PayerWrapper>
                           <ExpenseItemList expense={friend} />
                         </ItemChildrenWrapper>
