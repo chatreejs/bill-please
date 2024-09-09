@@ -9,7 +9,7 @@ import './i18n';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <BrowserRouter basename="/bill-please">
+  <BrowserRouter>
     <App />
   </BrowserRouter>,
 );

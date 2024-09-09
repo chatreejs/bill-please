@@ -18,7 +18,7 @@ void i18n
     },
     backend: {
       loadPath: function (lng: string, ns: string) {
-        return `/bill-please/locales/${lng}/${ns}.json`;
+        return `/locales/${lng}/${ns}.json`;
       },
     },
   });

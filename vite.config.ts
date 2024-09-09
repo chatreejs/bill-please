@@ -9,7 +9,6 @@ export default defineConfig({
   build: {
     outDir: 'build',
   },
-  base: '/bill-please',
   define: {
     BUILD_DATE: JSON.stringify(new Date()),
   },
@@ -18,7 +17,6 @@ export default defineConfig({
     EnvironmentPlugin('all'),
     viteTsconfigPaths(),
     VitePWA({
-      base: '/bill-please/',
       registerType: 'autoUpdate',
       workbox: {
         globPatterns: ['**/*.{js,css,html,json,woff2}'],

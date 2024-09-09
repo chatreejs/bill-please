@@ -40,9 +40,7 @@ const Logo: React.FC<LogoProps> = ({ systemName, showEnvBadge = true }) => {
       case 'local':
         return 'LOCAL';
       case 'develop':
-        return 'DEV';
-      case 'staging':
-        return 'STAGE';
+        return 'BETA';
       default:
         return '';
     }
