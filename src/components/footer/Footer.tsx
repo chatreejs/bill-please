@@ -54,7 +54,7 @@ const Footer: React.FC = () => {
         Made with ❤️ by
         <a
           className="gh-username"
-          href="https://github.com/chatreejs"
+          href="https://github.com/chatreejs/bill-please"
           target="_blank"
           rel="noopener noreferrer"
           style={{ marginLeft: '0.25rem' }}
@@ -71,7 +71,7 @@ const Footer: React.FC = () => {
         <span>|</span>
         <span>
           <a
-            href="https://github.com/chatreejs/bill-please/issues/new?assignees=&labels=&projects=&template=bug_report.md&title="
+            href="https://github.com/chatreejs/bill-please/issues/new/choose"
             target="_blank"
             rel="noopener noreferrer"
           >
