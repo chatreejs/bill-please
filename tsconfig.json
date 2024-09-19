@@ -20,7 +20,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "types": ["node", "vite/client", "jest"],
+    "types": ["node", "vite/client"],
     "typeRoots": ["node_modules/@types", "src/types"],
     "paths": {
       "@components": ["./src/components"],
