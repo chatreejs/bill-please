@@ -27,4 +27,4 @@ Yes!
 
 ## License
 
-Released under the [MIT License](./LICENSE).
+Released under the [AGPL-3.0 License](./LICENSE).
