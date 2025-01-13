@@ -1,7 +1,15 @@
 import { DeleteOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Flex,
+  Form,
+  Input,
+  InputNumber,
+  Typography,
+} from 'antd';
 import Modal from 'antd/es/modal/Modal';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -11,6 +19,8 @@ import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItemForm } from '@interfaces';
 import { addItem, editItem, removeItem } from '@slices';
+
+const { Text } = Typography;
 
 const FormWrapper = styled.div`
   margin-top: 1rem;
@@ -27,14 +37,46 @@ interface Props {
 
 const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
   const { t } = useTranslation();
+  const vatPercentage = useSelector(
+    (state: RootState) => state.app.vatPercentage,
+  );
   const billItems = useSelector((state: RootState) => state.bill.items);
   const dispatch = useDispatch();
   const [form] = Form.useForm<IBillItemForm>();
+  const [isVat, setIsVat] = useState(false);
+  const [approxVat, setApproxVat] = useState(0);
 
   const initialValues: IBillItemForm = {
     name: '',
     quantity: undefined,
     price: undefined,
+    isVat: false,
+    vatPercentage: vatPercentage,
+  };
+
+  const calculateApproxVat = (
+    price: number,
+    quantity: number,
+    vatPercentage: number,
+  ) => {
+    return price * quantity * (vatPercentage / 100);
+  };
+
+  const onFormValuesChange = (
+    changedValues: IBillItemForm,
+    values: IBillItemForm,
+  ) => {
+    if ('isVat' in changedValues) {
+      const isVat = changedValues.isVat!;
+      setIsVat(isVat);
+    }
+    const vatPercentage = form.getFieldValue('vatPercentage') as number;
+    const approxVat = calculateApproxVat(
+      values.price!,
+      values.quantity!,
+      vatPercentage,
+    );
+    setApproxVat(isNaN(approxVat) ? 0 : approxVat);
   };
 
   const saveItem = () => {
@@ -49,6 +91,12 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
               name: formData.name,
               quantity: formData.quantity!,
               price: formData.price!,
+              vatPercentage: formData.isVat ? formData.vatPercentage! : 0,
+              vat: formData.isVat
+                ? formData.price! *
+                  formData.quantity! *
+                  (formData.vatPercentage! / 100)
+                : 0,
             }),
           );
         } else {
@@ -58,6 +106,12 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
               name: formData.name,
               quantity: formData.quantity!,
               price: formData.price!,
+              vatPercentage: formData.isVat ? formData.vatPercentage! : 0,
+              vat: formData.isVat
+                ? formData.price! *
+                  formData.quantity! *
+                  (formData.vatPercentage! / 100)
+                : 0,
             }),
           );
         }
@@ -77,14 +131,27 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
     if (isOpen) {
       if (mode === ModalType.Edit && itemId) {
         const item = billItems.find((item) => item.id === itemId)!;
-        form.setFieldsValue(item);
+        form.setFieldsValue({
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          isVat: item.vatPercentage > 0,
+          vatPercentage: item.vatPercentage,
+        });
+        setIsVat(item.vatPercentage > 0);
+        setApproxVat(
+          calculateApproxVat(item.price, item.quantity, item.vatPercentage),
+        );
       } else {
         form.setFieldsValue(initialValues);
+        setIsVat(false);
+        setApproxVat(0);
       }
     }
 
     return () => {
       form.resetFields();
+      setIsVat(false);
     };
   }, [isOpen, mode, itemId]);
 
@@ -103,7 +170,13 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
       forceRender
     >
       <FormWrapper>
-        <Form name="itemListForm" form={form} layout="vertical" size="large">
+        <Form
+          name="itemListForm"
+          form={form}
+          layout="vertical"
+          size="large"
+          onValuesChange={onFormValuesChange}
+        >
           <Form.Item
             name="name"
             label={t('home.itemList.modal.form.name')}
@@ -117,18 +190,6 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
             <Input />
           </Form.Item>
           <Form.Item
-            name="quantity"
-            label={t('home.itemList.modal.form.quantity')}
-            rules={[
-              {
-                required: true,
-                message: t('home.itemList.modal.form.quantityError'),
-              },
-            ]}
-          >
-            <InputNumber min={1} style={{ width: '100%' }} />
-          </Form.Item>
-          <Form.Item
             name="price"
             label={`${t('home.itemList.modal.form.price')} (${t('home.itemList.modal.form.priceTip')})`}
             rules={[
@@ -140,6 +201,39 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
           >
             <InputNumber style={{ width: '100%' }} />
           </Form.Item>
+          <Form.Item
+            name="quantity"
+            label={t('home.itemList.modal.form.quantity')}
+            rules={[
+              {
+                required: true,
+                message: t('home.itemList.modal.form.quantityError'),
+              },
+            ]}
+          >
+            <InputNumber min={1} style={{ width: '100%' }} />
+          </Form.Item>
+          <Flex>
+            <Form.Item name="isVat" valuePropName="checked">
+              <Checkbox>{t('home.itemList.modal.form.isVat')}</Checkbox>
+            </Form.Item>
+            {isVat && (
+              <>
+                <Form.Item name="vatPercentage">
+                  <InputNumber suffix="%" />
+                </Form.Item>
+                <Form.Item>
+                  <Text type="secondary" style={{ marginLeft: 6 }}>
+                    ≈{' '}
+                    {approxVat.toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                      minimumFractionDigits: 2,
+                    })}
+                  </Text>
+                </Form.Item>
+              </>
+            )}
+          </Flex>
         </Form>
         {mode === ModalType.Edit && (
           <Button

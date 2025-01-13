@@ -26,7 +26,8 @@
           "priceError": "Please input item price",
           "priceTip": "Can be negative value e.g. discount",
           "quantity": "Quantity",
-          "quantityError": "Please input item quantity"
+          "quantityError": "Please input item quantity",
+          "isVat": "Calculate VAT for this item"
         },
         "title": {
           "add": "Add new item",
@@ -92,6 +93,8 @@
   },
   "result": {
     "total": "Total",
+    "net": "Net",
+    "vat": "VAT",
     "people": "People",
     "expenseList": "Expense List",
     "payment": {

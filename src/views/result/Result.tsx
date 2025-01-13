@@ -55,6 +55,10 @@ const SummaryTitle = styled.div`
     font-size: 26px;
   }
 
+  .sub-value {
+    font-size: 12px;
+  }
+
   &.text-right {
     text-align: right;
   }
@@ -104,13 +108,17 @@ const Result: React.FC = () => {
   const billPayers = useSelector((state: RootState) => state.bill.payers);
 
   const [total, setTotal] = React.useState(0);
+  const [vat, setVat] = React.useState(0);
 
   useEffect(() => {
     let total = 0;
+    let vat = 0;
     billItems.forEach((item) => {
       total += item.total ?? 0;
+      vat += item.vat ?? 0;
     });
     setTotal(total);
+    setVat(vat);
   }, [billItems]);
 
   return (
@@ -132,6 +140,20 @@ const Result: React.FC = () => {
                     minimumFractionDigits: 2,
                   })}
             </div>
+            {vat > 0 && (
+              <div className="sub-value">
+                {t('result.net')}:{' '}
+                {(total - vat).toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                })}{' '}
+                {t('result.vat')}:{' '}
+                {vat.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                })}
+              </div>
+            )}
           </SummaryTitle>
           <SummaryTitle className="text-right">
             <div className="title">{t('result.people')}</div>
