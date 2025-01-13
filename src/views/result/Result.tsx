@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '@config';
+import { currencyFormat } from '@utils';
 import ExpenseList from './components/ExpenseList';
 import Payment from './components/Payment';
 
@@ -69,7 +70,6 @@ const TextSeparator = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0.5rem 0;
   padding: 0.5rem 0;
   border-top: 1.5px solid #838689;
 `;
@@ -133,26 +133,17 @@ const Result: React.FC = () => {
           <SummaryTitle>
             <div className="title">{t('result.total')}</div>
             <div className="value">
-              {total <= 0
-                ? 0
-                : total.toLocaleString(undefined, {
-                    maximumFractionDigits: 2,
-                    minimumFractionDigits: 2,
-                  })}
+              {total <= 0 ? 0 : currencyFormat(total)}
             </div>
             {vat > 0 && (
-              <div className="sub-value">
-                {t('result.net')}:{' '}
-                {(total - vat).toLocaleString(undefined, {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                })}{' '}
-                {t('result.vat')}:{' '}
-                {vat.toLocaleString(undefined, {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                })}
-              </div>
+              <Flex className="sub-value" vertical>
+                <span>
+                  {t('result.net')}: {currencyFormat(total - vat)}{' '}
+                </span>
+                <span>
+                  {t('result.vat')}: {currencyFormat(vat)}
+                </span>
+              </Flex>
             )}
           </SummaryTitle>
           <SummaryTitle className="text-right">

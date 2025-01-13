@@ -11,6 +11,7 @@ import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItem } from '@interfaces';
 import { removeAllItems, removeItems } from '@slices';
+import { currencyFormat } from '@utils';
 import ItemListModal from './ItemListModal';
 
 const ItemTable: React.FC = () => {
@@ -127,10 +128,7 @@ const ItemTable: React.FC = () => {
               dataIndex="total"
               align="right"
               render={(price: number) => {
-                return price.toLocaleString(undefined, {
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                });
+                return currencyFormat(price);
               }}
             />
           </Table>

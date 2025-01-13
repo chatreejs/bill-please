@@ -19,6 +19,7 @@ import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItemForm } from '@interfaces';
 import { addItem, editItem, removeItem } from '@slices';
+import { currencyFormat } from '@utils';
 
 const { Text } = Typography;
 
@@ -224,11 +225,7 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
                 </Form.Item>
                 <Form.Item>
                   <Text type="secondary" style={{ marginLeft: 6 }}>
-                    ≈{' '}
-                    {approxVat.toLocaleString(undefined, {
-                      maximumFractionDigits: 2,
-                      minimumFractionDigits: 2,
-                    })}
+                    ≈ {currencyFormat(approxVat)}
                   </Text>
                 </Form.Item>
               </>

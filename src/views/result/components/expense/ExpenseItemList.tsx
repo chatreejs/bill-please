@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { IExpense, IExpenseChildren } from '@interfaces';
+import { currencyFormat } from '@utils';
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -29,12 +30,7 @@ const ExpenseItemList: React.FC<Props> = ({ expense }) => {
               <div>{item.itemQuantity}</div>
               <div>{item.itemName}</div>
             </Flex>
-            <div>
-              {item.itemTotalPrice.toLocaleString(undefined, {
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })}
-            </div>
+            <div>{currencyFormat(item.itemTotalPrice)}</div>
           </ItemWrapper>
         );
       })}
