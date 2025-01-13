@@ -20,7 +20,7 @@ const FooterWrapper = styled.div`
 
   a {
     color: #fafafa;
-    text-decoration: underline;
+    // text-decoration: underline;
   }
 
   a.gh-username {
@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
           Chatree.js
         </a>
       </span>
-      <Flex gap={6}>
+      <Flex gap={2}>
         <span onClick={toggleBuildNumber}>
           {isShowBuildNumber
             ? `v${version} (${getBuildNumber()})`
@@ -76,6 +76,18 @@ const Footer: React.FC = () => {
             rel="noopener noreferrer"
           >
             Report Issue
+          </a>
+        </span>
+        <span>|</span>
+        <span>
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            Terms
+          </a>
+        </span>
+        <span>|</span>
+        <span>
+          <a href="#" target="_blank" rel="noopener noreferrer">
+            Privacy
           </a>
         </span>
       </Flex>
