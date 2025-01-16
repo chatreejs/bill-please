@@ -116,7 +116,7 @@ const BillItemMapping: React.FC = () => {
                         borderStyle: 'dashed',
                       }}
                     >
-                      Empty Payer
+                      {t('mapping.noPayer')}
                     </Tag>
                   )}
                 </Flex>

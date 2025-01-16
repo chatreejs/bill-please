@@ -86,6 +86,7 @@
   "mapping": {
     "title": "Which item belong to ?",
     "description": "Please select who should pay for which item",
+    "noPayer": "No payer selected",
     "modal": {
       "title": "Select payer for {{itemName}}",
       "selectAll": "Select all",
