@@ -1,6 +1,6 @@
 import { RightOutlined } from '@ant-design/icons';
 import { Button, Card, Flex, Tag, Typography } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +24,7 @@ const BillItemMapping: React.FC = () => {
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [selectedItemId, setSelectedItemId] = useState<string>();
+  const [isDisableButton, setIsDisableButton] = useState<boolean>(true);
 
   const getPayerNameList = (payerIds: string[]) => {
     const payerNameList: string[] = [];
@@ -51,6 +52,12 @@ const BillItemMapping: React.FC = () => {
     setIsModalVisible(false);
     setSelectedItemId(undefined);
   };
+
+  useEffect(() => {
+    setIsDisableButton(
+      billItemMappings.some((mapping) => mapping.payerId.length === 0),
+    );
+  }, [billItemMappings]);
 
   return (
     <BillCard
@@ -131,6 +138,7 @@ const BillItemMapping: React.FC = () => {
             onClick={() => {
               navigate('/result', { replace: true });
             }}
+            disabled={isDisableButton}
           >
             {t('common.button.next')}
             <RightOutlined />
