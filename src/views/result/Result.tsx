@@ -135,27 +135,30 @@ const Result: React.FC = () => {
         </Flex>
         <SummaryWrapper>
           <SummaryTitle>
+            <div className="title">{t('result.people')}</div>
+            <div className="value">{billPayers.length}</div>
+          </SummaryTitle>
+          <SummaryTitle className="text-right">
             <div className="title">{t('result.total')}</div>
             <div className="value">
               {total <= 0 ? 0 : currencyFormat(total)}
             </div>
             {vat > 0 && (
               <Flex className="sub-value" vertical>
-                <span>
-                  {t('result.net')}: {currencyFormat(total - vat)}{' '}
-                </span>
-                <span>
-                  {t('result.service')}: {currencyFormat(service)}
-                </span>
-                <span>
-                  {t('result.vat')}: {currencyFormat(vat)}
-                </span>
+                <Flex justify="space-between">
+                  <span>{t('result.net')}:</span>
+                  <span>{currencyFormat(total - vat)}</span>
+                </Flex>
+                <Flex justify="space-between">
+                  <span>{t('result.service')}:</span>
+                  <span>{currencyFormat(service)}</span>
+                </Flex>
+                <Flex justify="space-between">
+                  <span>{t('result.vat')}:</span>
+                  <span>{currencyFormat(vat)}</span>
+                </Flex>
               </Flex>
             )}
-          </SummaryTitle>
-          <SummaryTitle className="text-right">
-            <div className="title">{t('result.people')}</div>
-            <div className="value">{billPayers.length}</div>
           </SummaryTitle>
         </SummaryWrapper>
         <TextSeparator>

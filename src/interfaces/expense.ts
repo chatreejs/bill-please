@@ -15,5 +15,7 @@ export interface IExpenseChildren {
 export interface IExpenseItem {
   itemName: string;
   itemQuantity: number;
+  itemService: number;
+  itemVat: number;
   itemTotalPrice: number;
 }

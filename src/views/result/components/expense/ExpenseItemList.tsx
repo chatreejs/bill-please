@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { IExpense, IExpenseChildren } from '@interfaces';
-import { currencyFormat } from '@utils';
+import { currencyFormat, ellipsisText } from '@utils';
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -14,6 +14,11 @@ const ItemWrapper = styled.div`
   }
 
   font-size: 13px;
+
+  div.extra-price {
+    color: #888;
+    font-style: italic;
+  }
 `;
 
 interface Props {
@@ -28,9 +33,21 @@ const ExpenseItemList: React.FC<Props> = ({ expense }) => {
           <ItemWrapper key={item.itemName}>
             <Flex gap={'12px'}>
               <div>{item.itemQuantity}</div>
-              <div>{item.itemName}</div>
+              <div>{ellipsisText(item.itemName, 28)}</div>
             </Flex>
-            <div>{currencyFormat(item.itemTotalPrice)}</div>
+            <Flex gap={'6px'} justify="center" align="center">
+              {item.itemService > 0 && (
+                <div className="extra-price">
+                  S {currencyFormat(item.itemService)}
+                </div>
+              )}
+              {item.itemVat > 0 && (
+                <div className="extra-price">
+                  V {currencyFormat(item.itemVat)}
+                </div>
+              )}
+              <div>{currencyFormat(item.itemTotalPrice)}</div>
+            </Flex>
           </ItemWrapper>
         );
       })}
