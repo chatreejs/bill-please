@@ -27,6 +27,7 @@
           "priceTip": "Can be negative value e.g. discount",
           "quantity": "Quantity",
           "quantityError": "Please input item quantity",
+          "isService": "Calculate Service Charge for this item",
           "isVat": "Calculate VAT for this item"
         },
         "title": {
@@ -94,6 +95,7 @@
   "result": {
     "total": "Total",
     "net": "Net",
+    "service": "Service Charge",
     "vat": "VAT",
     "people": "People",
     "expenseList": "Expense List",

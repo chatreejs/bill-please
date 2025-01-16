@@ -38,29 +38,45 @@ interface Props {
 
 const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
   const { t } = useTranslation();
-  const vatPercentage = useSelector(
+  const defaultVatPercentage = useSelector(
     (state: RootState) => state.app.vatPercentage,
   );
   const billItems = useSelector((state: RootState) => state.bill.items);
   const dispatch = useDispatch();
   const [form] = Form.useForm<IBillItemForm>();
   const [isVat, setIsVat] = useState(false);
+  const [isService, setIsService] = useState(false);
   const [approxVat, setApproxVat] = useState(0);
+  const [approxService, setApproxService] = useState(0);
 
   const initialValues: IBillItemForm = {
     name: '',
     quantity: undefined,
     price: undefined,
     isVat: false,
-    vatPercentage: vatPercentage,
+    isService: false,
+    vatPercentage: defaultVatPercentage,
+    servicePercentage: 10,
   };
 
-  const calculateApproxVat = (
+  const calculateService = (
     price: number,
     quantity: number,
+    percentage: number,
+  ) => {
+    if (!percentage) return 0;
+    return price * quantity * (percentage / 100);
+  };
+
+  const calculateVat = (
+    price: number,
+    quantity: number,
+    servicePercentage: number,
     vatPercentage: number,
   ) => {
-    return price * quantity * (vatPercentage / 100);
+    const service = calculateService(price, quantity, servicePercentage);
+    const vat = (price * quantity + service) * (vatPercentage / 100);
+    return vat;
   };
 
   const onFormValuesChange = (
@@ -70,14 +86,25 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
     if ('isVat' in changedValues) {
       const isVat = changedValues.isVat!;
       setIsVat(isVat);
+      form.setFieldsValue({ vatPercentage: isVat ? defaultVatPercentage : 0 });
+    }
+    if ('isService' in changedValues) {
+      const isService = changedValues.isService!;
+      setIsService(isService);
+      form.setFieldsValue({ servicePercentage: isService ? 10 : 0 });
     }
     const vatPercentage = form.getFieldValue('vatPercentage') as number;
-    const approxVat = calculateApproxVat(
+    const servicePercentage = form.getFieldValue('servicePercentage') as number;
+    const approxVat = calculateVat(
       values.price!,
       values.quantity!,
+      servicePercentage,
       vatPercentage,
     );
+    const approxService =
+      values.price! * values.quantity! * (servicePercentage / 100);
     setApproxVat(isNaN(approxVat) ? 0 : approxVat);
+    setApproxService(isNaN(approxService) ? 0 : approxService);
   };
 
   const saveItem = () => {
@@ -92,11 +119,24 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
               name: formData.name,
               quantity: formData.quantity!,
               price: formData.price!,
-              vatPercentage: formData.isVat ? formData.vatPercentage! : 0,
               vat: formData.isVat
-                ? formData.price! *
-                  formData.quantity! *
-                  (formData.vatPercentage! / 100)
+                ? calculateVat(
+                    formData.price!,
+                    formData.quantity!,
+                    formData.servicePercentage!,
+                    formData.vatPercentage!,
+                  )
+                : 0,
+              vatPercentage: formData.isVat ? formData.vatPercentage! : 0,
+              service: formData.isService
+                ? calculateService(
+                    formData.price!,
+                    formData.quantity!,
+                    formData.servicePercentage!,
+                  )
+                : 0,
+              servicePercentage: formData.isService
+                ? formData.servicePercentage!
                 : 0,
             }),
           );
@@ -107,11 +147,24 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
               name: formData.name,
               quantity: formData.quantity!,
               price: formData.price!,
-              vatPercentage: formData.isVat ? formData.vatPercentage! : 0,
               vat: formData.isVat
-                ? formData.price! *
-                  formData.quantity! *
-                  (formData.vatPercentage! / 100)
+                ? calculateVat(
+                    formData.price!,
+                    formData.quantity!,
+                    formData.servicePercentage!,
+                    formData.vatPercentage!,
+                  )
+                : 0,
+              vatPercentage: formData.isVat ? formData.vatPercentage! : 0,
+              service: formData.isService
+                ? calculateService(
+                    formData.price!,
+                    formData.quantity!,
+                    formData.servicePercentage!,
+                  )
+                : 0,
+              servicePercentage: formData.isService
+                ? formData.servicePercentage!
                 : 0,
             }),
           );
@@ -137,16 +190,29 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
           quantity: item.quantity,
           price: item.price,
           isVat: item.vatPercentage > 0,
+          isService: item.servicePercentage > 0,
           vatPercentage: item.vatPercentage,
+          servicePercentage: item.servicePercentage,
         });
+        setIsService(item.servicePercentage > 0);
         setIsVat(item.vatPercentage > 0);
+        setApproxService(
+          calculateService(item.price, item.quantity, item.servicePercentage),
+        );
         setApproxVat(
-          calculateApproxVat(item.price, item.quantity, item.vatPercentage),
+          calculateVat(
+            item.price,
+            item.quantity,
+            item.servicePercentage,
+            item.vatPercentage,
+          ),
         );
       } else {
         form.setFieldsValue(initialValues);
         setIsVat(false);
-        setApproxVat(0);
+        setIsService(false);
+        setApproxVat(defaultVatPercentage);
+        setApproxService(10);
       }
     }
 
@@ -215,13 +281,34 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
             <InputNumber min={1} style={{ width: '100%' }} />
           </Form.Item>
           <Flex>
+            <Form.Item
+              name="isService"
+              valuePropName="checked"
+              style={{ marginBottom: 6 }}
+            >
+              <Checkbox>{t('home.itemList.modal.form.isService')}</Checkbox>
+            </Form.Item>
+            {isService && (
+              <>
+                <Form.Item name="servicePercentage" style={{ marginBottom: 6 }}>
+                  <InputNumber suffix="%" style={{ width: '3.5rem' }} />
+                </Form.Item>
+                <Form.Item style={{ marginBottom: 6 }}>
+                  <Text type="secondary" style={{ marginLeft: 6 }}>
+                    ≈ {currencyFormat(approxService)}
+                  </Text>
+                </Form.Item>
+              </>
+            )}
+          </Flex>
+          <Flex>
             <Form.Item name="isVat" valuePropName="checked">
               <Checkbox>{t('home.itemList.modal.form.isVat')}</Checkbox>
             </Form.Item>
             {isVat && (
               <>
                 <Form.Item name="vatPercentage">
-                  <InputNumber suffix="%" />
+                  <InputNumber suffix="%" style={{ width: '3.5rem' }} />
                 </Form.Item>
                 <Form.Item>
                   <Text type="secondary" style={{ marginLeft: 6 }}>

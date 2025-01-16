@@ -108,16 +108,20 @@ const Result: React.FC = () => {
   const billPayers = useSelector((state: RootState) => state.bill.payers);
 
   const [total, setTotal] = React.useState(0);
+  const [service, setService] = React.useState(0);
   const [vat, setVat] = React.useState(0);
 
   useEffect(() => {
     let total = 0;
+    let service = 0;
     let vat = 0;
     billItems.forEach((item) => {
       total += item.total ?? 0;
+      service += item.service ?? 0;
       vat += item.vat ?? 0;
     });
     setTotal(total);
+    setService(service);
     setVat(vat);
   }, [billItems]);
 
@@ -139,6 +143,9 @@ const Result: React.FC = () => {
               <Flex className="sub-value" vertical>
                 <span>
                   {t('result.net')}: {currencyFormat(total - vat)}{' '}
+                </span>
+                <span>
+                  {t('result.service')}: {currencyFormat(service)}
                 </span>
                 <span>
                   {t('result.vat')}: {currencyFormat(vat)}
