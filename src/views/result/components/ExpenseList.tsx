@@ -10,6 +10,7 @@ import {
   IExpenseChildren,
   IExpenseItem,
 } from '@interfaces';
+import { currencyFormat } from '@utils';
 import ExpenseItemList from './expense/ExpenseItemList';
 
 const PayerWrapper = styled.div`
@@ -101,9 +102,13 @@ const ExpenseList: React.FC = () => {
     const itemQuantity = billItem.quantity;
     const payerCount = item.payerId.length;
     const total = billItem.total! / payerCount;
+    const service = billItem.service / payerCount;
+    const vat = billItem.vat / payerCount;
     const expenseItem: IExpenseItem = {
       itemName: billItem.name,
       itemQuantity: itemQuantity,
+      itemService: service,
+      itemVat: vat,
       itemTotalPrice: total,
     };
     return expenseItem;
@@ -140,10 +145,7 @@ const ExpenseList: React.FC = () => {
                         <PayerText>
                           {expense.total <= 0
                             ? 0
-                            : expense.total.toLocaleString(undefined, {
-                                maximumFractionDigits: 2,
-                                minimumFractionDigits: 2,
-                              })}
+                            : currencyFormat(expense.total)}
                         </PayerText>
                       </PayerWrapper>
                     );

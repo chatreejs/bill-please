@@ -16,14 +16,20 @@ const billSlice = createSlice({
       state.title = action.payload;
     },
     addItem(state, action: PayloadAction<IBillItem>) {
-      const total = action.payload.price * action.payload.quantity;
+      const total =
+        action.payload.price * action.payload.quantity +
+        action.payload.service +
+        action.payload.vat;
       state.items.push({ ...action.payload, total });
     },
     editItem(state, action: PayloadAction<IBillItem>) {
       const index = state.items.findIndex(
         (item) => item.id === action.payload.id,
       );
-      const total = action.payload.price * action.payload.quantity;
+      const total =
+        action.payload.price * action.payload.quantity +
+        action.payload.service +
+        action.payload.vat;
       state.items[index] = { ...action.payload, total };
     },
     removeItem(state, action: PayloadAction<string>) {
