@@ -143,22 +143,27 @@ const Result: React.FC = () => {
             <div className="value">
               {total <= 0 ? 0 : currencyFormat(total)}
             </div>
-            {vat > 0 && (
-              <Flex className="sub-value" vertical>
-                <Flex justify="space-between">
-                  <span>{t('result.net')}:</span>
-                  <span>{currencyFormat(total - vat)}</span>
+            {service > 0 ||
+              (vat > 0 && (
+                <Flex className="sub-value" vertical>
+                  <Flex justify="space-between">
+                    <span>{t('result.net')}:</span>
+                    <span>{currencyFormat(total - vat)}</span>
+                  </Flex>
+                  {service > 0 && (
+                    <Flex justify="space-between">
+                      <span>{t('result.service')}:</span>
+                      <span>{currencyFormat(service)}</span>
+                    </Flex>
+                  )}
+                  {vat > 0 && (
+                    <Flex justify="space-between">
+                      <span>{t('result.vat')}:</span>
+                      <span>{currencyFormat(vat)}</span>
+                    </Flex>
+                  )}
                 </Flex>
-                <Flex justify="space-between">
-                  <span>{t('result.service')}:</span>
-                  <span>{currencyFormat(service)}</span>
-                </Flex>
-                <Flex justify="space-between">
-                  <span>{t('result.vat')}:</span>
-                  <span>{currencyFormat(vat)}</span>
-                </Flex>
-              </Flex>
-            )}
+              ))}
           </SummaryTitle>
         </SummaryWrapper>
         <TextSeparator>
