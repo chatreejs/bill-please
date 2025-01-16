@@ -84,9 +84,11 @@ const BillItemMapping: React.FC = () => {
                   {item.name}
                 </div>
                 <Flex wrap>
-                  {billItemMappings?.some(
-                    (mapping) => mapping.itemId === item.id,
-                  ) ? (
+                  {billItemMappings?.some((mapping) => {
+                    if (mapping.itemId === item.id) {
+                      return mapping.payerId.length > 0;
+                    }
+                  }) ? (
                     <>
                       {billItemMappings?.map((mapping) => {
                         if (mapping.itemId === item.id) {
