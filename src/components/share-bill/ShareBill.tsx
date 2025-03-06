@@ -12,7 +12,7 @@ import { RootState } from '@config';
 import { downloadFile } from '@utils';
 interface Props {
   show: boolean;
-  elementRef: RefObject<HTMLDivElement>;
+  elementRef: RefObject<HTMLDivElement | null>;
 }
 
 const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
