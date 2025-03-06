@@ -28,9 +28,9 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
-    "@fontsource/kanit": "^5.0.20",
-    "@fontsource/outfit": "^5.0.13",
-    "@fontsource/pacifico": "^5.0.13",
+    "@fontsource/kanit": "^5.2.5",
+    "@fontsource/outfit": "^5.2.5",
+    "@fontsource/pacifico": "^5.2.5",
     "@reduxjs/toolkit": "^2.2.7",
     "antd": "^5.20.0",
     "dayjs": "^1.11.13",

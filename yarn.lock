@@ -1437,20 +1437,20 @@
   resolved "https://registry.yarnpkg.com/@eslint/object-schema/-/object-schema-2.1.4.tgz#9e69f8bb4031e11df79e03db09f9dbbae1740843"
   integrity sha512-BsWiH1yFGjXXS2yvrf5LyuoSIIbPrGUWob917o+BTKuZ7qJdxX8aJLRxs1fS9n6r7vESrq1OUqb68dANcFXuQQ==
 
-"@fontsource/kanit@^5.0.20":
-  version "5.0.20"
-  resolved "https://registry.yarnpkg.com/@fontsource/kanit/-/kanit-5.0.20.tgz#873f55d909dc978fb7a5078a7cef932fee6c4e42"
-  integrity sha512-UvQ3Lm2+V+arG7GlYDHhgTt+TYLvKhORYZ3B51zZfq769JqqBDm2I5hdpWX7u/hf0tgY19CrKvu3k6AgAGPf7w==
+"@fontsource/kanit@^5.2.5":
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/kanit/-/kanit-5.2.5.tgz#d1da14db770b5a3007e2aedada82c50030ff8362"
+  integrity sha512-xOLoC0xVPN+JRDU8a1npqGMzSewPhJFzBJhZfYy03HcxgtqVnagLhD4Jpdse+KfX/NF15/GD/Y6mTBDlgcli/w==
 
-"@fontsource/outfit@^5.0.13":
-  version "5.0.13"
-  resolved "https://registry.yarnpkg.com/@fontsource/outfit/-/outfit-5.0.13.tgz#99d6b34687173842ee63bd5917fb989bc214feea"
-  integrity sha512-wIPcryKAs7Vu1/FyG0qSsrzN0SWq/oclGSZNIspuZXR6/lsCerFrHoMdMyDcidg+KTWE68/Du2qGz2B4Gtrg4w==
+"@fontsource/outfit@^5.2.5":
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/outfit/-/outfit-5.2.5.tgz#03588eb33bfd4dd3db75a98a447eeadbdf479e70"
+  integrity sha512-MoQRZDQ8nKOYxJXJNXzcDaBfw+k6IQ0+O/fQaBh5zJRb1/n7JNqxnc7iLK46YlMaFEGh8rjjF0Pp6o8Qc8JSJw==
 
-"@fontsource/pacifico@^5.0.13":
-  version "5.0.13"
-  resolved "https://registry.yarnpkg.com/@fontsource/pacifico/-/pacifico-5.0.13.tgz#c2071dadcb2a2ee18115129264463892cb85d782"
-  integrity sha512-E7YdFyuIYLfxuOZeRzKotZf2mirl52JY8kN3qfwwM7fT+ndYDnOBAb/nvYvPJIks2sjGwW00hYmJNNTvOmZRDg==
+"@fontsource/pacifico@^5.2.5":
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/@fontsource/pacifico/-/pacifico-5.2.5.tgz#872b77efcccf2dd330ac3117628237de485aba18"
+  integrity sha512-JpimzPRR6Hh2jIj3x+6Wzk8vBv9IdInuu2y0muGnpQQIOscyQdM4i8bSSszgOoH4WD3PuUpMGHCi4ZBNtoekWA==
 
 "@humanwhocodes/module-importer@^1.0.1":
   version "1.0.1"
