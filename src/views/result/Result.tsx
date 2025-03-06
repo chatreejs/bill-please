@@ -78,7 +78,8 @@ const Separator = styled.div`
   height: 24px;
   width: 100%;
   margin: 0 auto;
-  background-image: radial-gradient(circle, transparent 72%, #fafafa 72%),
+  background-image:
+    radial-gradient(circle, transparent 72%, #fafafa 72%),
     repeating-linear-gradient(
       90deg,
       #fafafa 0,
