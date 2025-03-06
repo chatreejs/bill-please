@@ -81,6 +81,13 @@
     "tab": {
       "itemList": "Item",
       "payerList": "Payer"
+    },
+    "reset": {
+      "button": "Clear bill data",
+      "title": "All data will be deleted",
+      "description": "All data will be deleted and cannot be recovered. Are you sure?",
+      "ok": "Clear data",
+      "cancel": "Cancel"
     }
   },
   "mapping": {

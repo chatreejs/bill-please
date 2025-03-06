@@ -3,7 +3,7 @@ import {
   UnorderedListOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Tabs, TabsProps, Typography } from 'antd';
+import { Button, Popconfirm, Tabs, TabsProps, Typography } from 'antd';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { BillCard, ButtonWrapper } from '@components';
 import { RootState } from '@config';
-import { setTitle } from '@slices';
+import { removeAllItems, removeAllPayers, setTitle } from '@slices';
 import ItemTable from './components/item/ItemTable';
 import PayerTable from './components/payer/PayerTable';
 
@@ -26,6 +26,7 @@ const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('item');
   const [isNextButtonDisabled, setIsNextButtonDisabled] =
     useState<boolean>(true);
+  const [isShowResetBill, setIsShowResetBill] = useState<boolean>(false);
 
   const tabItems: TabsProps['items'] = [
     {
@@ -46,6 +47,12 @@ const Home: React.FC = () => {
     setActiveTab(key);
   };
 
+  const onResetBill = () => {
+    dispatch(setTitle(''));
+    dispatch(removeAllItems());
+    dispatch(removeAllPayers());
+  };
+
   useEffect(() => {
     if (billItems.length > 0 && billPayers.length > 0) {
       setIsNextButtonDisabled(false);
@@ -58,7 +65,15 @@ const Home: React.FC = () => {
     if (billTitle === '') {
       dispatch(setTitle(dayjs().format('YYYY-MM-DD')));
     }
-  }, [billTitle]);
+  }, [billTitle, dispatch]);
+
+  useEffect(() => {
+    if (billItems.length === 0 && billPayers.length === 0) {
+      setIsShowResetBill(false);
+    } else {
+      setIsShowResetBill(true);
+    }
+  }, [billItems, billPayers]);
 
   return (
     <BillCard
@@ -98,6 +113,20 @@ const Home: React.FC = () => {
             {t('common.button.next')}
             <RightOutlined />
           </Button>
+          {isShowResetBill && (
+            <Popconfirm
+              title={t('home.reset.title')}
+              description={t('home.reset.description')}
+              onConfirm={onResetBill}
+              okText={t('home.reset.ok')}
+              cancelText={t('home.reset.cancel')}
+              okType="danger"
+            >
+              <Button color="danger" variant="link">
+                {t('home.reset.button')}
+              </Button>
+            </Popconfirm>
+          )}
         </ButtonWrapper>
       }
     />
