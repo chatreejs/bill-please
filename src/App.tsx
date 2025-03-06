@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 import {
   BackButton,
+  CheckForUpdate,
   Footer,
   LanguageSwitcher,
   Logo,
@@ -83,6 +84,7 @@ const App: React.FC = () => {
           <PersistGate loading={null} persistor={persistor}>
             <AntApp>
               <MainWrapper>
+                <CheckForUpdate />
                 <ProductLogoWrapper>
                   <BackButton show={isShowBackButton} />
                   <Logo systemName="Bill Please" showEnvBadge={true} />

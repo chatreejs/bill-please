@@ -8,6 +8,11 @@
       "save": "Save"
     }
   },
+  "checkForUpdate": {
+    "title": "A new version available",
+    "description": "We added lots of new features and fixed some bugs to make your experience as smooth as possible.",
+    "update": "Update App"
+  },
   "home": {
     "itemList": {
       "button": {
