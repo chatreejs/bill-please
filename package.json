@@ -33,7 +33,7 @@
     "@fontsource/pacifico": "^5.2.5",
     "@reduxjs/toolkit": "^2.2.7",
     "antd": "^5.21.0",
-    "axios": "^1.8.1",
+    "axios": "^1.8.2",
     "dayjs": "^1.11.13",
     "flag-icons": "^7.2.3",
     "i18next": "^24.2.2",
