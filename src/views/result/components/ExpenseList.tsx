@@ -15,11 +15,8 @@ import ExpenseItemList from './expense/ExpenseItemList';
 
 const PayerWrapper = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
-  cursor: pointer;
 `;
 
 const PayerText = styled.div`
@@ -135,6 +132,7 @@ const ExpenseList: React.FC = () => {
         return (
           <Collapse.Panel
             collapsible="header"
+            style={{ flex: 1 }}
             header={
               <>
                 {expenseList.map((expense) => {
