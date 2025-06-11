@@ -96,8 +96,8 @@ const ExpenseList: React.FC = () => {
 
     if (!billItem) return;
 
-    const itemQuantity = billItem.quantity;
     const payerCount = item.payerId.length;
+    const itemQuantity = billItem.quantity / payerCount;
     const total = billItem.total! / payerCount;
     const service = billItem.service / payerCount;
     const vat = billItem.vat / payerCount;

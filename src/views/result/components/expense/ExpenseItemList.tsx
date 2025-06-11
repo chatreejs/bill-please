@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { IExpense, IExpenseChildren } from '@interfaces';
-import { currencyFormat, ellipsisText } from '@utils';
+import { currencyFormat, ellipsisText, numberFormat } from '@utils';
 
 const ItemWrapper = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ const ExpenseItemList: React.FC<Props> = ({ expense }) => {
         return (
           <ItemWrapper key={item.itemName}>
             <Flex gap={'12px'}>
-              <div>{item.itemQuantity}</div>
+              <div>{numberFormat(item.itemQuantity, 1)}</div>
               <div>{ellipsisText(item.itemName, 28)}</div>
             </Flex>
             <Flex gap={'6px'} justify="center" align="center">
