@@ -74,6 +74,13 @@ const TextSeparator = styled.div`
   border-top: 1.5px solid #838689;
 `;
 
+const RemarkText = styled.div`
+  display: flex;
+  justify-content: right;
+  font-size: 12px;
+  margin-top: 0.5rem;
+`;
+
 const Separator = styled.div`
   height: 24px;
   width: 100%;
@@ -172,6 +179,9 @@ const Result: React.FC = () => {
           </div>
         </TextSeparator>
         <ExpenseList />
+        <RemarkText>
+          *S: {t('result.service')}, V: {t('result.vat')}
+        </RemarkText>
       </CardTop>
       <Separator />
       <CardBottom>
