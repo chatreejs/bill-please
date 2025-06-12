@@ -78,10 +78,14 @@ const BillItemMapping: React.FC = () => {
                   style={{
                     fontSize: 16,
                     fontWeight: 600,
-                    marginBottom: '12px',
                   }}
                 >
                   {item.name}
+                </div>
+                <div style={{ marginBottom: '12px' }}>
+                  <Text italic>
+                    {t('common.text.quantity')}: {item.quantity}
+                  </Text>
                 </div>
                 <Flex wrap>
                   {billItemMappings?.some((mapping) => {
