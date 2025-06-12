@@ -1,5 +1,5 @@
 import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Flex, Modal } from 'antd';
+import { Button, Flex, Modal, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,8 @@ import { RootState } from '@config';
 import { IPayer } from '@interfaces';
 import { addBillItemMapping, editBillItemMapping } from '@slices';
 import { getColorByName } from '@utils';
+
+const { Text } = Typography;
 
 interface Props {
   isOpen: boolean;
@@ -122,6 +124,12 @@ const BillItemMappingModal: React.FC<Props> = ({ isOpen, itemId, onClose }) => {
       okText={t('common.button.save')}
       cancelText={t('common.button.cancel')}
     >
+      <div style={{ marginBottom: '12px' }}>
+        <Text italic>
+          {t('common.text.quantity')}:{' '}
+          {billItems.find((item) => item.id === itemId)?.quantity}
+        </Text>
+      </div>
       <Button onClick={handleSelectAll} style={{ marginBottom: '16px' }}>
         {isAllSelected
           ? t('mapping.modal.deselectAll')
