@@ -6,12 +6,18 @@
       "next": "Next",
       "ok": "Ok",
       "save": "Save"
+    },
+    "text": {
+      "subTotal": "Subtotal",
+      "total": "Total",
+      "service": "Service Charge",
+      "vat": "VAT"
     }
   },
   "checkForUpdate": {
     "title": "A new version available",
     "description": "We added lots of new features and fixed some bugs to make your experience as smooth as possible.",
-    "update": "Update App"
+    "update": "Update Now!"
   },
   "home": {
     "itemList": {
@@ -106,10 +112,6 @@
     }
   },
   "result": {
-    "total": "Total",
-    "net": "Net",
-    "service": "Service Charge",
-    "vat": "VAT",
     "people": "People",
     "expenseList": "Expense List",
     "payment": {

@@ -1,5 +1,5 @@
 import { Flex, Typography } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -115,9 +115,9 @@ const Result: React.FC = () => {
   const billItems = useSelector((state: RootState) => state.bill.items);
   const billPayers = useSelector((state: RootState) => state.bill.payers);
 
-  const [total, setTotal] = React.useState(0);
-  const [service, setService] = React.useState(0);
-  const [vat, setVat] = React.useState(0);
+  const [total, setTotal] = useState(0);
+  const [service, setService] = useState(0);
+  const [vat, setVat] = useState(0);
 
   useEffect(() => {
     let total = 0;
@@ -147,25 +147,25 @@ const Result: React.FC = () => {
             <div className="value">{billPayers.length}</div>
           </SummaryTitle>
           <SummaryTitle className="text-right">
-            <div className="title">{t('result.total')}</div>
+            <div className="title">{t('common.text.total')}</div>
             <div className="value">
               {total <= 0 ? 0 : currencyFormat(total)}
             </div>
             {(service > 0 || vat > 0) && (
               <Flex className="sub-value" vertical>
                 <Flex justify="space-between">
-                  <span>{t('result.net')}:</span>
-                  <span>{currencyFormat(total - vat)}</span>
+                  <span>{t('common.text.subTotal')}:</span>
+                  <span>{currencyFormat(total - service - vat)}</span>
                 </Flex>
                 {service > 0 && (
                   <Flex justify="space-between">
-                    <span>{t('result.service')}:</span>
+                    <span>{t('common.text.service')}:</span>
                     <span>{currencyFormat(service)}</span>
                   </Flex>
                 )}
                 {vat > 0 && (
                   <Flex justify="space-between">
-                    <span>{t('result.vat')}:</span>
+                    <span>{t('common.text.vat')}:</span>
                     <span>{currencyFormat(vat)}</span>
                   </Flex>
                 )}
@@ -180,7 +180,7 @@ const Result: React.FC = () => {
         </TextSeparator>
         <ExpenseList />
         <RemarkText>
-          *S: {t('result.service')}, V: {t('result.vat')}
+          *S: {t('common.text.service')}, V: {t('common.text.vat')}
         </RemarkText>
       </CardTop>
       <Separator />
