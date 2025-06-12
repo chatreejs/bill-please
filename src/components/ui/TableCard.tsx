@@ -18,7 +18,7 @@ const TableWrapper = styled.div`
 `;
 
 const StyledCard = styled(Card)`
-  margin: 1rem 0;
+  margin: 1rem 0 0.35rem 0;
 
   .ant-card-body {
     padding: 0px;
