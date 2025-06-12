@@ -13,6 +13,12 @@ import {
 import { currencyFormat } from '@utils';
 import ExpenseItemList from './expense/ExpenseItemList';
 
+const StyledCollapse = styled(Collapse)`
+  span.ant-collapse-header-text {
+    flex: 1 !important;
+  }
+`;
+
 const PayerWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -120,7 +126,7 @@ const ExpenseList: React.FC = () => {
   }, []);
 
   return (
-    <Collapse
+    <StyledCollapse
       bordered={false}
       style={{
         backgroundColor: 'white',
@@ -132,7 +138,6 @@ const ExpenseList: React.FC = () => {
         return (
           <Collapse.Panel
             collapsible="header"
-            style={{ flex: 1 }}
             header={
               <>
                 {expenseList.map((expense) => {
@@ -179,7 +184,7 @@ const ExpenseList: React.FC = () => {
           </Collapse.Panel>
         );
       })}
-    </Collapse>
+    </StyledCollapse>
   );
 };
 
