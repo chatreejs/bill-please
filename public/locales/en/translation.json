@@ -11,7 +11,8 @@
       "subTotal": "Subtotal",
       "total": "Total",
       "service": "Service Charge",
-      "vat": "VAT"
+      "vat": "VAT",
+      "quantity": "Quantity"
     }
   },
   "checkForUpdate": {
@@ -53,8 +54,7 @@
       },
       "table": {
         "name": "Name",
-        "price": "Total Price",
-        "quantity": "Quantity"
+        "price": "Total Price"
       }
     },
     "payerList": {

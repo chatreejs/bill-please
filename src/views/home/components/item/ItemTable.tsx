@@ -143,7 +143,7 @@ const ItemTable: React.FC = () => {
                 dataIndex="name"
               />
               <Column
-                title={t('home.itemList.table.quantity')}
+                title={t('common.text.quantity')}
                 key="quantity"
                 dataIndex="quantity"
                 align="right"
