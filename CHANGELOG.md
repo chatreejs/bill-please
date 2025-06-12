@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Item quantity in result page is diveded by payer count.
+- Item quantity in result page is divided by payer count.
 
 ## [0.7.1] - 2025-03-06
 
