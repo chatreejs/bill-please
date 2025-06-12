@@ -1,10 +1,11 @@
 import { FileTextOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Table } from 'antd';
+import { Button, Flex, Popconfirm, Table } from 'antd';
 import Column from 'antd/es/table/Column';
 import { TableRowSelection } from 'antd/es/table/interface';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 import { ActionButtonWrapper, ButtonWrapper, TableCard } from '@components';
 import { RootState } from '@config';
@@ -13,6 +14,12 @@ import { IBillItem } from '@interfaces';
 import { removeAllItems, removeItems } from '@slices';
 import { currencyFormat } from '@utils';
 import ItemListModal from './ItemListModal';
+
+const SummaryContainer = styled.div`
+  margin-bottom: 0.5rem;
+  padding: 0 8px;
+  font-size: 12px;
+`;
 
 const ItemTable: React.FC = () => {
   const { t } = useTranslation();
@@ -25,6 +32,24 @@ const ItemTable: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [modalMode, setModalMode] = useState<ModalType>(ModalType.Create);
   const [selectedItemId, setSelectedItemId] = useState<string>();
+
+  const [total, setTotal] = useState(0);
+  const [service, setService] = useState(0);
+  const [vat, setVat] = useState(0);
+
+  useEffect(() => {
+    let total = 0;
+    let service = 0;
+    let vat = 0;
+    billItems.forEach((item) => {
+      total += item.total ?? 0;
+      service += item.service ?? 0;
+      vat += item.vat ?? 0;
+    });
+    setTotal(total);
+    setService(service);
+    setVat(vat);
+  }, [billItems]);
 
   const toggleCheckbox = () => {
     setIsShowCheckbox(!isShowCheckbox);
@@ -96,43 +121,75 @@ const ItemTable: React.FC = () => {
         </ActionButtonWrapper>
       )}
       {billItems.length > 0 && (
-        <TableCard>
-          <Table
-            dataSource={billItems}
-            pagination={false}
-            size="small"
-            rowSelection={isShowCheckbox ? rowSelection : undefined}
-            rowKey={(record) => record.id}
-            onRow={(record) => {
-              return {
-                onClick: () => {
-                  openModal(ModalType.Edit, record.id);
-                },
-              };
-            }}
-          >
-            <Column
-              title={t('home.itemList.table.name')}
-              key="name"
-              dataIndex="name"
-            />
-            <Column
-              title={t('home.itemList.table.quantity')}
-              key="quantity"
-              dataIndex="quantity"
-              align="right"
-            />
-            <Column
-              title={t('home.itemList.table.price')}
-              key="total"
-              dataIndex="total"
-              align="right"
-              render={(price: number) => {
-                return currencyFormat(price);
+        <>
+          <TableCard>
+            <Table
+              dataSource={billItems}
+              pagination={false}
+              size="small"
+              rowSelection={isShowCheckbox ? rowSelection : undefined}
+              rowKey={(record) => record.id}
+              onRow={(record) => {
+                return {
+                  onClick: () => {
+                    openModal(ModalType.Edit, record.id);
+                  },
+                };
               }}
-            />
-          </Table>
-        </TableCard>
+            >
+              <Column
+                title={t('home.itemList.table.name')}
+                key="name"
+                dataIndex="name"
+              />
+              <Column
+                title={t('home.itemList.table.quantity')}
+                key="quantity"
+                dataIndex="quantity"
+                align="right"
+              />
+              <Column
+                title={t('home.itemList.table.price')}
+                key="total"
+                dataIndex="total"
+                align="right"
+                render={(price: number) => {
+                  return currencyFormat(price);
+                }}
+              />
+            </Table>
+          </TableCard>
+          <SummaryContainer>
+            <Flex vertical>
+              {(service > 0 || vat > 0) && (
+                <Flex justify="space-between">
+                  <span>{t('common.text.subTotal')}:</span>
+                  <span>{currencyFormat(total - service - vat)}</span>
+                </Flex>
+              )}
+              {service > 0 && (
+                <Flex justify="space-between">
+                  <span>{t('common.text.service')}:</span>
+                  <span>{currencyFormat(service)}</span>
+                </Flex>
+              )}
+              {vat > 0 && (
+                <Flex justify="space-between">
+                  <span>{t('common.text.vat')}:</span>
+                  <span>{currencyFormat(vat)}</span>
+                </Flex>
+              )}
+              <Flex justify="space-between">
+                <span>
+                  <b>{t('common.text.total')}:</b>
+                </span>
+                <span>
+                  <b>{currencyFormat(total)}</b>
+                </span>
+              </Flex>
+            </Flex>
+          </SummaryContainer>
+        </>
       )}
       <ButtonWrapper>
         <Button
