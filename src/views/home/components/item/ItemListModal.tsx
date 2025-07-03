@@ -280,40 +280,42 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
           >
             <InputNumber min={1} style={{ width: '100%' }} />
           </Form.Item>
-          <Flex>
+          <Flex gap={6}>
             <Form.Item
               name="isService"
               valuePropName="checked"
-              style={{ marginBottom: 6 }}
+              style={{ marginBottom: 6, maxWidth: '50vw' }}
             >
-              <Checkbox>{t('home.itemList.modal.form.isService')}</Checkbox>
+              <Checkbox>{t('home.itemList.modal.form.isService')} (%)</Checkbox>
             </Form.Item>
             {isService && (
               <>
                 <Form.Item name="servicePercentage" style={{ marginBottom: 6 }}>
-                  <InputNumber suffix="%" style={{ width: '3.5rem' }} />
+                  <InputNumber style={{ width: '3.5rem' }} />
                 </Form.Item>
                 <Form.Item style={{ marginBottom: 6 }}>
-                  <Text type="secondary" style={{ marginLeft: 6 }}>
+                  <Text type="secondary">
                     ≈ {currencyFormat(approxService)}
                   </Text>
                 </Form.Item>
               </>
             )}
           </Flex>
-          <Flex>
-            <Form.Item name="isVat" valuePropName="checked">
-              <Checkbox>{t('home.itemList.modal.form.isVat')}</Checkbox>
+          <Flex gap={6}>
+            <Form.Item
+              name="isVat"
+              valuePropName="checked"
+              style={{ maxWidth: '50vw' }}
+            >
+              <Checkbox>{t('home.itemList.modal.form.isVat')} (%)</Checkbox>
             </Form.Item>
             {isVat && (
               <>
                 <Form.Item name="vatPercentage">
-                  <InputNumber suffix="%" style={{ width: '3.5rem' }} />
+                  <InputNumber style={{ width: '3.5rem' }} />
                 </Form.Item>
                 <Form.Item>
-                  <Text type="secondary" style={{ marginLeft: 6 }}>
-                    ≈ {currencyFormat(approxVat)}
-                  </Text>
+                  <Text type="secondary">≈ {currencyFormat(approxVat)}</Text>
                 </Form.Item>
               </>
             )}
