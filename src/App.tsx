@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { App as AntApp, ConfigProvider } from 'antd';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import ReactGA from 'react-ga4';
@@ -51,6 +52,7 @@ const App: React.FC = () => {
   const [isShowShareButton, setIsShowShareButton] = useState<boolean>(false);
   const location = useLocation();
   const billRef = useRef<HTMLDivElement>(null);
+  const queryClient = new QueryClient();
 
   useEffect(() => {
     setIsShowBackButton(location.pathname !== '/');
@@ -69,40 +71,42 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: '#2C9C91',
-          fontFamily: 'Outfit, Kanit',
-          fontSize: 14,
-          fontWeightStrong: 700,
-        },
-      }}
-    >
-      <Suspense fallback={<SplashSpinner />}>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <AntApp>
-              <MainWrapper>
-                <CheckForUpdate />
-                <ProductLogoWrapper>
-                  <BackButton show={isShowBackButton} />
-                  <Logo systemName="Bill Please" showEnvBadge={true} />
-                </ProductLogoWrapper>
-                <LanguageSwitcherWrapper>
-                  <LanguageSwitcher />
-                </LanguageSwitcherWrapper>
-                <BillRefStyled id="bill-ref-element" ref={billRef}>
-                  <AppRoutes />
-                </BillRefStyled>
-                <ShareBill show={isShowShareButton} elementRef={billRef} />
-                <Footer />
-              </MainWrapper>
-            </AntApp>
-          </PersistGate>
-        </Provider>
-      </Suspense>
-    </ConfigProvider>
+    <QueryClientProvider client={queryClient}>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: '#2C9C91',
+            fontFamily: 'Outfit, Kanit',
+            fontSize: 14,
+            fontWeightStrong: 700,
+          },
+        }}
+      >
+        <Suspense fallback={<SplashSpinner />}>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <AntApp>
+                <MainWrapper>
+                  <CheckForUpdate />
+                  <ProductLogoWrapper>
+                    <BackButton show={isShowBackButton} />
+                    <Logo systemName="Bill Please" showEnvBadge={true} />
+                  </ProductLogoWrapper>
+                  <LanguageSwitcherWrapper>
+                    <LanguageSwitcher />
+                  </LanguageSwitcherWrapper>
+                  <BillRefStyled id="bill-ref-element" ref={billRef}>
+                    <AppRoutes />
+                  </BillRefStyled>
+                  <ShareBill show={isShowShareButton} elementRef={billRef} />
+                  <Footer />
+                </MainWrapper>
+              </AntApp>
+            </PersistGate>
+          </Provider>
+        </Suspense>
+      </ConfigProvider>
+    </QueryClientProvider>
   );
 };
 
