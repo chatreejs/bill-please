@@ -27,7 +27,7 @@ To get started, look at the existing [**Issues**](https://github.com/chatreejs/b
 
 ### Setup guidelines 🪜
 
-Follow these steps to setup LinksHub on your local machine
+Follow these steps to setup BillPlease on your local machine
 
 1. [Fork](https://github.com/chatreejs/bill-please/fork) the project
 2. Clone the project to run on your local machine using the following command:
