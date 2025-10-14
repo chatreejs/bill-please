@@ -2,7 +2,7 @@
   <p align="center">🧾 Bill-Please</p>
 </h1>
 
-[![Build Status](http://jenkins.chatree.dev/job/Chatree.js/job/Develop/job/bill-please/badge/icon)](http://jenkins.chatree.dev/job/Chatree.js/job/Develop/job/bill-please/)
+![codeql workflow](https://github.com/chatreejs/bill-please/actions/workflows/codeql.yml/badge.svg)
 
 ## Introduction
 
