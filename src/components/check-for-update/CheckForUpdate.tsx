@@ -25,9 +25,10 @@ const checkVersion = (
     latestVersionArray.length,
   );
   for (let i = 0; i < versionLength; i++) {
-    if ((latestVersionArray[i] || 0) > (currentVersionArray[i] || 0)) {
-      return true;
-    }
+    const latest = latestVersionArray[i] || 0;
+    const current = currentVersionArray[i] || 0;
+    if (latest > current) return true;
+    if (latest < current) return false;
   }
   return false;
 };
