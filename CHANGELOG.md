@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-04-21
+
+### Added
+
+- Add bill summary
+- Add item quantity to mapping page
+- Add react query hook
+
+### Changed
+
+- Update service charge and VAT input style
+- Update store key
+- Upgrade dependencies:
+  - axios: 1.12.0 → 1.15.0
+  - vite: 6.4.1 → 6.4.2
+  - lodash: 4.17.21 → 4.18.1
+  - flatted: 3.3.3 → 3.4.2
+  - follow-redirects: 1.15.9 → 1.16.0
+
+### Fixed
+
+- Fix version checking logic
+
 ## [0.7.3] - 2025-11-30
 
 ### Changed
@@ -88,6 +111,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Full Changelog**: https://github.com/chatreejs/bill-please/commits/v0.4.5
 
+[0.8.0]: https://github.com/chatreejs/bill-please/compare/v0.7.3...v0.8.0
 [0.7.3]: https://github.com/chatreejs/bill-please/compare/v0.7.2...v0.7.3
 [0.7.2]: https://github.com/chatreejs/bill-please/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/chatreejs/bill-please/compare/v0.7.0...v0.7.1
