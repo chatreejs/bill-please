@@ -5,7 +5,7 @@ import storage from 'redux-persist/es/storage';
 import { appReducer, billReducer } from '@slices';
 
 const persistConfig = {
-  key: 'root',
+  key: 'bp-store',
   storage,
 };
 
