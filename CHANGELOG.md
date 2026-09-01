@@ -12,9 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Currency and exchange rate support:
   - Set a base currency for the bill
   - Add per-bill exchange rates and switch the display currency on the result page
+- Terms of Service page (`/tos`), available in English and Thai and linked from the footer
 
 ### Changed
 
+- Refine UX writing across the mapping and result pages
 - Bump GitHub Actions:
   - actions/checkout: 6 → 7
 - Upgrade dependencies:

@@ -1,5 +1,6 @@
 import { Flex } from 'antd';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import dayjs from 'dayjs';
@@ -80,9 +81,7 @@ const Footer: React.FC = () => {
         </span>
         <span>|</span>
         <span>
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            Terms
-          </a>
+          <Link to="/tos">Terms</Link>
         </span>
         <span>|</span>
         <span>

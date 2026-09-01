@@ -1,0 +1,79 @@
+{
+  "title": "Terms of Service",
+  "lastUpdated": "Last updated: 1 September 2026",
+  "intro": "Welcome to Bill Please. These Terms of Service (\"Terms\") govern your use of the Bill Please web application (the \"Service\"). By accessing or using the Service, you agree to be bound by these Terms. If you do not agree, please do not use the Service.",
+  "sections": [
+    {
+      "heading": "1. About the Service",
+      "body": [
+        "Bill Please is a free, mobile-first web application that helps groups split restaurant bills and shared expenses. The Service runs entirely in your web browser and does not require an account.",
+        "The Service is provided for personal, non-commercial use as a convenience tool for calculating how a bill may be divided."
+      ]
+    },
+    {
+      "heading": "2. Local Data Storage",
+      "body": [
+        "Bill Please has no backend server and does not send your bill data to us. All information you enter — including bill titles, items, payers, and currency settings — is stored locally in your browser (via localStorage) on your own device.",
+        "Because your data is stored only on your device, clearing your browser data or using a different device or browser will remove or fail to display previously entered information. You are responsible for your own data."
+      ]
+    },
+    {
+      "heading": "3. Your Responsibilities",
+      "body": [
+        "You are responsible for the accuracy of the information you enter and for verifying any amounts the Service calculates before relying on them.",
+        "All calculations, including bill splits, service charge, VAT, currency conversion, and totals, are provided for convenience only and may contain rounding differences or errors. You should independently confirm final amounts.",
+        "You agree to use the Service lawfully and not to misuse it or interfere with its operation."
+      ]
+    },
+    {
+      "heading": "4. Payments and PromptPay",
+      "body": [
+        "The Service can generate a Thai PromptPay QR code from a phone number or national ID that you provide, to make settling a shared bill more convenient.",
+        "Bill Please does not process, hold, or transfer any money and is not a payment service or financial institution. Any payment is made directly between you and the relevant parties through your own banking or payment applications. We are not responsible for any payment, transfer, or the accuracy of any QR code or recipient details."
+      ]
+    },
+    {
+      "heading": "5. Analytics and Third-Party Services",
+      "body": [
+        "The Service may use third-party services, such as Google Analytics, to collect anonymous, aggregated usage statistics that help us improve the Service. These services may process limited technical information in accordance with their own terms and privacy policies.",
+        "The Service is distributed and its source code is hosted through third-party platforms. Your use of those platforms is subject to their respective terms."
+      ]
+    },
+    {
+      "heading": "6. Intellectual Property",
+      "body": [
+        "The Service, including its name, design, and source code (except third-party components under their own licenses), is owned by the developer of Bill Please. You may not copy, modify, or redistribute the Service except as permitted by its applicable open-source license or by law."
+      ]
+    },
+    {
+      "heading": "7. Disclaimer of Warranties",
+      "body": [
+        "The Service is provided \"as is\" and \"as available\", without warranties of any kind, whether express or implied, including but not limited to fitness for a particular purpose and the accuracy of calculations. We do not warrant that the Service will be uninterrupted, error-free, or available at all times."
+      ]
+    },
+    {
+      "heading": "8. Limitation of Liability",
+      "body": [
+        "To the maximum extent permitted by law, the developer of Bill Please shall not be liable for any indirect, incidental, or consequential damages, or for any loss arising from incorrect calculations, lost data, payment disputes, or your use of or inability to use the Service."
+      ]
+    },
+    {
+      "heading": "9. Changes to the Service and Terms",
+      "body": [
+        "We may update, change, or discontinue the Service or these Terms at any time. Changes become effective when the updated Terms are posted within the Service. Your continued use of the Service after changes are posted constitutes acceptance of the revised Terms."
+      ]
+    },
+    {
+      "heading": "10. Governing Law",
+      "body": [
+        "These Terms are governed by and construed in accordance with the laws of Thailand, without regard to its conflict of law principles."
+      ]
+    },
+    {
+      "heading": "11. Contact",
+      "body": [
+        "If you have any questions about these Terms, please contact us at contact@chatree.dev."
+      ]
+    }
+  ]
+}

@@ -18,6 +18,9 @@ const BackButton: React.FC<BackButtonProps> = ({ show }) => {
     const index = routes.indexOf(currentRoute);
     if (index > 0) {
       navigate(routes[index - 1], { replace: true });
+    } else if (index === -1) {
+      // Routes outside the linear bill flow (e.g. /tos) go back in history
+      navigate(-1);
     }
   };
 
