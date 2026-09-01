@@ -110,12 +110,15 @@
   },
   "mapping": {
     "title": "Which item belong to ?",
-    "description": "Please select who should pay for which item",
+    "description": "Tap to select who should pay for which item",
     "noPayer": "No payer selected",
     "modal": {
       "title": "Select payer for {{itemName}}",
       "selectAll": "Select all",
       "deselectAll": "Deselect all"
+    },
+    "button": {
+      "submit": "Summarize"
     }
   },
   "result": {
@@ -125,14 +128,17 @@
       "selectPaymentMethod": "Select your payment method",
       "changePaymentMethod": "Change your payment method",
       "promptPay": {
-        "inputLabel": "Phone number or Thai National ID"
+        "inputLabel": "Phone number or Thai National ID",
+        "inputError": "This field is required"
       },
       "qr": {
         "scanToPay": "Scan QR Code to pay",
         "changeQRCode": "Change QR Code"
       }
     },
-    "share": "Share",
-    "download": "Download this bill"
+    "button": {
+      "share": "Share",
+      "download": "Download this bill"
+    }
   }
 }

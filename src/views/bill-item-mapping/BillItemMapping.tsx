@@ -146,7 +146,7 @@ const BillItemMapping: React.FC = () => {
             }}
             disabled={isDisableButton}
           >
-            {t('common.button.next')}
+            {t('mapping.button.submit')}
             <RightOutlined />
           </Button>
         </ButtonWrapper>

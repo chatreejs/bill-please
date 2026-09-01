@@ -85,12 +85,12 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
           {isMobile || isTablet ? (
             <Button style={{ width: '84x' }} onClick={() => void onShare()}>
               <ShareAltOutlined />
-              {t('result.share')}
+              {t('result.button.share')}
             </Button>
           ) : (
             <Button style={{ width: '84x' }} onClick={() => void onDownload()}>
               <DownloadOutlined />
-              {t('result.download')}
+              {t('result.button.download')}
             </Button>
           )}
         </Flex>

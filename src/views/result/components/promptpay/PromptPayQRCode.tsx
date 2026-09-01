@@ -57,6 +57,7 @@ const PromptPayQRCode: React.FC = () => {
                 rules={[
                   {
                     required: true,
+                    message: t('result.payment.promptPay.inputError'),
                   },
                 ]}
               >
