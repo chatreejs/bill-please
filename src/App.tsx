@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { App as AntApp, ConfigProvider } from 'antd';
+import { App as AntApp, ConfigProvider, FloatButton } from 'antd';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import ReactGA from 'react-ga4';
 import { Provider } from 'react-redux';
@@ -50,6 +50,7 @@ const BillRefStyled = styled.div`
 const App: React.FC = () => {
   const [isShowBackButton, setIsShowBackButton] = useState<boolean>(false);
   const [isShowShareButton, setIsShowShareButton] = useState<boolean>(false);
+  const [isShowBackTop, setIsShowBackTop] = useState<boolean>(false);
   const location = useLocation();
   const billRef = useRef<HTMLDivElement>(null);
   const queryClient = new QueryClient();
@@ -57,6 +58,7 @@ const App: React.FC = () => {
   useEffect(() => {
     setIsShowBackButton(location.pathname !== '/');
     setIsShowShareButton(location.pathname === '/result');
+    setIsShowBackTop(['/tos', '/privacy'].includes(location.pathname));
   }, [location]);
 
   useEffect(() => {
@@ -99,6 +101,9 @@ const App: React.FC = () => {
                     <AppRoutes />
                   </BillRefStyled>
                   <ShareBill show={isShowShareButton} elementRef={billRef} />
+                  {isShowBackTop && (
+                    <FloatButton.BackTop visibilityHeight={200} />
+                  )}
                   <Footer />
                 </MainWrapper>
               </AntApp>
