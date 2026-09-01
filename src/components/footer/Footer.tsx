@@ -85,9 +85,7 @@ const Footer: React.FC = () => {
         </span>
         <span>|</span>
         <span>
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            Privacy
-          </a>
+          <Link to="/privacy">Privacy</Link>
         </span>
       </Flex>
     </FooterWrapper>

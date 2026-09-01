@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Set a base currency for the bill
   - Add per-bill exchange rates and switch the display currency on the result page
 - Terms of Service page (`/tos`), available in English and Thai and linked from the footer
+- Privacy Policy page (`/privacy`), available in English and Thai and linked from the footer
 
 ### Changed
 

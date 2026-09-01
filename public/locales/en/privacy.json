@@ -1,0 +1,74 @@
+{
+  "title": "Privacy Policy",
+  "lastUpdated": "Last updated: 1 September 2026",
+  "intro": "This Privacy Policy explains how Bill Please (\"we\", \"our\", or \"the Service\") handles information when you use the Bill Please web application. We are committed to protecting your privacy. By using the Service, you agree to the practices described in this Policy.",
+  "sections": [
+    {
+      "heading": "1. Overview",
+      "body": [
+        "Bill Please is a fully client-side application with no backend server. The bill information you create stays on your own device and is never sent to us. We only use a third-party analytics service to understand anonymous, aggregated usage."
+      ]
+    },
+    {
+      "heading": "2. Information You Provide",
+      "body": [
+        "When you use the Service, you may enter information such as bill titles, item names and prices, payer names, currency settings, and a phone number or national ID used to generate a PromptPay QR code.",
+        "This information is stored locally in your browser (via localStorage) on your device and is not transmitted to or stored on any server operated by us."
+      ]
+    },
+    {
+      "heading": "3. Local Storage on Your Device",
+      "body": [
+        "Because your bill data is stored only on your device, you remain in control of it. Clearing your browser data, or using the in-app clear function, permanently removes it. Using a different device or browser will not carry over your data."
+      ]
+    },
+    {
+      "heading": "4. Analytics",
+      "body": [
+        "We use Google Analytics, a web analytics service provided by Google, to collect anonymous, aggregated statistics about how the Service is used — such as page views, general device and browser type, and approximate region. This information helps us understand usage and improve the Service; it is not used to personally identify you. Google processes this data in accordance with its own privacy policy."
+      ]
+    },
+    {
+      "heading": "5. Payment Information (PromptPay)",
+      "body": [
+        "Any phone number or national ID you enter to generate a PromptPay QR code is used only within your browser to create the QR code and is stored locally on your device. We do not collect, transmit, or store this information, and we do not process any payment."
+      ]
+    },
+    {
+      "heading": "6. Third-Party Services",
+      "body": [
+        "The Service is delivered through, and its source code is hosted on, third-party platforms, and it relies on the third-party analytics service described above. These providers may process limited technical data (such as your IP address and device information) as part of delivering their services, subject to their own privacy policies."
+      ]
+    },
+    {
+      "heading": "7. Data Security",
+      "body": [
+        "We do not hold your bill data on a server, so it is not exposed to any server-side breach on our side. However, no method of electronic storage is completely secure, and data stored in your browser depends on the security of your own device and browser."
+      ]
+    },
+    {
+      "heading": "8. Children's Privacy",
+      "body": [
+        "The Service is not directed to children under the age of 13, and we do not knowingly collect personal information from children."
+      ]
+    },
+    {
+      "heading": "9. Changes to This Policy",
+      "body": [
+        "We may update this Privacy Policy from time to time. Changes become effective when the updated Policy is posted within the Service. Your continued use of the Service after changes are posted constitutes acceptance of the revised Policy."
+      ]
+    },
+    {
+      "heading": "10. Governing Law",
+      "body": [
+        "This Privacy Policy is governed by and construed in accordance with the laws of Thailand, without regard to its conflict of law principles."
+      ]
+    },
+    {
+      "heading": "11. Contact",
+      "body": [
+        "If you have any questions about this Privacy Policy, please contact us at contact@chatree.dev."
+      ]
+    }
+  ]
+}

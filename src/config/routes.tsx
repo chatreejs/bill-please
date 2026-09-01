@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { BillItemMapping, Home, Result, Tos } from '@views';
+import { BillItemMapping, Home, Privacy, Result, Tos } from '@views';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -9,6 +9,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/mapping" element={<BillItemMapping />} />
       <Route path="/result" element={<Result />} />
       <Route path="/tos" element={<Tos />} />
+      <Route path="/privacy" element={<Privacy />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
