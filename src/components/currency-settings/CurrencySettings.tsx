@@ -11,10 +11,22 @@ import {
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 import { RootState } from '@config';
 import { CURRENCIES } from '@enums';
 import { addExchangeRate, removeExchangeRate, setMainCurrency } from '@slices';
+
+const StyledCollapse = styled(Collapse)`
+  &.ant-collapse-small > .ant-collapse-item > .ant-collapse-header {
+    padding: 0;
+
+    > .ant-collapse-expand-icon {
+      margin-inline-start: 0;
+      padding-inline-end: 6px;
+    }
+  }
+`;
 
 const CurrencySettings: React.FC = () => {
   const { t } = useTranslation();
@@ -61,7 +73,7 @@ const CurrencySettings: React.FC = () => {
   };
 
   return (
-    <Collapse
+    <StyledCollapse
       ghost
       size="small"
       items={[
