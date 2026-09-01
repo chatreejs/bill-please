@@ -24,9 +24,11 @@ Bill Please is a mobile-first PWA (max-width 420px) that splits restaurant bills
 
 The app has three pages connected by a linear flow:
 
-1. **`/` (Home)** — User enters a bill title, adds items (`IBillItem`) and payers (`IPayer`).
+1. **`/` (Home)** — User enters a bill title, adds items (`IBillItem`) and payers (`IPayer`) via tabbed tables. `CurrencySettings` here sets the base currency and exchange rates.
 2. **`/mapping` (BillItemMapping)** — User assigns which payers split each item (`IBillItemMapping`).
-3. **`/result` (Result)** — Computes per-payer expenses and shows totals, breakdown, and payment options.
+3. **`/result` (Result)** — Computes per-payer expenses and shows totals, breakdown, and payment options. A display-currency `Select` appears when exchange rates exist.
+
+Routes are defined in `src/config/routes.tsx`; unknown paths redirect to `/`.
 
 ### State management
 
@@ -39,7 +41,7 @@ Redux Toolkit + `redux-persist` (key `bp-store`, localStorage). Two slices:
 
 ### Currency / exchange rates
 
-`mainCurrency` is the bill's base currency. Users can add exchange rates (1 main = N target) via `CurrencySettings`. On the Result page a `conversionRate` multiplier is derived from the selected `displayCurrency`. Supported currencies are the fixed `CURRENCIES` array in `@enums/currency.ts`.
+`mainCurrency` is the bill's base currency. Users add exchange rates (1 main = N target, `ICurrencyExchangeRate`) via `CurrencySettings` on Home. All amounts are computed and stored in `mainCurrency`. On the Result page a `conversionRate` multiplier is derived from the selected `displayCurrency` (1 when it equals `mainCurrency`) and, with a `currencySymbol`, is threaded down as props through `ExpenseList` → `ExpenseItemList`, which format display values via a local `fmt` helper (`symbol + currencyFormat(amount * conversionRate)`). Supported currencies are the fixed `CURRENCIES` array in `@enums/currency.ts`; use `getCurrencySymbol(code)` for the symbol.
 
 ### Expense calculation
 

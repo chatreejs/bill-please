@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { BillCard, ButtonWrapper } from '@components';
+import { BillCard, ButtonWrapper, CurrencySettings } from '@components';
 import { RootState } from '@config';
 import { removeAllItems, removeAllPayers, setTitle } from '@slices';
 import ItemTable from './components/item/ItemTable';
@@ -81,13 +81,14 @@ const Home: React.FC = () => {
         <>
           <Typography.Title
             level={3}
-            style={{ marginBottom: '1rem' }}
+            style={{ marginBottom: '0.5rem' }}
             editable={{
               onChange: (value) => dispatch(setTitle(value)),
             }}
           >
             {billTitle}
           </Typography.Title>
+          <CurrencySettings />
           <Tabs
             size="large"
             defaultActiveKey="1"

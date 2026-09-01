@@ -1,10 +1,12 @@
-import { Flex, Typography } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Flex, Select, Typography } from 'antd';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '@config';
+import { getCurrencySymbol } from '@enums';
+import { setDisplayCurrency } from '@slices';
 import { currencyFormat } from '@utils';
 import ExpenseList from './components/ExpenseList';
 import Payment from './components/Payment';
@@ -111,13 +113,52 @@ const Separator = styled.div`
 
 const Result: React.FC = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const billTitle = useSelector((state: RootState) => state.bill.title);
   const billItems = useSelector((state: RootState) => state.bill.items);
   const billPayers = useSelector((state: RootState) => state.bill.payers);
+  const mainCurrency = useSelector(
+    (state: RootState) => state.app.mainCurrency,
+  );
+  const displayCurrency = useSelector(
+    (state: RootState) => state.app.displayCurrency,
+  );
+  const exchangeRates = useSelector(
+    (state: RootState) => state.app.exchangeRates ?? [],
+  );
 
   const [total, setTotal] = useState(0);
   const [service, setService] = useState(0);
   const [vat, setVat] = useState(0);
+
+  const conversionRate = useMemo(() => {
+    if (displayCurrency === mainCurrency) return 1;
+    return exchangeRates.find((r) => r.currency === displayCurrency)?.rate ?? 1;
+  }, [displayCurrency, mainCurrency, exchangeRates]);
+
+  const currencySymbol = useMemo(
+    () => getCurrencySymbol(displayCurrency),
+    [displayCurrency],
+  );
+
+  const displayCurrencyOptions = useMemo(() => {
+    const options = [
+      {
+        value: mainCurrency,
+        label: `${mainCurrency} (${getCurrencySymbol(mainCurrency)})`,
+      },
+    ];
+    exchangeRates.forEach((r) => {
+      options.push({
+        value: r.currency,
+        label: `${r.currency} (${getCurrencySymbol(r.currency)})`,
+      });
+    });
+    return options;
+  }, [mainCurrency, exchangeRates]);
+
+  const fmt = (amount: number) =>
+    `${currencySymbol} ${currencyFormat(amount * conversionRate)}`;
 
   useEffect(() => {
     let total = 0;
@@ -141,6 +182,17 @@ const Result: React.FC = () => {
             {billTitle}
           </Typography.Title>
         </Flex>
+        {displayCurrencyOptions.length > 1 && (
+          <Flex justify="flex-end" style={{ marginBottom: '0.5rem' }}>
+            <Select
+              size="small"
+              value={displayCurrency}
+              options={displayCurrencyOptions}
+              onChange={(value) => dispatch(setDisplayCurrency(value))}
+              style={{ minWidth: 90 }}
+            />
+          </Flex>
+        )}
         <SummaryWrapper>
           <SummaryTitle>
             <div className="title">{t('result.people')}</div>
@@ -148,25 +200,23 @@ const Result: React.FC = () => {
           </SummaryTitle>
           <SummaryTitle className="text-right">
             <div className="title">{t('common.text.total')}</div>
-            <div className="value">
-              {total <= 0 ? 0 : currencyFormat(total)}
-            </div>
+            <div className="value">{total <= 0 ? 0 : fmt(total)}</div>
             {(service > 0 || vat > 0) && (
               <Flex className="sub-value" vertical>
                 <Flex justify="space-between">
                   <span>{t('common.text.subTotal')}:</span>
-                  <span>{currencyFormat(total - service - vat)}</span>
+                  <span>{fmt(total - service - vat)}</span>
                 </Flex>
                 {service > 0 && (
                   <Flex justify="space-between">
                     <span>{t('common.text.service')}:</span>
-                    <span>{currencyFormat(service)}</span>
+                    <span>{fmt(service)}</span>
                   </Flex>
                 )}
                 {vat > 0 && (
                   <Flex justify="space-between">
                     <span>{t('common.text.vat')}:</span>
-                    <span>{currencyFormat(vat)}</span>
+                    <span>{fmt(vat)}</span>
                   </Flex>
                 )}
               </Flex>
@@ -178,7 +228,10 @@ const Result: React.FC = () => {
             {t('result.expenseList')}
           </div>
         </TextSeparator>
-        <ExpenseList />
+        <ExpenseList
+          conversionRate={conversionRate}
+          currencySymbol={currencySymbol}
+        />
         <RemarkText>
           *S: {t('common.text.service')}, V: {t('common.text.vat')}
         </RemarkText>

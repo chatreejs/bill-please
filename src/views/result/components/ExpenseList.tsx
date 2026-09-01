@@ -38,7 +38,10 @@ const ItemChildrenWrapper = styled.div`
   padding-left: 1rem;
 `;
 
-const ExpenseList: React.FC = () => {
+const ExpenseList: React.FC<{
+  conversionRate?: number;
+  currencySymbol?: string;
+}> = ({ conversionRate = 1, currencySymbol = '' }) => {
   const billPayers = useSelector((state: RootState) => state.bill.payers);
   const billItems = useSelector((state: RootState) => state.bill.items);
   const billItemMapping = useSelector(
@@ -148,7 +151,7 @@ const ExpenseList: React.FC = () => {
                         <PayerText>
                           {expense.total <= 0
                             ? 0
-                            : currencyFormat(expense.total)}
+                            : `${currencySymbol} ${currencyFormat(expense.total * conversionRate)}`}
                         </PayerText>
                       </PayerWrapper>
                     );
@@ -162,7 +165,11 @@ const ExpenseList: React.FC = () => {
               if (expense.payerId === payer.id) {
                 return (
                   <>
-                    <ExpenseItemList expense={expense} />
+                    <ExpenseItemList
+                      expense={expense}
+                      conversionRate={conversionRate}
+                      currencySymbol={currencySymbol}
+                    />
                     {expense.friend?.map((friend) => {
                       return (
                         <ItemChildrenWrapper key={friend.payerId}>
@@ -170,10 +177,16 @@ const ExpenseList: React.FC = () => {
                           <PayerWrapper key={payer.id}>
                             <PayerText>{friend.payerName}</PayerText>
                             <PayerText>
-                              {friend.total <= 0 ? 0 : friend.total.toFixed(2)}
+                              {friend.total <= 0
+                                ? 0
+                                : `${currencySymbol} ${currencyFormat(friend.total * conversionRate)}`}
                             </PayerText>
                           </PayerWrapper>
-                          <ExpenseItemList expense={friend} />
+                          <ExpenseItemList
+                            expense={friend}
+                            conversionRate={conversionRate}
+                            currencySymbol={currencySymbol}
+                          />
                         </ItemChildrenWrapper>
                       );
                     })}

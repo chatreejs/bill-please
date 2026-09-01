@@ -23,9 +23,17 @@ const ItemWrapper = styled.div`
 
 interface Props {
   expense: IExpense | IExpenseChildren;
+  conversionRate?: number;
+  currencySymbol?: string;
 }
 
-const ExpenseItemList: React.FC<Props> = ({ expense }) => {
+const ExpenseItemList: React.FC<Props> = ({
+  expense,
+  conversionRate = 1,
+  currencySymbol = '',
+}) => {
+  const fmt = (amount: number) =>
+    `${currencySymbol} ${currencyFormat(amount * conversionRate)}`.trim();
   return (
     <>
       {expense.items.map((item) => {
@@ -37,16 +45,12 @@ const ExpenseItemList: React.FC<Props> = ({ expense }) => {
             </Flex>
             <Flex gap={'6px'} justify="center" align="center">
               {item.itemService > 0 && (
-                <div className="extra-price">
-                  S {currencyFormat(item.itemService)}
-                </div>
+                <div className="extra-price">S {fmt(item.itemService)}</div>
               )}
               {item.itemVat > 0 && (
-                <div className="extra-price">
-                  V {currencyFormat(item.itemVat)}
-                </div>
+                <div className="extra-price">V {fmt(item.itemVat)}</div>
               )}
-              <div>{currencyFormat(item.itemTotalPrice)}</div>
+              <div>{fmt(item.itemTotalPrice)}</div>
             </Flex>
           </ItemWrapper>
         );

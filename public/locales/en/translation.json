@@ -15,6 +15,13 @@
       "quantity": "Quantity"
     }
   },
+  "currency": {
+    "settings": "Currency Settings",
+    "baseCurrency": "Base Currency",
+    "targetCurrency": "Target Currency",
+    "rate": "Rate",
+    "addRate": "Add Exchange Rate"
+  },
   "checkForUpdate": {
     "title": "A new version available",
     "description": "We added lots of new features and fixed some bugs to make your experience as smooth as possible.",
