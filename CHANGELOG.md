@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-09-01
+
+### Added
+
+- Currency and exchange rate support:
+  - Set a base currency for the bill
+  - Add per-bill exchange rates and switch the display currency on the result page
+
+### Changed
+
+- Bump GitHub Actions:
+  - actions/checkout: 6 → 7
+- Upgrade dependencies:
+  - axios: 1.15.0 → 1.18.0
+  - vite: 6.4.2 → 6.4.3
+  - js-yaml: 4.1.1 → 4.3.2
+  - nanoid: 3.3.8 → 3.3.18
+  - fast-uri: 3.0.6 → 3.1.6
+  - form-data: 4.0.5 → 4.0.6
+  - @babel/core: 7.26.9 → 7.29.7
+  - i18next-http-backend: 3.0.2 → 3.0.5
+
 ## [0.8.0] - 2026-04-21
 
 ### Added
@@ -111,6 +133,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Full Changelog**: https://github.com/chatreejs/bill-please/commits/v0.4.5
 
+[0.9.0]: https://github.com/chatreejs/bill-please/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/chatreejs/bill-please/compare/v0.7.3...v0.8.0
 [0.7.3]: https://github.com/chatreejs/bill-please/compare/v0.7.2...v0.7.3
 [0.7.2]: https://github.com/chatreejs/bill-please/compare/v0.7.1...v0.7.2
