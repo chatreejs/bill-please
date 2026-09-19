@@ -1,3 +1,5 @@
+import { faKoFi } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Flex } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -29,6 +31,25 @@ const FooterWrapper = styled.div`
     text-decoration: underline;
     font-weight: 600;
   }
+
+  a.kofi-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+    padding: 0.4rem 0.9rem;
+    background-color: #ff5e5b;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #e94f4c;
+    }
+  }
 `;
 
 const Footer: React.FC = () => {
@@ -51,6 +72,15 @@ const Footer: React.FC = () => {
 
   return (
     <FooterWrapper>
+      <a
+        className="kofi-button"
+        href="https://ko-fi.com/chatreejs"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FontAwesomeIcon icon={faKoFi} />
+        Buy me a coffee
+      </a>
       <span>
         Made with ❤️ by
         <a
