@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.1] - 2026-09-19
+
+### Added
+
+- "Buy me a coffee" Ko-fi button in the footer
+
+### Changed
+
+- Upgrade dependencies:
+  - browserslist: 4.24.4 → 4.28.9
+
+### Fixed
+
+- Backfill the default currency for users created before v0.9.0
+
 ## [0.9.0] - 2026-09-01
 
 ### Added
@@ -136,6 +151,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Full Changelog**: https://github.com/chatreejs/bill-please/commits/v0.4.5
 
+[0.9.1]: https://github.com/chatreejs/bill-please/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/chatreejs/bill-please/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/chatreejs/bill-please/compare/v0.7.3...v0.8.0
 [0.7.3]: https://github.com/chatreejs/bill-please/compare/v0.7.2...v0.7.3
