@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+
+import DebugInfoModal from '../debug-info/DebugInfoModal';
+
+const DEBUG_TAP_COUNT = 10;
+const DEBUG_TAP_TIMEOUT_MS = 500;
 
 interface LogoProps {
   systemName: string;
@@ -11,6 +16,8 @@ const LogoWrapper = styled.div`
   display: flex;
   align-items: center;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 `;
 
 const LogoText = styled.div`
@@ -34,6 +41,21 @@ const EnvBadge = styled.div`
 const Logo: React.FC<LogoProps> = ({ systemName, showEnvBadge = true }) => {
   const env = process.env.VITE_APP_ENV ?? 'local';
   const isProduction = env === 'production';
+  const [isDebugOpen, setIsDebugOpen] = useState(false);
+  const tapCount = useRef(0);
+  const lastTapAt = useRef(0);
+
+  // Rapid taps open the debug modal; a pause longer than the timeout resets.
+  const handleTap = () => {
+    const now = Date.now();
+    tapCount.current =
+      now - lastTapAt.current > DEBUG_TAP_TIMEOUT_MS ? 1 : tapCount.current + 1;
+    lastTapAt.current = now;
+    if (tapCount.current >= DEBUG_TAP_COUNT) {
+      tapCount.current = 0;
+      setIsDebugOpen(true);
+    }
+  };
 
   const getEnvironmentText = (env: string) => {
     switch (env) {
@@ -47,12 +69,18 @@ const Logo: React.FC<LogoProps> = ({ systemName, showEnvBadge = true }) => {
   };
 
   return (
-    <LogoWrapper>
-      <LogoText>{systemName}</LogoText>
-      {!isProduction && showEnvBadge && (
-        <EnvBadge>{getEnvironmentText(env)}</EnvBadge>
-      )}
-    </LogoWrapper>
+    <>
+      <LogoWrapper onClick={handleTap}>
+        <LogoText>{systemName}</LogoText>
+        {!isProduction && showEnvBadge && (
+          <EnvBadge>{getEnvironmentText(env)}</EnvBadge>
+        )}
+      </LogoWrapper>
+      <DebugInfoModal
+        open={isDebugOpen}
+        onClose={() => setIsDebugOpen(false)}
+      />
+    </>
   );
 };
 

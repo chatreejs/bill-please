@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import dayjs from 'dayjs';
+import { getBuildNumber } from '@utils';
 import packageJson from '../../../package.json';
 
 const FooterWrapper = styled.div`
@@ -58,16 +58,6 @@ const Footer: React.FC = () => {
 
   const toggleBuildNumber = () => {
     setIsShowBuildNumber((prev) => !prev);
-  };
-
-  const getBuildNumber = () => {
-    const minutes = dayjs(BUILD_DATE).diff(
-      dayjs(BUILD_DATE).startOf('day'),
-      'minute',
-    );
-    const formattedDate = dayjs(BUILD_DATE).format('YYMMDD');
-    const intervals = Math.floor(minutes / 2);
-    return `${formattedDate}${intervals}`;
   };
 
   return (
