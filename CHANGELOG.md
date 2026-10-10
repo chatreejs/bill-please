@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0] - 2026-10-10
+
+### Added
+
+- Anonymous usage analytics to help improve the app (no bill titles, item or payer names, or PromptPay IDs are sent):
+  - Track progress through the bill flow and feature usage (items, payers, mapping, currency, payment, sharing, language, PWA install and updates)
+  - Report app errors and form validation failures
+- Hidden debug info modal, opened by tapping the Bill Please logo 10 times quickly:
+  - Shows app version, build number, environment, device, OS, browser, screen size, language and timezone
+  - Copy button to paste the details into a bug report
+
+### Changed
+
+- Record a page view on every page instead of only the home page
+- Rename share and download analytics events to the standard GA4 names
+- Upgrade dependencies:
+  - react-router-dom: 6.30.0 → 7.18.4
+  - i18next-http-backend: 3.0.6 → 4.0.2
+  - @babel/core: 7.26.9 → 7.29.7
+  - @babel/plugin-transform-modules-systemjs: 7.25.9 → 7.29.8
+  - browserslist: 4.24.4 → 4.29.0
+  - workbox-build: 7.3.0 → 7.4.1
+  - serialize-javascript: 6.0.2 → 7.1.2
+  - js-yaml: 4.1.0 → 4.3.2
+  - nanoid: 3.3.8 → 3.3.19
+  - fast-uri: 3.0.6 → 3.1.8
+  - flatted: 3.3.3 → 3.4.4
+  - picomatch: 2.3.1 → 2.3.2, 4.0.3 → 4.0.7
+  - minimatch: 3.1.2 → 3.1.5
+  - brace-expansion: 1.1.11 → 1.1.21
+  - source-map-js: 1.2.1 → 1.2.2
+
 ## [0.9.1] - 2026-09-19
 
 ### Added
@@ -151,6 +183,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Full Changelog**: https://github.com/chatreejs/bill-please/commits/v0.4.5
 
+[0.10.0]: https://github.com/chatreejs/bill-please/compare/v0.9.1...v0.10.0
 [0.9.1]: https://github.com/chatreejs/bill-please/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/chatreejs/bill-please/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/chatreejs/bill-please/compare/v0.7.3...v0.8.0
