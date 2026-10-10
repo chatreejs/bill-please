@@ -19,7 +19,7 @@ import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItemForm } from '@interfaces';
 import { addItem, editItem, removeItem } from '@slices';
-import { currencyFormat } from '@utils';
+import { currencyFormat, trackEvent } from '@utils';
 
 const { Text } = Typography;
 
@@ -112,6 +112,11 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
       .validateFields()
       .then(() => {
         const formData = form.getFieldsValue(true) as IBillItemForm;
+        trackEvent(mode === ModalType.Create ? 'item_added' : 'item_edited', {
+          has_service: !!formData.isService,
+          has_vat: !!formData.isVat,
+          quantity: formData.quantity!,
+        });
         if (mode === ModalType.Create) {
           dispatch(
             addItem({
@@ -172,11 +177,12 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
         onClose();
       })
       .catch(() => {
-        return;
+        trackEvent('form_validation_failed', { form: 'item' });
       });
   };
 
   const deleteItem = () => {
+    trackEvent('item_deleted');
     dispatch(removeItem(itemId!));
     onClose();
   };

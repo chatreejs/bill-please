@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { App as AntApp, ConfigProvider, FloatButton } from 'antd';
 import { Suspense, useEffect, useRef, useState } from 'react';
-import ReactGA from 'react-ga4';
 import { Provider } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -17,6 +16,8 @@ import {
   SplashSpinner,
 } from '@components';
 import { AppRoutes, persistor, store } from '@config';
+import { trackError, trackEvent, trackPageView } from '@utils';
+import packageJson from '../package.json';
 
 const MainWrapper = styled.div`
   display: flex;
@@ -62,14 +63,30 @@ const App: React.FC = () => {
   }, [location]);
 
   useEffect(() => {
-    const gaMeasurementId = process.env.VITE_APP_GA_MEASUREMENT_ID;
-    if (gaMeasurementId === undefined) return;
-    ReactGA.initialize(gaMeasurementId);
-    ReactGA.send({
-      hitType: 'page_view',
-      page: '/home',
-      title: 'Home',
+    trackPageView(location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    trackEvent('app_launched', {
+      display_mode: window.matchMedia('(display-mode: standalone)').matches
+        ? 'standalone'
+        : 'browser',
+      app_version: packageJson.version,
     });
+
+    const onAppInstalled = () => trackEvent('app_installed_pwa');
+    const onError = (event: ErrorEvent) =>
+      trackError('window', event.error ?? event.message, true);
+    const onUnhandledRejection = (event: PromiseRejectionEvent) =>
+      trackError('promise', event.reason);
+    window.addEventListener('appinstalled', onAppInstalled);
+    window.addEventListener('error', onError);
+    window.addEventListener('unhandledrejection', onUnhandledRejection);
+    return () => {
+      window.removeEventListener('appinstalled', onAppInstalled);
+      window.removeEventListener('error', onError);
+      window.removeEventListener('unhandledrejection', onUnhandledRejection);
+    };
   }, []);
 
   return (

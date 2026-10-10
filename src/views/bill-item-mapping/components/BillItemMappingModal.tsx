@@ -8,7 +8,7 @@ import { PayerTag } from '@components';
 import { RootState } from '@config';
 import { IPayer } from '@interfaces';
 import { addBillItemMapping, editBillItemMapping } from '@slices';
-import { getColorByName } from '@utils';
+import { getColorByName, trackEvent } from '@utils';
 
 const { Text } = Typography;
 
@@ -60,6 +60,7 @@ const BillItemMappingModal: React.FC<Props> = ({ isOpen, itemId, onClose }) => {
     if (selectedPayerIds.length === allPayerIds.length) {
       setSelectedPayerIds([]);
     } else {
+      trackEvent('mapping_select_all', { payer_count: allPayerIds.length });
       setSelectedPayerIds(allPayerIds);
     }
   };

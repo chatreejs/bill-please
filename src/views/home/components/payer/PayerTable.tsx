@@ -11,6 +11,7 @@ import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IPayer } from '@interfaces';
 import { removeAllPayers, removePayers } from '@slices';
+import { trackEvent } from '@utils';
 import PayerListModal from './PayerListModal';
 
 const PayerTable: React.FC = () => {
@@ -40,6 +41,12 @@ const PayerTable: React.FC = () => {
   };
 
   const deletePayerList = () => {
+    trackEvent('payers_bulk_deleted', {
+      count: selectedRowKeys.length || billPayers.length,
+      is_all:
+        selectedRowKeys.length === 0 ||
+        selectedRowKeys.length === billPayers.length,
+    });
     if (selectedRowKeys.length === 0) {
       dispatch(removeAllPayers());
       setSelectedRowKeys([]);

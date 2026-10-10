@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useBrowserStorage } from '@hooks';
+import { trackError, trackEvent } from '@utils';
 import PromptPayLogo from '/src/assets/images/PromptPay-logo.png';
 import ThaiQRPayment from '/src/assets/images/thai-qr-payment.png';
 
@@ -23,7 +24,7 @@ const PromptPayQRCode: React.FC = () => {
   const [qrCodePayload, setQrCodePayload] = useState<string>();
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
-  const onSubmit = () => {
+  const onSubmit = (isRestored = false) => {
     form
       .validateFields()
       .then(() => {
@@ -32,16 +33,23 @@ const PromptPayQRCode: React.FC = () => {
         setPromptPayId(formData.promptPayId);
         setQrCodePayload(promptPayPayload);
         setIsSubmit(true);
+        trackEvent('promptpay_qr_generated', { is_restored: isRestored });
       })
-      .catch(() => {
-        return;
+      .catch((error: unknown) => {
+        // validateFields rejects with { errorFields }; anything else is a
+        // real failure, e.g. generatePayload throwing on a malformed ID.
+        if (error && typeof error === 'object' && 'errorFields' in error) {
+          trackEvent('form_validation_failed', { form: 'promptpay' });
+        } else {
+          trackError('promptpay', error);
+        }
       });
   };
 
   useEffect(() => {
     if (promptPayId) {
       form.setFieldsValue({ promptPayId });
-      onSubmit();
+      onSubmit(true);
     }
   }, [form]);
 
@@ -65,7 +73,7 @@ const PromptPayQRCode: React.FC = () => {
               </Form.Item>
               <Button
                 type="primary"
-                onClick={onSubmit}
+                onClick={() => onSubmit()}
                 icon={<QrcodeOutlined />}
               ></Button>
             </Flex>
@@ -94,7 +102,10 @@ const PromptPayQRCode: React.FC = () => {
           <span
             className="change-qr-code"
             style={{ fontSize: 12, textDecoration: 'underline' }}
-            onClick={() => setIsSubmit(false)}
+            onClick={() => {
+              trackEvent('promptpay_qr_changed');
+              setIsSubmit(false);
+            }}
           >
             {t('result.payment.qr.changeQRCode')}
           </span>

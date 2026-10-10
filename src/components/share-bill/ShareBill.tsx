@@ -3,13 +3,12 @@ import { Button, Flex } from 'antd';
 import { domToJpeg } from 'modern-screenshot';
 import React, { RefObject } from 'react';
 import { isMobile, isTablet } from 'react-device-detect';
-import ReactGA from 'react-ga4';
 import { useTranslation } from 'react-i18next';
 import { shareOnMobile } from 'react-mobile-share';
 import { useSelector } from 'react-redux';
 
 import { RootState } from '@config';
-import { downloadFile } from '@utils';
+import { downloadFile, trackError, trackEvent } from '@utils';
 interface Props {
   show: boolean;
   elementRef: RefObject<HTMLDivElement | null>;
@@ -20,14 +19,11 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
   const billTitle = useSelector((state: RootState) => state.bill.title);
 
   const onDownload = async () => {
-    ReactGA.event({
-      category: 'Social Links',
-      action: 'download-bill-button',
-      label: 'Download Bill',
-    });
+    trackEvent('bill_image_downloaded');
 
     const result = await convertHtmlToImage();
     if (!result) {
+      trackEvent('share_failed', { method: 'download' });
       return;
     }
     const fileName = `bill-${billTitle.replace(/\s/g, '-')}.jpeg`;
@@ -35,13 +31,13 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
   };
 
   const onShare = async () => {
-    ReactGA.event({
-      category: 'Social Links',
-      action: 'share-bill-button',
-      label: 'Share Bill',
+    trackEvent('share', {
+      method: 'native_share',
+      content_type: 'bill_image',
     });
     const result = await convertHtmlToImage();
     if (!result) {
+      trackEvent('share_failed', { method: 'native_share' });
       return;
     }
 
@@ -52,18 +48,23 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
     });
   };
 
-  const convertHtmlToImage = () => {
+  const convertHtmlToImage = async () => {
     if (!elementRef.current) {
       return;
     }
-    return domToJpeg(elementRef.current, {
-      filter,
-      quality: 1,
-      fetch: {
-        bypassingCache: true,
-      },
-      scale: 4,
-    });
+    try {
+      return await domToJpeg(elementRef.current, {
+        filter,
+        quality: 1,
+        fetch: {
+          bypassingCache: true,
+        },
+        scale: 4,
+      });
+    } catch (error) {
+      trackError('share_image', error);
+      return;
+    }
   };
 
   const filter = (node: Node) => {

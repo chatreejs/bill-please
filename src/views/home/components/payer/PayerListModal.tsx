@@ -11,6 +11,7 @@ import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IPayerForm } from '@interfaces';
 import { addPayer, editPayer, removePayer } from '@slices';
+import { trackEvent } from '@utils';
 
 const FormWrapper = styled.div`
   margin-top: 1rem;
@@ -55,6 +56,9 @@ const PayerListModal: React.FC<Props> = ({
             name: item.name,
           }));
         }
+        trackEvent(mode === ModalType.Create ? 'payer_added' : 'payer_edited', {
+          friend_count: formData.friend.length,
+        });
         if (mode === ModalType.Create) {
           dispatch(addPayer({ ...formData, id: uuidv7() }));
         } else {
@@ -63,11 +67,12 @@ const PayerListModal: React.FC<Props> = ({
         onClose();
       })
       .catch(() => {
-        return;
+        trackEvent('form_validation_failed', { form: 'payer' });
       });
   };
 
   const deletePayer = () => {
+    trackEvent('payer_deleted');
     dispatch(removePayer(payerId!));
     onClose();
   };

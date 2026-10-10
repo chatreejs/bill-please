@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { BillCard, ButtonWrapper, CurrencySettings } from '@components';
 import { RootState } from '@config';
 import { removeAllItems, removeAllPayers, setTitle } from '@slices';
+import { trackEvent } from '@utils';
 import ItemTable from './components/item/ItemTable';
 import PayerTable from './components/payer/PayerTable';
 
@@ -44,10 +45,17 @@ const Home: React.FC = () => {
   ];
 
   const onTabClick = (key: string) => {
+    if (key !== activeTab) {
+      trackEvent('home_tab_switched', { tab: key });
+    }
     setActiveTab(key);
   };
 
   const onResetBill = () => {
+    trackEvent('bill_reset', {
+      item_count: billItems.length,
+      payer_count: billPayers.length,
+    });
     dispatch(setTitle(''));
     dispatch(removeAllItems());
     dispatch(removeAllPayers());
@@ -83,7 +91,12 @@ const Home: React.FC = () => {
             level={3}
             style={{ marginBottom: '0.5rem' }}
             editable={{
-              onChange: (value) => dispatch(setTitle(value)),
+              onChange: (value) => {
+                if (value !== billTitle) {
+                  trackEvent('bill_title_edited');
+                }
+                dispatch(setTitle(value));
+              },
             }}
           >
             {billTitle}
@@ -105,6 +118,13 @@ const Home: React.FC = () => {
             type="primary"
             size="large"
             onClick={() => {
+              trackEvent('bill_step_items_completed', {
+                item_count: billItems.length,
+                payer_count: billPayers.length,
+                has_friends: billPayers.some(
+                  (payer) => (payer.friend?.length ?? 0) > 0,
+                ),
+              });
               navigate('/mapping', {
                 replace: true,
               });

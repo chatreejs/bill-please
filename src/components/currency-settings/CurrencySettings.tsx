@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import { RootState } from '@config';
 import { CURRENCIES } from '@enums';
 import { addExchangeRate, removeExchangeRate, setMainCurrency } from '@slices';
+import { trackEvent } from '@utils';
 
 const StyledCollapse = styled(Collapse)`
   &.ant-collapse-small > .ant-collapse-item > .ant-collapse-header {
@@ -60,6 +61,7 @@ const CurrencySettings: React.FC = () => {
 
   const handleAddRate = () => {
     if (!targetCurrency || !rate) return;
+    trackEvent('exchange_rate_added', { currency: targetCurrency });
     dispatch(addExchangeRate({ currency: targetCurrency, rate }));
     setTargetCurrency(undefined);
     setRate(null);
@@ -76,6 +78,11 @@ const CurrencySettings: React.FC = () => {
     <StyledCollapse
       ghost
       size="small"
+      onChange={(keys) => {
+        if (keys.length > 0) {
+          trackEvent('currency_settings_opened');
+        }
+      }}
       items={[
         {
           key: '1',
@@ -94,7 +101,13 @@ const CurrencySettings: React.FC = () => {
                   size="small"
                   options={currencyOptions}
                   value={mainCurrency}
-                  onChange={(value) => dispatch(setMainCurrency(value))}
+                  onChange={(value) => {
+                    trackEvent('main_currency_changed', {
+                      from: mainCurrency,
+                      to: value,
+                    });
+                    dispatch(setMainCurrency(value));
+                  }}
                   style={{ minWidth: 90 }}
                   showSearch
                   filterOption={(input, option) =>
@@ -113,7 +126,12 @@ const CurrencySettings: React.FC = () => {
                       style={{ cursor: 'default' }}
                       closeIcon={<DeleteOutlined style={{ color: 'red' }} />}
                       closable
-                      onClose={() => dispatch(removeExchangeRate(er.currency))}
+                      onClose={() => {
+                        trackEvent('exchange_rate_removed', {
+                          currency: er.currency,
+                        });
+                        dispatch(removeExchangeRate(er.currency));
+                      }}
                     >
                       1 {mainCurrency} = {er.rate} {er.currency}
                     </Tag>

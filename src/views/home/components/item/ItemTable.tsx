@@ -12,7 +12,7 @@ import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItem } from '@interfaces';
 import { removeAllItems, removeItems } from '@slices';
-import { currencyFormat } from '@utils';
+import { currencyFormat, trackEvent } from '@utils';
 import ItemListModal from './ItemListModal';
 
 const SummaryContainer = styled.div`
@@ -66,6 +66,12 @@ const ItemTable: React.FC = () => {
   };
 
   const deleteItemList = () => {
+    trackEvent('items_bulk_deleted', {
+      count: selectedRowKeys.length || billItems.length,
+      is_all:
+        selectedRowKeys.length === 0 ||
+        selectedRowKeys.length === billItems.length,
+    });
     if (selectedRowKeys.length === 0) {
       dispatch(removeAllItems());
       setSelectedRowKeys([]);

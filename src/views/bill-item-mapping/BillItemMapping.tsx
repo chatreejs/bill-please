@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { BillCard, ButtonWrapper, PayerTag } from '@components';
 import { RootState } from '@config';
-import { getColorByName } from '@utils';
+import { getColorByName, trackEvent } from '@utils';
 import BillItemMappingModal from './components/BillItemMappingModal';
 
 const { Title, Text } = Typography;
@@ -142,6 +142,19 @@ const BillItemMapping: React.FC = () => {
             type="primary"
             size="large"
             onClick={() => {
+              const totalAssigned = billItemMappings.reduce(
+                (sum, mapping) => sum + mapping.payerId.length,
+                0,
+              );
+              trackEvent('bill_step_mapping_completed', {
+                item_count: billItems.length,
+                avg_payers_per_item:
+                  billItemMappings.length > 0
+                    ? Math.round(
+                        (totalAssigned / billItemMappings.length) * 10,
+                      ) / 10
+                    : 0,
+              });
               navigate('/result', { replace: true });
             }}
             disabled={isDisableButton}

@@ -7,6 +7,7 @@ import styled from 'styled-components';
 
 import { useBrowserStorage } from '@hooks';
 import { ILanguage } from '@interfaces';
+import { trackEvent } from '@utils';
 
 const LanguageSwitcherDropdown = styled.div`
   cursor: pointer;
@@ -43,6 +44,10 @@ const LanguageSwitcher: React.FC = () => {
       const browserLanguage = navigator.language.split('-')[0];
       language =
         languages.find((lang) => lang.code === browserLanguage) ?? languages[0];
+      trackEvent('language_detected', {
+        language: language.code,
+        source: 'browser',
+      });
     }
     setSelectedLanguage(language);
     setLanguageStorage(language.code);
@@ -58,6 +63,12 @@ const LanguageSwitcher: React.FC = () => {
           label: lang.name,
           icon: <span className={`fi fi-${lang.countryCode}`}></span>,
           onClick: () => {
+            if (lang.code !== selectedLanguage?.code) {
+              trackEvent('language_changed', {
+                from: selectedLanguage?.code ?? '',
+                to: lang.code,
+              });
+            }
             setSelectedLanguage(lang);
             setLanguageStorage(lang.code);
             void i18n.changeLanguage(lang.code);

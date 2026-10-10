@@ -3,6 +3,8 @@ import { Button } from 'antd';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { trackEvent } from '@utils';
+
 interface BackButtonProps {
   show: boolean;
 }
@@ -16,6 +18,7 @@ const BackButton: React.FC<BackButtonProps> = ({ show }) => {
   const onBack = () => {
     const currentRoute = location.pathname;
     const index = routes.indexOf(currentRoute);
+    trackEvent('navigate_back', { from_page: currentRoute });
     if (index > 0) {
       navigate(routes[index - 1], { replace: true });
     } else if (index === -1) {

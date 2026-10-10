@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { RootState } from '@config';
 import { getCurrencySymbol } from '@enums';
 import { setDisplayCurrency } from '@slices';
-import { currencyFormat } from '@utils';
+import { currencyFormat, getTotalBucket, trackEvent } from '@utils';
 import ExpenseList from './components/ExpenseList';
 import Payment from './components/Payment';
 
@@ -174,6 +174,18 @@ const Result: React.FC = () => {
     setVat(vat);
   }, [billItems]);
 
+  useEffect(() => {
+    const total = billItems.reduce((sum, item) => sum + (item.total ?? 0), 0);
+    trackEvent('bill_result_viewed', {
+      item_count: billItems.length,
+      payer_count: billPayers.length,
+      has_service: billItems.some((item) => (item.service ?? 0) > 0),
+      has_vat: billItems.some((item) => (item.vat ?? 0) > 0),
+      main_currency: mainCurrency,
+      total_bucket: getTotalBucket(total),
+    });
+  }, []);
+
   return (
     <CardWrapper>
       <CardTop>
@@ -188,7 +200,13 @@ const Result: React.FC = () => {
               size="small"
               value={displayCurrency}
               options={displayCurrencyOptions}
-              onChange={(value) => dispatch(setDisplayCurrency(value))}
+              onChange={(value) => {
+                trackEvent('display_currency_changed', {
+                  currency: value,
+                  is_main: value === mainCurrency,
+                });
+                dispatch(setDisplayCurrency(value));
+              }}
               style={{ minWidth: 90 }}
             />
           </Flex>

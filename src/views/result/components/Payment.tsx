@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 import { PaymentMethod } from '@enums';
+import { trackEvent } from '@utils';
 import PromptPayQRCode from './promptpay/PromptPayQRCode';
 import PromptPayLogo from '/src/assets/images/PromptPay-logo.png';
 
@@ -26,6 +27,11 @@ const Payment: React.FC = () => {
     useState<PaymentMethod>(PaymentMethod.None);
 
   const onPaymentMethodSelected = (method: PaymentMethod) => {
+    if (method === PaymentMethod.None) {
+      trackEvent('payment_method_changed');
+    } else {
+      trackEvent('payment_method_selected', { method });
+    }
     setSelectedPaymentMethod(method);
   };
 

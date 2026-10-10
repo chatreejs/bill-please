@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { Modal } from 'antd';
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { IGitHubTag } from '@interfaces';
+import { trackEvent } from '@utils';
 import packageJson from '../../../package.json';
 
 const fetchLatestVersion = async (): Promise<string> => {
@@ -48,13 +49,28 @@ const CheckForUpdate: React.FC = () => {
     ? checkVersion(version, latestVersion)
     : false;
 
+  useEffect(() => {
+    if (isUpdateAvailable) {
+      trackEvent('update_prompt_shown', {
+        current_version: version,
+        latest_version: latestVersion!,
+      });
+    }
+  }, [isUpdateAvailable, version, latestVersion]);
+
   return (
     <Modal
       title={t('checkForUpdate.title')}
       open={isUpdateAvailable}
       centered
       okText={t('checkForUpdate.update')}
-      onOk={() => window.location.reload()}
+      onOk={() => {
+        trackEvent('update_accepted', {
+          current_version: version,
+          latest_version: latestVersion!,
+        });
+        window.location.reload();
+      }}
       closable={false}
       cancelButtonProps={{ style: { display: 'none' } }}
     >

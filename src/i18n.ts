@@ -2,6 +2,8 @@ import i18n from 'i18next';
 import Backend from 'i18next-http-backend';
 import { initReactI18next } from 'react-i18next';
 
+import { trackError } from '@utils';
+
 void i18n
   // load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
   // learn more: https://github.com/i18next/i18next-http-backend
@@ -22,5 +24,9 @@ void i18n
       },
     },
   });
+
+i18n.on('failedLoading', (lng: string, ns: string, msg: string) => {
+  trackError('i18n', `${lng}/${ns}: ${msg}`);
+});
 
 export default i18n;
