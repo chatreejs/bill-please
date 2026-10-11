@@ -12,26 +12,32 @@ const fetchLatestVersion = async (): Promise<string> => {
   const { data } = await axios.get<IGitHubTag[]>(
     'https://api.github.com/repos/chatreejs/bill-please/git/refs/tags',
   );
-  return data[data.length - 1].ref.replace('refs/tags/v', '');
+  // GitHub returns refs sorted lexically (v0.10.0 before v0.9.1),
+  // so pick the highest version instead of the last entry.
+  return data
+    .map((tag) => tag.ref.replace('refs/tags/v', ''))
+    .filter((version) => /^\d+(\.\d+)*$/.test(version))
+    .reduce((latest, version) =>
+      compareVersions(version, latest) > 0 ? version : latest,
+    );
+};
+
+const compareVersions = (a: string, b: string): number => {
+  const aArray = a.split('.').map(Number);
+  const bArray = b.split('.').map(Number);
+  const versionLength = Math.max(aArray.length, bArray.length);
+  for (let i = 0; i < versionLength; i++) {
+    const diff = (aArray[i] || 0) - (bArray[i] || 0);
+    if (diff !== 0) return diff;
+  }
+  return 0;
 };
 
 const checkVersion = (
   currentVersion: string,
   latestVersion: string,
 ): boolean => {
-  const currentVersionArray = currentVersion.split('.').map(Number);
-  const latestVersionArray = latestVersion.split('.').map(Number);
-  const versionLength = Math.max(
-    currentVersionArray.length,
-    latestVersionArray.length,
-  );
-  for (let i = 0; i < versionLength; i++) {
-    const latest = latestVersionArray[i] || 0;
-    const current = currentVersionArray[i] || 0;
-    if (latest > current) return true;
-    if (latest < current) return false;
-  }
-  return false;
+  return compareVersions(latestVersion, currentVersion) > 0;
 };
 
 const CheckForUpdate: React.FC = () => {
@@ -60,7 +66,7 @@ const CheckForUpdate: React.FC = () => {
 
   return (
     <Modal
-      title={t('checkForUpdate.title')}
+      title={t('checkForUpdate.title') + ` (v${version} → v${latestVersion})`}
       open={isUpdateAvailable}
       centered
       okText={t('checkForUpdate.update')}
