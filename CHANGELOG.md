@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.1] - 2026-10-11
+
+### Changed
+
+- Show the current and latest version in the update prompt title
+- Show the "Buy me a coffee" Ko-fi button only on the result page
+
+### Fixed
+
+- Update prompt not appearing for new releases, because the latest version was read from the wrong GitHub tag (e.g. v0.9.1 instead of v0.10.0)
+
 ## [0.10.0] - 2026-10-10
 
 ### Added
@@ -183,6 +194,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Full Changelog**: https://github.com/chatreejs/bill-please/commits/v0.4.5
 
+[0.10.1]: https://github.com/chatreejs/bill-please/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/chatreejs/bill-please/compare/v0.9.1...v0.10.0
 [0.9.1]: https://github.com/chatreejs/bill-please/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/chatreejs/bill-please/compare/v0.8.0...v0.9.0
