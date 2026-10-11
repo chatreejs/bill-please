@@ -22,6 +22,12 @@ const billSlice = createSlice({
         action.payload.vat;
       state.items.push({ ...action.payload, total });
     },
+    addItems(state, action: PayloadAction<IBillItem[]>) {
+      action.payload.forEach((item) => {
+        const total = item.price * item.quantity + item.service + item.vat;
+        state.items.push({ ...item, total });
+      });
+    },
     editItem(state, action: PayloadAction<IBillItem>) {
       const index = state.items.findIndex(
         (item) => item.id === action.payload.id,
@@ -145,6 +151,7 @@ export default billSlice.reducer;
 export const {
   setTitle,
   addItem,
+  addItems,
   editItem,
   removeItem,
   removeItems,

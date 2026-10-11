@@ -36,6 +36,15 @@
         "deleteSelected": "Delete selected item(s)",
         "select": "Select item(s)"
       },
+      "importModal": {
+        "title": "Add from bill",
+        "loading": "Reading your bill, this may take a few seconds...",
+        "description": "Review the items read from your bill and untick any that are wrong.",
+        "empty": "No items found on this bill",
+        "confirm": "Add {{count}} item(s)",
+        "error": "Could not read the bill, please try again",
+        "unavailable": "Bill scanning is unavailable right now"
+      },
       "modal": {
         "form": {
           "delete": "Delete item",
