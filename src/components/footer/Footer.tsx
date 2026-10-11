@@ -2,7 +2,7 @@ import { faKoFi } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Flex } from 'antd';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { getBuildNumber } from '@utils';
@@ -55,6 +55,8 @@ const FooterWrapper = styled.div`
 const Footer: React.FC = () => {
   const [isShowBuildNumber, setIsShowBuildNumber] = useState(false);
   const { version } = packageJson;
+  const { pathname } = useLocation();
+  const isResultPage = pathname === '/result';
 
   const toggleBuildNumber = () => {
     setIsShowBuildNumber((prev) => !prev);
@@ -62,15 +64,17 @@ const Footer: React.FC = () => {
 
   return (
     <FooterWrapper>
-      <a
-        className="kofi-button"
-        href="https://ko-fi.com/chatreejs"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <FontAwesomeIcon icon={faKoFi} />
-        Buy me a coffee
-      </a>
+      {isResultPage && (
+        <a
+          className="kofi-button"
+          href="https://ko-fi.com/chatreejs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FontAwesomeIcon icon={faKoFi} />
+          Buy me a coffee
+        </a>
+      )}
       <span>
         Made with ❤️ by
         <a
