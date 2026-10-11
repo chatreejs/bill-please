@@ -7,3 +7,4 @@ export * from './expense';
 export * from './github';
 export * from './language';
 export * from './payer';
+export * from './receipt';

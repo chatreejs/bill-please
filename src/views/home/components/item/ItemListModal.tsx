@@ -19,7 +19,12 @@ import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItemForm } from '@interfaces';
 import { addItem, editItem, removeItem } from '@slices';
-import { currencyFormat, trackEvent } from '@utils';
+import {
+  calculateService,
+  calculateVat,
+  currencyFormat,
+  trackEvent,
+} from '@utils';
 
 const { Text } = Typography;
 
@@ -57,26 +62,6 @@ const ItemListModal: React.FC<Props> = ({ mode, isOpen, itemId, onClose }) => {
     isService: false,
     vatPercentage: defaultVatPercentage,
     servicePercentage: 10,
-  };
-
-  const calculateService = (
-    price: number,
-    quantity: number,
-    percentage: number,
-  ) => {
-    if (!percentage) return 0;
-    return price * quantity * (percentage / 100);
-  };
-
-  const calculateVat = (
-    price: number,
-    quantity: number,
-    servicePercentage: number,
-    vatPercentage: number,
-  ) => {
-    const service = calculateService(price, quantity, servicePercentage);
-    const vat = (price * quantity + service) * (vatPercentage / 100);
-    return vat;
   };
 
   const onFormValuesChange = (

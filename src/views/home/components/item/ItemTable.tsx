@@ -1,8 +1,9 @@
 import { FileTextOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Flex, Popconfirm, Table } from 'antd';
+import { useQuery } from '@tanstack/react-query';
+import { App, Button, Flex, Popconfirm, Table, Tooltip } from 'antd';
 import Column from 'antd/es/table/Column';
 import { TableRowSelection } from 'antd/es/table/interface';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -11,9 +12,16 @@ import { ActionButtonWrapper, ButtonWrapper, TableCard } from '@components';
 import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { IBillItem } from '@interfaces';
-import { removeAllItems, removeItems } from '@slices';
-import { currencyFormat, trackEvent } from '@utils';
+import { addItems, removeAllItems, removeItems } from '@slices';
+import {
+  checkReceiptApiHealth,
+  currencyFormat,
+  receiptItemToBillItem,
+  scanReceipt,
+  trackEvent,
+} from '@utils';
 import ItemListModal from './ItemListModal';
+import ReceiptImportModal from './ReceiptImportModal';
 
 const SummaryContainer = styled.div`
   margin-bottom: 0.5rem;
@@ -23,6 +31,7 @@ const SummaryContainer = styled.div`
 
 const ItemTable: React.FC = () => {
   const { t } = useTranslation();
+  const { message } = App.useApp();
   const billItems = useSelector((state: RootState) => state.bill.items);
   const dispatch = useDispatch();
 
@@ -32,6 +41,19 @@ const ItemTable: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [modalMode, setModalMode] = useState<ModalType>(ModalType.Create);
   const [selectedItemId, setSelectedItemId] = useState<string>();
+
+  const { isSuccess: isReceiptApiHealthy } = useQuery({
+    queryKey: ['receiptApiHealth'],
+    queryFn: checkReceiptApiHealth,
+    refetchInterval: 60_000,
+    retry: 1,
+  });
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const scanRequestRef = useRef(0);
+  const [isImportModalVisible, setIsImportModalVisible] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
+  const [scannedItems, setScannedItems] = useState<IBillItem[]>([]);
 
   const [total, setTotal] = useState(0);
   const [service, setService] = useState(0);
@@ -92,6 +114,50 @@ const ItemTable: React.FC = () => {
   const closeModal = () => {
     setIsModalVisible(false);
     setSelectedItemId(undefined);
+  };
+
+  const onReceiptSelected = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    // Reset so selecting the same file again still fires onChange
+    event.target.value = '';
+    if (!file) return;
+
+    const requestId = ++scanRequestRef.current;
+    trackEvent('receipt_scan_started');
+    setScannedItems([]);
+    setIsScanning(true);
+    setIsImportModalVisible(true);
+    try {
+      const receiptItems = await scanReceipt(file);
+      // Ignore results from a scan the user already cancelled
+      if (requestId !== scanRequestRef.current) return;
+      trackEvent('receipt_scan_succeeded', { count: receiptItems.length });
+      setScannedItems(receiptItems.map(receiptItemToBillItem));
+    } catch {
+      if (requestId !== scanRequestRef.current) return;
+      trackEvent('receipt_scan_failed');
+      void message.error(t('home.itemList.importModal.error'));
+      setIsImportModalVisible(false);
+    } finally {
+      if (requestId === scanRequestRef.current) setIsScanning(false);
+    }
+  };
+
+  const closeImportModal = () => {
+    scanRequestRef.current++;
+    setIsScanning(false);
+    setIsImportModalVisible(false);
+  };
+
+  const importScannedItems = (items: IBillItem[]) => {
+    trackEvent('receipt_items_imported', {
+      count: items.length,
+      scanned_count: scannedItems.length,
+    });
+    dispatch(addItems(items));
+    closeImportModal();
   };
 
   return (
@@ -206,15 +272,46 @@ const ItemTable: React.FC = () => {
         >
           {t('home.itemList.button.add')}
         </Button>
-        <Button type="dashed" size="large" icon={<FileTextOutlined />} disabled>
-          {t('home.itemList.button.addFromBill')}
-        </Button>
+        <Tooltip
+          title={
+            isReceiptApiHealthy
+              ? undefined
+              : t('home.itemList.importModal.unavailable')
+          }
+        >
+          <Button
+            type="dashed"
+            size="large"
+            icon={<FileTextOutlined />}
+            loading={isScanning}
+            disabled={!isReceiptApiHealthy}
+            onClick={() => fileInputRef.current?.click()}
+            block
+          >
+            {t('home.itemList.button.addFromBill')}
+          </Button>
+        </Tooltip>
+        {/* image/* lets mobile browsers offer both camera and photo library */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={(event) => void onReceiptSelected(event)}
+        />
       </ButtonWrapper>
       <ItemListModal
         mode={modalMode}
         isOpen={isModalVisible}
         itemId={selectedItemId}
         onClose={closeModal}
+      />
+      <ReceiptImportModal
+        isOpen={isImportModalVisible}
+        isLoading={isScanning}
+        items={scannedItems}
+        onConfirm={importScannedItems}
+        onClose={closeImportModal}
       />
     </>
   );
