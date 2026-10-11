@@ -47,6 +47,10 @@ Redux Toolkit + `redux-persist` (key `bp-store`, localStorage). Two slices:
 
 `ExpenseList` (Result page) computes each payer's share by iterating `billPayers`, finding all `IBillItemMapping` entries where that payer (or their friends) are listed, then proportionally splitting item cost (price × quantity), service, and VAT across the assigned payers.
 
+### Receipt import ("Add from bill")
+
+`ItemTable` opens a hidden `<input type="file" accept="image/*">` and sends the photo to the sibling backend **bill-please-mcp** (`../bill-please-mcp`, Bun + Elysia, also an MCP server) via `scanReceipt` in `@utils/receipt.util.ts`: resized to ≤1600px JPEG, `POST {VITE_APP_BILL_PLEASE_MCP_URL}/api/receipts/scan`. The button is disabled unless `GET /health` succeeds (TanStack Query, 60 s refetch). The response (`IReceiptScanResult`, per-item `servicePercentage` / `vatPercentage`) is sanitized by `normalizeReceiptItems`, converted by `receiptItemToBillItem` (`@utils/bill.util.ts`, shares `calculateService` / `calculateVat` with `ItemListModal`), previewed in `ReceiptImportModal`, then appended with the `addItems` action. Keep `src/interfaces/receipt.ts` in sync with the backend's zod schema.
+
 ### Path aliases
 
 Defined in `tsconfig.json` and resolved by `vite-tsconfig-paths`:
