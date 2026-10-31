@@ -6,11 +6,12 @@ import { TableRowSelection } from 'antd/es/table/interface';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { ActionButtonWrapper, ButtonWrapper, TableCard } from '@components';
 import { RootState } from '@config';
 import { ModalType } from '@enums';
+import { useTurnstile } from '@hooks';
 import { IBillItem } from '@interfaces';
 import { addItems, removeAllItems, removeItems } from '@slices';
 import {
@@ -22,6 +23,37 @@ import {
 } from '@utils';
 import ItemListModal from './ItemListModal';
 import ReceiptImportModal from './ReceiptImportModal';
+import TurnstileVerifying from './TurnstileVerifying';
+
+const revealButton = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+`;
+
+const RevealWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  animation: ${revealButton} 0.35s ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+`;
+
+const TurnstileContainer = styled.div`
+  display: flex;
+  justify-content: center;
+
+  &:empty {
+    display: none;
+  }
+`;
 
 const SummaryContainer = styled.div`
   margin-bottom: 0.5rem;
@@ -48,6 +80,13 @@ const ItemTable: React.FC = () => {
     refetchInterval: 60_000,
     retry: 1,
   });
+
+  // Only offer "Add from bill" to visitors who pass Turnstile
+  const {
+    containerRef: turnstileRef,
+    getToken: getTurnstileToken,
+    status: turnstileStatus,
+  } = useTurnstile('receipt_scan');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const scanRequestRef = useRef(0);
@@ -128,9 +167,24 @@ const ItemTable: React.FC = () => {
     trackEvent('receipt_scan_started');
     setScannedItems([]);
     setIsScanning(true);
+
+    // Verify before opening the modal so a managed challenge, if Cloudflare
+    // asks for one, shows under the buttons instead of behind the modal mask
+    let turnstileToken: string | undefined;
+    try {
+      turnstileToken = await getTurnstileToken();
+    } catch {
+      if (requestId !== scanRequestRef.current) return;
+      trackEvent('receipt_scan_failed', { reason: 'turnstile' });
+      void message.error(t('home.itemList.importModal.verifyError'));
+      setIsScanning(false);
+      return;
+    }
+    if (requestId !== scanRequestRef.current) return;
+
     setIsImportModalVisible(true);
     try {
-      const receiptItems = await scanReceipt(file);
+      const receiptItems = await scanReceipt(file, turnstileToken);
       // Ignore results from a scan the user already cancelled
       if (requestId !== scanRequestRef.current) return;
       trackEvent('receipt_scan_succeeded', { count: receiptItems.length });
@@ -272,25 +326,35 @@ const ItemTable: React.FC = () => {
         >
           {t('home.itemList.button.add')}
         </Button>
-        <Tooltip
-          title={
-            isReceiptApiHealthy
-              ? undefined
-              : t('home.itemList.importModal.unavailable')
-          }
-        >
-          <Button
-            type="dashed"
-            size="large"
-            icon={<FileTextOutlined />}
-            loading={isScanning}
-            disabled={!isReceiptApiHealthy}
-            onClick={() => fileInputRef.current?.click()}
-            block
-          >
-            {t('home.itemList.button.addFromBill')}
-          </Button>
-        </Tooltip>
+        {(turnstileStatus === 'verifying' ||
+          turnstileStatus === 'interactive') && (
+          <TurnstileVerifying
+            isInteractive={turnstileStatus === 'interactive'}
+          />
+        )}
+        {turnstileStatus === 'passed' && (
+          <RevealWrapper>
+            <Tooltip
+              title={
+                isReceiptApiHealthy
+                  ? undefined
+                  : t('home.itemList.importModal.unavailable')
+              }
+            >
+              <Button
+                type="dashed"
+                size="large"
+                icon={<FileTextOutlined />}
+                loading={isScanning}
+                disabled={!isReceiptApiHealthy}
+                onClick={() => fileInputRef.current?.click()}
+                block
+              >
+                {t('home.itemList.button.addFromBill')}
+              </Button>
+            </Tooltip>
+          </RevealWrapper>
+        )}
         {/* image/* lets mobile browsers offer both camera and photo library */}
         <input
           ref={fileInputRef}
@@ -300,6 +364,7 @@ const ItemTable: React.FC = () => {
           onChange={(event) => void onReceiptSelected(event)}
         />
       </ButtonWrapper>
+      <TurnstileContainer ref={turnstileRef} />
       <ItemListModal
         mode={modalMode}
         isOpen={isModalVisible}

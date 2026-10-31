@@ -51,8 +51,13 @@ export const checkReceiptApiHealth = async (): Promise<boolean> => {
 
 /**
  * Send a receipt image to bill-please-mcp and get bill items back.
+ * `turnstileToken` is sent as the `cf-turnstile-response` form field, which
+ * the backend checks with Cloudflare's siteverify before running OCR.
  */
-export const scanReceipt = async (image: File): Promise<IReceiptItem[]> => {
+export const scanReceipt = async (
+  image: File,
+  turnstileToken?: string,
+): Promise<IReceiptItem[]> => {
   const apiUrl = getApiUrl();
 
   const resized = await resizeImage(image);
@@ -62,6 +67,9 @@ export const scanReceipt = async (image: File): Promise<IReceiptItem[]> => {
     resized,
     resized === image ? image.name : 'receipt.jpg',
   );
+  if (turnstileToken) {
+    formData.append('cf-turnstile-response', turnstileToken);
+  }
   const { data } = await axios.post<unknown>(
     `${apiUrl}/api/receipts/scan`,
     formData,

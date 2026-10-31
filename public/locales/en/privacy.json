@@ -37,7 +37,7 @@
     {
       "heading": "6. Third-Party Services",
       "body": [
-        "The Service is delivered through, and its source code is hosted on, third-party platforms, and it relies on the third-party analytics service described above. These providers may process limited technical data (such as your IP address and device information) as part of delivering their services, subject to their own privacy policies."
+        "The Service is delivered through, and its source code is hosted on, third-party platforms, and it relies on the third-party analytics service described above. These providers may process limited technical data (such as your IP address and device information) as part of delivering their services, subject to their own privacy policies. To protect the receipt scanning feature from automated abuse, we use Cloudflare Turnstile. It processes technical data from your browser and device, including your IP address, to tell people from bots."
       ]
     },
     {

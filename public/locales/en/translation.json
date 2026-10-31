@@ -43,6 +43,7 @@
         "empty": "No items found on this bill",
         "confirm": "Add {{count}} item(s)",
         "error": "Could not read the bill, please try again",
+        "verifyError": "Could not verify you are human, please try again",
         "unavailable": "Bill scanning is unavailable right now"
       },
       "modal": {
@@ -71,6 +72,10 @@
       "table": {
         "name": "Name",
         "price": "Total Price"
+      },
+      "turnstile": {
+        "verifying": "Verifying you're human",
+        "interactive": "Tap the check below to scan bills"
       }
     },
     "payerList": {

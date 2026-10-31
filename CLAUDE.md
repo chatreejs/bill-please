@@ -51,6 +51,8 @@ Redux Toolkit + `redux-persist` (key `bp-store`, localStorage). Two slices:
 
 `ItemTable` opens a hidden `<input type="file" accept="image/*">` and sends the photo to the sibling backend **bill-please-mcp** (`../bill-please-mcp`, Bun + Elysia, also an MCP server) via `scanReceipt` in `@utils/receipt.util.ts`: resized to ≤1600px JPEG, `POST {VITE_APP_BILL_PLEASE_MCP_URL}/api/receipts/scan`. The button is disabled unless `GET /health` succeeds (TanStack Query, 60 s refetch). The response (`IReceiptScanResult`, per-item `servicePercentage` / `vatPercentage`) is sanitized by `normalizeReceiptItems`, converted by `receiptItemToBillItem` (`@utils/bill.util.ts`, shares `calculateService` / `calculateVat` with `ItemListModal`), previewed in `ReceiptImportModal`, then appended with the `addItems` action. Keep `src/interfaces/receipt.ts` in sync with the backend's zod schema.
 
+Scans are gated by Cloudflare Turnstile: `useTurnstile` (`@hooks`) runs an invisible check when `ItemTable` mounts (a managed challenge, if any, shows under the buttons). The hook exposes `status` (`verifying` / `interactive` / `passed` / `failed`): while verifying, `TurnstileVerifying` shows an animated placeholder in the button slot, and the "Add from bill" button fades in only on `passed`. On `failed` neither shows. Each scan takes the current single-use token via `getToken()`, which starts the next challenge in the background, and `scanReceipt` sends it as the `cf-turnstile-response` form field. With `VITE_APP_TURNSTILE_SITE_KEY` unset the check is skipped and the button always shows.
+
 ### Path aliases
 
 Defined in `tsconfig.json` and resolved by `vite-tsconfig-paths`:
