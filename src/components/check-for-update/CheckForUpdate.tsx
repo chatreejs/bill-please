@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { IGitHubTag } from '@interfaces';
-import { trackEvent } from '@utils';
+import { compareVersions, isNewerVersion, trackEvent } from '@utils';
 import packageJson from '../../../package.json';
 
 const fetchLatestVersion = async (): Promise<string> => {
@@ -22,24 +22,6 @@ const fetchLatestVersion = async (): Promise<string> => {
     );
 };
 
-const compareVersions = (a: string, b: string): number => {
-  const aArray = a.split('.').map(Number);
-  const bArray = b.split('.').map(Number);
-  const versionLength = Math.max(aArray.length, bArray.length);
-  for (let i = 0; i < versionLength; i++) {
-    const diff = (aArray[i] || 0) - (bArray[i] || 0);
-    if (diff !== 0) return diff;
-  }
-  return 0;
-};
-
-const checkVersion = (
-  currentVersion: string,
-  latestVersion: string,
-): boolean => {
-  return compareVersions(latestVersion, currentVersion) > 0;
-};
-
 const CheckForUpdate: React.FC = () => {
   const { version } = packageJson;
   const { t } = useTranslation();
@@ -52,7 +34,7 @@ const CheckForUpdate: React.FC = () => {
   });
 
   const isUpdateAvailable = latestVersion
-    ? checkVersion(version, latestVersion)
+    ? isNewerVersion(version, latestVersion)
     : false;
 
   useEffect(() => {
