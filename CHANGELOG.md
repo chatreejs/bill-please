@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.0] - 2026-11-01
+
+### Added
+
+- Add items from a receipt photo with the "Add from bill" button on the items tab:
+  - Take or pick a photo, and the bill-please-mcp service reads each item's name, price, quantity, service charge and VAT
+  - Review the scanned items in a preview and choose which ones to add to the bill
+  - The button is disabled while the scanning service is unreachable
+- Cloudflare Turnstile bot check before receipt scanning:
+  - Runs in the background when the items tab opens, and asks for a click only when Cloudflare needs one
+  - The "Add from bill" button appears once the check passes
+- Link previews in LINE, Facebook, X and Discord, with a description and preview image
+
+### Changed
+
+- Mention Cloudflare Turnstile in the privacy policy
+
 ## [0.10.1] - 2026-10-11
 
 ### Changed
@@ -194,6 +211,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Full Changelog**: https://github.com/chatreejs/bill-please/commits/v0.4.5
 
+[0.11.0]: https://github.com/chatreejs/bill-please/compare/v0.10.1...v0.11.0
 [0.10.1]: https://github.com/chatreejs/bill-please/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/chatreejs/bill-please/compare/v0.9.1...v0.10.0
 [0.9.1]: https://github.com/chatreejs/bill-please/compare/v0.9.0...v0.9.1
