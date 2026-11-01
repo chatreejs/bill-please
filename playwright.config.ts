@@ -49,13 +49,13 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: `yarn vite --port ${PORT} --strictPort`,
+      command: `bun run vite --port ${PORT} --strictPort`,
       url: `http://localhost:${PORT}`,
       reuseExistingServer: !process.env.CI,
       env: { ...serverEnv, VITE_APP_TURNSTILE_SITE_KEY: '' },
     },
     {
-      command: `yarn vite --port ${TURNSTILE_PORT} --strictPort`,
+      command: `bun run vite --port ${TURNSTILE_PORT} --strictPort`,
       url: `http://localhost:${TURNSTILE_PORT}`,
       reuseExistingServer: !process.env.CI,
       env: { ...serverEnv, VITE_APP_TURNSTILE_SITE_KEY: 'e2e-site-key' },

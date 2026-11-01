@@ -17,7 +17,7 @@ Thank you for taking the time to contribute to our project. Please take a moment
 - Basic familiarity with Git and GitHub: If you are also new to these tools, visit [GitHub for complete beginners](https://developer.mozilla.org/en-US/docs/MDN/Contribute/GitHub_beginners) for a comprehensive introduction to them.
 
 - Make sure you have [Node.js](https://nodejs.org/) installed.
-- Make sure you have [Yarn](https://yarnpkg.com/getting-started/install) installed.
+- Make sure you have [Bun](https://bun.sh/docs/installation) installed.
 
 ---
 
@@ -45,7 +45,7 @@ Follow these steps to setup BillPlease on your local machine
 4. Install all dependencies by running
 
    ```sh
-   yarn install
+   bun install
    ```
 
 5. Create your branch
@@ -57,7 +57,7 @@ Follow these steps to setup BillPlease on your local machine
 6. Run and view the application on localhost
 
    ```sh
-   yarn start
+   bun run start
    ```
 
 7. Make your changes before staging them.

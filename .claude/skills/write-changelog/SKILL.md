@@ -28,12 +28,14 @@ Add a new release section to `CHANGELOG.md` covering every change since the last
 
 - Read each `feat`/`fix` commit body and, if needed, its diff (`git show <sha>`), so entries describe what the user sees, not the commit title.
 - Group related commits into one entry. Skip pure refactors, formatting, CI noise and changelog/version commits.
-- Dependency bumps: take versions from `yarn.lock`, not the Dependabot commit titles (titles can be stale after rebases). Compare with:
+- Dependency bumps: take versions from `bun.lock`, not the Dependabot commit titles (titles can be stale after rebases). Compare with:
 
   ```bash
-  git show <tag>:yarn.lock | grep -A1 '^"\?<pkg>@' | grep '^  version'
-  grep -A1 '^"\?<pkg>@' yarn.lock | grep '^  version'
+  git show <tag>:bun.lock | grep -oE '"(.+/)?<pkg>": \["<pkg>@[^"]+' | sed 's/.*@//'
+  grep -oE '"(.+/)?<pkg>": \["<pkg>@[^"]+' bun.lock | sed 's/.*@//'
   ```
+
+  Tags from before the Bun migration (0.11.0) have `yarn.lock` instead. For those use `git show <tag>:yarn.lock | grep -A1 '^"\?<pkg>@' | grep '^  version'`.
 
   Skip a package whose resolved version did not actually change. If a package resolves to several versions, report the one that moved.
 
@@ -76,6 +78,6 @@ Follow the existing format in `CHANGELOG.md` ([Keep a Changelog](https://keepach
 
 ## 5. Check and report
 
-- Run `yarn prettier --check CHANGELOG.md` (fix with `--write` if needed).
+- Run `bun run prettier --check CHANGELOG.md` (fix with `--write` if needed).
 - Do not commit unless asked.
 - Tell the user the version chosen, a one-line summary per section, and anything that needs their decision (e.g. major dependency jumps, mismatches with older entries).

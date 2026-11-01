@@ -21,7 +21,7 @@
     "preview": "vite preview",
     "check-types": "tsc --noemit",
     "eslint": "eslint",
-    "lint": "yarn eslint; yarn check-types",
+    "lint": "bun run eslint; bun run check-types",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
     "prepare": "husky",
@@ -91,5 +91,5 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.7"
   },
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "bun@1.4.3"
 }

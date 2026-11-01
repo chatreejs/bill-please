@@ -36,7 +36,7 @@ Links to bill-please.chatree.dev showed no preview in LINE, Facebook, X or Disco
 
 Done, size S.
 
-The project had no tests, and the expense calculation in `ExpenseList` breaks most easily. It handles proportional service and VAT and friends, and ideas 4, 5 and 7 all change it. The calculation now lives in `calculateExpenses` and `calculateExpenseItem` in `@utils/expense.util.ts`, and `ExpenseList` only renders the result. Vitest covers it, together with `calculateService` and `calculateVat`, in `expense.util.test.ts`. Run it with `yarn test`.
+The project had no tests, and the expense calculation in `ExpenseList` breaks most easily. It handles proportional service and VAT and friends, and ideas 4, 5 and 7 all change it. The calculation now lives in `calculateExpenses` and `calculateExpenseItem` in `@utils/expense.util.ts`, and `ExpenseList` only renders the result. Vitest covers it, together with `calculateService` and `calculateVat`, in `expense.util.test.ts`. Run it with `bun run test`.
 
 ## Now
 
