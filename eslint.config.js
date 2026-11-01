@@ -35,7 +35,7 @@ export default tseslint.config(
     },
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.json',
+        project: ['./tsconfig.json', './tsconfig.node.json'],
         tsconfigRootDir: dirname(fileURLToPath(import.meta.url)),
         ecmaFeatures: {
           jsx: true,
@@ -48,10 +48,18 @@ export default tseslint.config(
     },
   },
   {
+    // Playwright fixtures call `use()`, which is not a React hook
+    files: ['e2e/**/*.ts'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
+  {
     ignores: [
       'build/*',
       'vite.config.ts',
       'vitest.config.ts',
+      'playwright.config.ts',
       'eslint.config.js',
       'babel.config.js',
       'jest.config.ts',

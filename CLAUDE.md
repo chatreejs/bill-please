@@ -14,9 +14,13 @@ yarn check-types      # tsc --noemit only
 yarn format:write     # prettier auto-fix
 yarn test             # vitest run (unit tests)
 yarn test:watch       # vitest in watch mode
+yarn test:e2e         # playwright e2e tests (starts vite on :3100)
+yarn test:e2e:ui      # playwright UI mode
 ```
 
 Unit tests use Vitest (`vitest.config.ts`, node environment) and live next to the code as `src/**/*.test.ts`. Import the module under test directly (e.g. `./expense.util`) rather than via `@utils`, so the barrel does not pull in browser-only code.
+
+E2E tests use Playwright (`playwright.config.ts`, Pixel 7 Chromium) and live in `e2e/*.spec.ts`; shared steps are in `e2e/helpers.ts`. Import `test` and `expect` from `./fixtures`, not `@playwright/test`. The fixtures stub GitHub (`githubTags`) and the receipt backend (`receiptApi`, at `http://mcp.test`), and block every other external host, so no test reaches the network. The config starts two Vite servers with GA disabled. Port 3100 has no Turnstile site key (project `mobile-chrome`). Port 3101 has one (project `turnstile`), and only `turnstile.spec.ts` runs there, against a fake Cloudflare script. On a new machine, run `yarn playwright install chromium` once.
 
 Commits must follow [Conventional Commits](https://www.conventionalcommits.org/) — enforced by commitlint via husky.
 
