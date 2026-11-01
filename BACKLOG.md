@@ -4,33 +4,35 @@ Planned work and feature ideas for Bill Please. When an idea ships, move it to [
 
 Each idea states the problem, a rough proposal, and the code it would change. Proposals are starting points, not specs.
 
-Every item has a status and a size. The status is idea, exploring, in progress, or parked. Size S fits in an evening, M fits in a weekend, and L needs design or backend work.
+Every item has a status and a size. The status is idea, exploring, in progress, parked, or done. Size S fits in an evening, M fits in a weekend, and L needs design or backend work.
 
-## Now
+## Done, awaiting release
+
+These shipped on `feature/next-0.11.0` and go out in 0.11.0. Move them to the changelog when that release is cut. They keep their numbers because other items refer to them.
 
 ### 1. Receipt upload and auto-fill
 
-In progress, size L.
+Done, size L.
 
-Typing every item from a long receipt is slow and leads to mistakes. The user uploads a receipt photo, and bill-please-mcp runs OCR and an LLM to extract each item's name, price, quantity, service and VAT. The app shows a preview, then appends the items to the bill. The work is on the `feature/bill-please-mcp` branch.
+Typing every item from a long receipt is slow and leads to mistakes. The "Add from bill" button in `ItemTable` sends a receipt photo to bill-please-mcp, which runs OCR and an LLM to extract each item's name, price, quantity, service and VAT. `ReceiptImportModal` shows a preview, then the app appends the items to the bill.
 
-It changes `ItemTable`, `ReceiptImportModal`, `@utils/receipt.util.ts`, `receiptItemToBillItem`, `src/interfaces/receipt.ts` and `../bill-please-mcp`. Keep `src/interfaces/receipt.ts` in sync with the backend zod schema.
+The code is in `ItemTable`, `ReceiptImportModal`, `@utils/receipt.util.ts`, `receiptItemToBillItem`, `src/interfaces/receipt.ts` and `../bill-please-mcp`. Keep `src/interfaces/receipt.ts` in sync with the backend zod schema.
 
 ### 2. Cloudflare Turnstile
 
-Idea, size M. Depends on #1.
+Done, size M.
 
-The receipt scan endpoint is public, and every call costs OCR and LLM usage, so bots can run up the bill. The app shows a Turnstile widget in invisible or managed mode before a scan and sends the token with `POST /api/receipts/scan`. bill-please-mcp checks the token with Cloudflare's `siteverify` API before it runs OCR. The app needs a site key env var such as `VITE_APP_TURNSTILE_SITE_KEY`, and the backend needs the secret key.
+The receipt scan endpoint is public, and every call costs OCR and LLM usage, so bots could run up the bill. `useTurnstile` runs an invisible check when `ItemTable` mounts and falls back to a managed challenge. The "Add from bill" button appears only after the check passes. `scanReceipt` sends the token as the `cf-turnstile-response` form field, and bill-please-mcp checks it with Cloudflare's `siteverify` API before it runs OCR. The app reads the site key from `VITE_APP_TURNSTILE_SITE_KEY` and skips the check when it is unset.
 
-It changes `scanReceipt` in `@utils/receipt.util.ts`, `ItemTable`, the `.env` example and the bill-please-mcp scan route.
+The code is in `useTurnstile`, `TurnstileVerifying`, `ItemTable`, `scanReceipt`, `.env.example` and the bill-please-mcp scan route.
 
 ### 3. OpenGraph
 
-Idea, size S.
+Done, size S.
 
-Links to bill-please.chatree.dev show no preview in LINE, Facebook, X or Discord. `index.html` has only a title and the placeholder description "Bill Please Application". Add the `og:title`, `og:description`, `og:image`, `og:url`, `og:type` and `twitter:card` meta tags, write a real description, and add a 1200×630 preview image to `public/`.
+Links to bill-please.chatree.dev showed no preview in LINE, Facebook, X or Discord. `index.html` now has a real description and the `og:*` and `twitter:*` meta tags, and `public/og-image.png` is the 1200×630 preview image.
 
-It changes `index.html` and `public/`.
+## Now
 
 ### 4. Uneven splits
 
@@ -84,7 +86,7 @@ It changes the routes, `ShareBill` and a new serializer in `@utils`.
 
 ### 10. Smarter receipt import
 
-Idea, size M. Follows #1.
+Idea, size M. Builds on #1.
 
 "Add from bill" fills in items only. A receipt usually also shows the restaurant name, the currency, and bill-level service, VAT and discount. Have bill-please-mcp return these and let the user apply them in `ReceiptImportModal`. Also accept several photos for a long receipt.
 
