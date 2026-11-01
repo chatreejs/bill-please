@@ -1,4 +1,4 @@
-import { FileTextOutlined, PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import { useQuery } from '@tanstack/react-query';
 import { App, Button, Flex, Popconfirm, Table, Tooltip } from 'antd';
 import Column from 'antd/es/table/Column';
@@ -21,6 +21,7 @@ import {
   scanReceipt,
   trackEvent,
 } from '@utils';
+import AiButton from './AiButton';
 import ItemListModal from './ItemListModal';
 import ReceiptImportModal from './ReceiptImportModal';
 import TurnstileVerifying from './TurnstileVerifying';
@@ -341,17 +342,15 @@ const ItemTable: React.FC = () => {
                   : t('home.itemList.importModal.unavailable')
               }
             >
-              <Button
-                type="dashed"
+              <AiButton
                 size="large"
-                icon={<FileTextOutlined />}
                 loading={isScanning}
                 disabled={!isReceiptApiHealthy}
                 onClick={() => fileInputRef.current?.click()}
                 block
               >
                 {t('home.itemList.button.addFromBill')}
-              </Button>
+              </AiButton>
             </Tooltip>
           </RevealWrapper>
         )}
