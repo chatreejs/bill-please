@@ -51,6 +51,7 @@ export default tseslint.config(
     ignores: [
       'build/*',
       'vite.config.ts',
+      'vitest.config.ts',
       'eslint.config.js',
       'babel.config.js',
       'jest.config.ts',

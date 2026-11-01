@@ -10,9 +10,11 @@ npm run build      # tsc + vite build → build/
 npm run lint       # eslint + tsc type-check
 npm run check-types  # tsc --noemit only
 npm run format:write # prettier auto-fix
+npm test           # vitest run (unit tests)
+npm run test:watch # vitest in watch mode
 ```
 
-There are no tests in this project.
+Unit tests use Vitest (`vitest.config.ts`, node environment) and live next to the code as `src/**/*.test.ts`. Import the module under test directly (e.g. `./expense.util`) rather than via `@utils`, so the barrel does not pull in browser-only code.
 
 Commits must follow [Conventional Commits](https://www.conventionalcommits.org/) — enforced by commitlint via husky.
 
@@ -45,7 +47,7 @@ Redux Toolkit + `redux-persist` (key `bp-store`, localStorage). Two slices:
 
 ### Expense calculation
 
-`ExpenseList` (Result page) computes each payer's share by iterating `billPayers`, finding all `IBillItemMapping` entries where that payer (or their friends) are listed, then proportionally splitting item cost (price × quantity), service, and VAT across the assigned payers.
+`calculateExpenses` (`@utils/expense.util.ts`, rendered by `ExpenseList` on the Result page) computes each payer's share by iterating `billPayers`, finding all `IBillItemMapping` entries where that payer (or their friends) are listed, then proportionally splitting item cost (price × quantity), service, and VAT across the assigned payers.
 
 ### Receipt import ("Add from bill")
 

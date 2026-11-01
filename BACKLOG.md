@@ -32,6 +32,12 @@ Done, size S.
 
 Links to bill-please.chatree.dev showed no preview in LINE, Facebook, X or Discord. `index.html` now has a real description and the `og:*` and `twitter:*` meta tags, and `public/og-image.png` is the 1200×630 preview image.
 
+### 15. Tests for the split math
+
+Done, size S.
+
+The project had no tests, and the expense calculation in `ExpenseList` breaks most easily. It handles proportional service and VAT and friends, and ideas 4, 5 and 7 all change it. The calculation now lives in `calculateExpenses` and `calculateExpenseItem` in `@utils/expense.util.ts`, and `ExpenseList` only renders the result. Vitest covers it, together with `calculateService` and `calculateVat`, in `expense.util.test.ts`. Run it with `npm test`.
+
 ## Now
 
 ### 4. Uneven splits
@@ -125,12 +131,6 @@ Idea, size S.
 The app supports only English and Thai. Add each language as `public/locales/{lang}/translation.json` and register it in the language switcher.
 
 ## Tech debt
-
-### 15. Tests for the split math
-
-Idea, size S.
-
-The project has no tests, and the expense calculation in `ExpenseList` breaks most easily. It handles proportional service and VAT, friends, and currency conversion, and ideas 4, 5 and 7 all change it. Move the calculation out of `ExpenseList` into a pure function in `@utils` and cover it with Vitest before building on it.
 
 ### 16. Store migrations
 

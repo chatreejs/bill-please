@@ -1,16 +1,10 @@
 import { Collapse, Divider } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { RootState } from '@config';
-import {
-  IBillItemMapping,
-  IExpense,
-  IExpenseChildren,
-  IExpenseItem,
-} from '@interfaces';
-import { currencyFormat } from '@utils';
+import { calculateExpenses, currencyFormat } from '@utils';
 import ExpenseItemList from './expense/ExpenseItemList';
 
 const StyledCollapse = styled(Collapse)`
@@ -48,85 +42,10 @@ const ExpenseList: React.FC<{
     (state: RootState) => state.bill.itemMapping,
   );
 
-  const [expenseList, setExpenseList] = useState<IExpense[]>([]);
-
-  const calculateExpenseList = () => {
-    const expenseList: IExpense[] = [];
-
-    billPayers.forEach((payer) => {
-      const expense: IExpense = {
-        payerId: payer.id,
-        total: 0,
-        items: [],
-        friend: [],
-      };
-      const items = billItemMapping.filter((mapping) =>
-        mapping.payerId.includes(payer.id),
-      );
-
-      items.forEach((item) => {
-        const expenseItem = calculateExpanse(item);
-        if (!expenseItem) return;
-
-        expense.total += expenseItem.itemTotalPrice;
-        expense.items.push(expenseItem);
-      });
-
-      const friendIds = payer.friend?.map((friend) => friend.id);
-      friendIds?.forEach((friendId) => {
-        const friendExpense: IExpenseChildren = {
-          payerId: friendId,
-          payerName:
-            payer.friend?.find((friend) => friend.id === friendId)?.name ?? '',
-          total: 0,
-          items: [],
-        };
-        const friendItems = billItemMapping.filter((mapping) =>
-          mapping.payerId.includes(friendId),
-        );
-
-        friendItems.forEach((item) => {
-          const expenseItem = calculateExpanse(item);
-          if (!expenseItem) return;
-
-          friendExpense.total += expenseItem.itemTotalPrice;
-          friendExpense.items.push(expenseItem);
-        });
-        expense.friend?.push(friendExpense);
-        expense.total += friendExpense.total;
-      });
-      expenseList.push(expense);
-    });
-    setExpenseList(expenseList);
-  };
-
-  const calculateExpanse = (item: IBillItemMapping) => {
-    const billItem = billItems.find((billItem) => billItem.id === item.itemId);
-
-    if (!billItem) return;
-
-    const payerCount = item.payerId.length;
-    const itemQuantity = billItem.quantity / payerCount;
-    const total = billItem.total! / payerCount;
-    const service = billItem.service / payerCount;
-    const vat = billItem.vat / payerCount;
-    const expenseItem: IExpenseItem = {
-      itemName: billItem.name,
-      itemQuantity: itemQuantity,
-      itemService: service,
-      itemVat: vat,
-      itemTotalPrice: total,
-    };
-    return expenseItem;
-  };
-
-  useEffect(() => {
-    calculateExpenseList();
-
-    return () => {
-      setExpenseList([]);
-    };
-  }, []);
+  const expenseList = useMemo(
+    () => calculateExpenses(billPayers, billItems, billItemMapping),
+    [billPayers, billItems, billItemMapping],
+  );
 
   return (
     <StyledCollapse

@@ -11,7 +11,7 @@ const useBrowserStorage = <T,>(
     const item = storage.getItem(key);
     try {
       return item ? (JSON.parse(item) as T) : initialValue;
-    } catch (error: unknown) {
+    } catch {
       console.warn(
         `Failed to parse stored value for key: ${key}.\nContinuing with default value.`,
       );
@@ -30,7 +30,7 @@ const useBrowserStorage = <T,>(
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
       storage.setItem(key, JSON.stringify(valueToStore));
-    } catch (error) {
+    } catch {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       console.error(`Failed to store value '${value}' for key: ${key}.`);
     }
@@ -45,7 +45,7 @@ const useBrowserStorage = <T,>(
         } else {
           try {
             setStoredValue(JSON.parse(event.newValue ?? '') as T);
-          } catch (error: unknown) {
+          } catch {
             console.error(
               `Failed to handle storageEvent's newValue='${event.newValue}' for key '${key}'`,
             );

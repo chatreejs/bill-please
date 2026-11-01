@@ -45,30 +45,30 @@ const parseBrowser = (ua: string) => {
 };
 
 const parseOS = (ua: string) => {
-  let match = ua.match(/(?:iPhone|CPU) OS ([\d_]+)/);
+  let match = /(?:iPhone|CPU) OS ([\d_]+)/.exec(ua);
   if (match) return `iOS ${match[1].replace(/_/g, '.')}`;
-  match = ua.match(/Android ([\d.]+)/);
+  match = /Android ([\d.]+)/.exec(ua);
   if (match) return `Android ${match[1]}`;
-  match = ua.match(/Windows NT ([\d.]+)/);
+  match = /Windows NT ([\d.]+)/.exec(ua);
   if (match) return `Windows NT ${match[1]}`;
-  match = ua.match(/Mac OS X ([\d_]+)/);
+  match = /Mac OS X ([\d_]+)/.exec(ua);
   if (match) return `macOS ${match[1].replace(/_/g, '.')}`;
-  if (/CrOS/.test(ua)) return 'ChromeOS';
-  if (/Linux/.test(ua)) return 'Linux';
+  if (ua.includes('CrOS')) return 'ChromeOS';
+  if (ua.includes('Linux')) return 'Linux';
   return 'Unknown';
 };
 
 const parseDevice = (ua: string) => {
-  if (/iPad/.test(ua)) return 'iPad';
-  if (/iPhone/.test(ua)) return 'iPhone';
+  if (ua.includes('iPad')) return 'iPad';
+  if (ua.includes('iPhone')) return 'iPhone';
   // iPadOS reports itself as macOS; tell them apart by touch support.
-  if (/Macintosh/.test(ua)) {
+  if (ua.includes('Macintosh')) {
     return navigator.maxTouchPoints > 1 ? 'iPad' : 'Mac';
   }
-  const android = ua.match(/Android [\d.]+; ([^;)]+?)(?: Build\/[^;)]*)?\)/);
+  const android = /Android [\d.]+; ([^;)]+?)(?: Build\/[^;)]*)?\)/.exec(ua);
   if (android && android[1] !== 'K') return android[1].trim();
-  if (/Android/.test(ua)) return 'Android device';
-  if (/Windows/.test(ua)) return 'Windows PC';
+  if (ua.includes('Android')) return 'Android device';
+  if (ua.includes('Windows')) return 'Windows PC';
   return 'Unknown';
 };
 
