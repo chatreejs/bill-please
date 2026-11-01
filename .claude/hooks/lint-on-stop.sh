@@ -11,7 +11,7 @@ if [[ -z "$CHANGED_FILES" ]]; then
   exit 0
 fi
 
-OUTPUT=$(echo "$CHANGED_FILES" | xargs npx eslint 2>&1) || {
+OUTPUT=$(echo "$CHANGED_FILES" | xargs yarn --silent eslint 2>&1) || {
   echo "$OUTPUT" >&2
   echo "ESLint failed on changed src/ files." >&2
   exit 2

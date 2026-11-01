@@ -76,6 +76,6 @@ Follow the existing format in `CHANGELOG.md` ([Keep a Changelog](https://keepach
 
 ## 5. Check and report
 
-- Run `npx prettier --check CHANGELOG.md` (fix with `--write` if needed).
+- Run `yarn prettier --check CHANGELOG.md` (fix with `--write` if needed).
 - Do not commit unless asked.
 - Tell the user the version chosen, a one-line summary per section, and anything that needs their decision (e.g. major dependency jumps, mismatches with older entries).

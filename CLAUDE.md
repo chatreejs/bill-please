@@ -4,14 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
+The project uses **Yarn 1** only — do not use npm or commit a `package-lock.json`.
+
 ```bash
-npm start          # dev server on localhost:3000
-npm run build      # tsc + vite build → build/
-npm run lint       # eslint + tsc type-check
-npm run check-types  # tsc --noemit only
-npm run format:write # prettier auto-fix
-npm test           # vitest run (unit tests)
-npm run test:watch # vitest in watch mode
+yarn start            # dev server on localhost:3000
+yarn build            # tsc + vite build → build/
+yarn lint             # eslint + tsc type-check
+yarn check-types      # tsc --noemit only
+yarn format:write     # prettier auto-fix
+yarn test             # vitest run (unit tests)
+yarn test:watch       # vitest in watch mode
 ```
 
 Unit tests use Vitest (`vitest.config.ts`, node environment) and live next to the code as `src/**/*.test.ts`. Import the module under test directly (e.g. `./expense.util`) rather than via `@utils`, so the barrel does not pull in browser-only code.
