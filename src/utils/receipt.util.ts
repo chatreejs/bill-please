@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { IReceiptItem } from '@interfaces';
+import { IReceiptItem, IReceiptScannerStatus } from '@interfaces';
 import { normalizeReceiptItems } from './bill.util';
 
 const MAX_IMAGE_DIMENSION = 1600;
@@ -42,12 +42,21 @@ const getApiUrl = (): string => {
 };
 
 /**
- * Check that bill-please-mcp is reachable, throws when it is not.
+ * Get the scanner status from bill-please-mcp, throws when it is unreachable.
+ * `busy` is true while the server's LLM queue is full.
  */
-export const checkReceiptApiHealth = async (): Promise<boolean> => {
-  await axios.get(`${getApiUrl()}/health`, { timeout: 5_000 });
-  return true;
-};
+export const getReceiptScannerStatus =
+  async (): Promise<IReceiptScannerStatus> => {
+    const { data } = await axios.get<IReceiptScannerStatus>(
+      `${getApiUrl()}/api/receipts/status`,
+      { timeout: 5_000 },
+    );
+    return data;
+  };
+
+/** The server answered 503 because its LLM queue is full */
+export const isReceiptScannerBusyError = (error: unknown): boolean =>
+  axios.isAxiosError(error) && error.response?.status === 503;
 
 /**
  * Send a receipt image to bill-please-mcp and get bill items back.

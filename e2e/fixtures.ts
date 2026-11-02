@@ -3,8 +3,10 @@ import { test as base, expect, Route } from '@playwright/test';
 export const MOCK_MCP_URL = 'http://mcp.test';
 
 export interface ReceiptApi {
-  /** Make GET /health succeed or fail */
+  /** Make GET /api/receipts/status succeed or fail */
   setHealthy: (healthy: boolean) => void;
+  /** Report the LLM queue as full (busy) or with room */
+  setBusy: (busy: boolean) => void;
   /** Respond to the next scans with this handler */
   onScan: (handler: (route: Route) => Promise<void> | void) => void;
 }
@@ -40,12 +42,13 @@ export const test = base.extend<{
   receiptApi: [
     async ({ context }, use) => {
       let healthy = false;
+      let busy = false;
       let scanHandler: (route: Route) => Promise<void> | void = (route) =>
         route.fulfill({ status: 500 });
 
-      await context.route(`${MOCK_MCP_URL}/health`, (route) =>
+      await context.route(`${MOCK_MCP_URL}/api/receipts/status`, (route) =>
         healthy
-          ? route.fulfill({ json: { status: 'ok' } })
+          ? route.fulfill({ json: { status: 'ok', busy } })
           : route.fulfill({ status: 503 }),
       );
       await context.route(`${MOCK_MCP_URL}/api/receipts/scan`, (route) =>
@@ -53,6 +56,7 @@ export const test = base.extend<{
       );
       await use({
         setHealthy: (next) => (healthy = next),
+        setBusy: (next) => (busy = next),
         onScan: (handler) => (scanHandler = handler),
       });
     },

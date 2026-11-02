@@ -15,8 +15,9 @@ import { useTurnstile } from '@hooks';
 import { IBillItem } from '@interfaces';
 import { addItems, removeAllItems, removeItems } from '@slices';
 import {
-  checkReceiptApiHealth,
   currencyFormat,
+  getReceiptScannerStatus,
+  isReceiptScannerBusyError,
   receiptItemToBillItem,
   scanReceipt,
   trackEvent,
@@ -44,6 +45,17 @@ const RevealWrapper = styled.div`
 
   @media (prefers-reduced-motion: reduce) {
     animation: none;
+  }
+`;
+
+// A disabled button fires no mouse events, so the Tooltip attaches to this wrapper.
+// pointer-events: none on the button lets taps and hovers reach it.
+const TooltipTarget = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & > button:disabled {
+    pointer-events: none;
   }
 `;
 
@@ -75,12 +87,19 @@ const ItemTable: React.FC = () => {
   const [modalMode, setModalMode] = useState<ModalType>(ModalType.Create);
   const [selectedItemId, setSelectedItemId] = useState<string>();
 
-  const { isSuccess: isReceiptApiHealthy } = useQuery({
-    queryKey: ['receiptApiHealth'],
-    queryFn: checkReceiptApiHealth,
-    refetchInterval: 60_000,
+  // Poll so the button re-enables without a page reload once the server's LLM
+  // queue has room again. TanStack Query pauses the interval while the tab is hidden.
+  const {
+    data: scannerStatus,
+    isSuccess: isReceiptApiHealthy,
+    refetch: refetchScannerStatus,
+  } = useQuery({
+    queryKey: ['receiptScannerStatus'],
+    queryFn: getReceiptScannerStatus,
+    refetchInterval: 5_000,
     retry: 1,
   });
+  const isReceiptScannerBusy = scannerStatus?.busy === true;
 
   // Only offer "Add from bill" to visitors who pass Turnstile
   const {
@@ -190,10 +209,21 @@ const ItemTable: React.FC = () => {
       if (requestId !== scanRequestRef.current) return;
       trackEvent('receipt_scan_succeeded', { count: receiptItems.length });
       setScannedItems(receiptItems.map(receiptItemToBillItem));
-    } catch {
+    } catch (error) {
       if (requestId !== scanRequestRef.current) return;
-      trackEvent('receipt_scan_failed');
-      void message.error(t('home.itemList.importModal.error'));
+      const isBusy = isReceiptScannerBusyError(error);
+      trackEvent(
+        'receipt_scan_failed',
+        isBusy ? { reason: 'busy' } : undefined,
+      );
+      void message.error(
+        t(
+          isBusy
+            ? 'home.itemList.importModal.busy'
+            : 'home.itemList.importModal.error',
+        ),
+      );
+      if (isBusy) void refetchScannerStatus();
       setIsImportModalVisible(false);
     } finally {
       if (requestId === scanRequestRef.current) setIsScanning(false);
@@ -337,20 +367,24 @@ const ItemTable: React.FC = () => {
           <RevealWrapper>
             <Tooltip
               title={
-                isReceiptApiHealthy
-                  ? undefined
-                  : t('home.itemList.importModal.unavailable')
+                !isReceiptApiHealthy
+                  ? t('home.itemList.importModal.unavailable')
+                  : isReceiptScannerBusy && !isScanning
+                    ? t('home.itemList.importModal.busy')
+                    : undefined
               }
             >
-              <AiButton
-                size="large"
-                loading={isScanning}
-                disabled={!isReceiptApiHealthy}
-                onClick={() => fileInputRef.current?.click()}
-                block
-              >
-                {t('home.itemList.button.addFromBill')}
-              </AiButton>
+              <TooltipTarget data-testid="add-from-bill-target">
+                <AiButton
+                  size="large"
+                  loading={isScanning}
+                  disabled={!isReceiptApiHealthy || isReceiptScannerBusy}
+                  onClick={() => fileInputRef.current?.click()}
+                  block
+                >
+                  {t('home.itemList.button.addFromBill')}
+                </AiButton>
+              </TooltipTarget>
             </Tooltip>
           </RevealWrapper>
         )}

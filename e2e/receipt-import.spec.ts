@@ -40,6 +40,26 @@ test('button is disabled when the scan service is down', async ({
   await expect(addFromBill(page)).toBeDisabled();
 });
 
+test('button waits while the AI is busy and turns on without a reload', async ({
+  page,
+  receiptApi,
+}) => {
+  receiptApi.setHealthy(true);
+  receiptApi.setBusy(true);
+  await page.goto('/');
+  await expect(addFromBill(page)).toBeDisabled();
+  // Phones open the tooltip on tap. The disabled button has pointer-events: none,
+  // so the tap reaches the wrapper that holds the tooltip
+  await page.getByTestId('add-from-bill-target').tap();
+  await expect(
+    page.getByText('AI is working hard, please wait a moment'),
+  ).toBeVisible();
+
+  receiptApi.setBusy(false);
+  // The status poll runs every 5 s
+  await expect(addFromBill(page)).toBeEnabled({ timeout: 10_000 });
+});
+
 test.describe('with the scan service up', () => {
   test.beforeEach(async ({ page, receiptApi }) => {
     receiptApi.setHealthy(true);
