@@ -42,7 +42,7 @@ The project had no tests, and the expense calculation in `ExpenseList` breaks mo
 
 ### 4. Uneven splits
 
-Idea, size M.
+In progress, size M.
 
 The app splits every item equally between the payers mapped to it, so it can't express one person eating two slices of a shared pizza. Give each payer in a mapping a weight that defaults to 1, so a pizza could split 2, 1, 1. A later step could allow a fixed amount per payer.
 
