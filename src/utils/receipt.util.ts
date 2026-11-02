@@ -1,10 +1,6 @@
 import axios from 'axios';
 
-import {
-  IReceiptItem,
-  IReceiptScannerStatus,
-  IReceiptScanProgress,
-} from '@interfaces';
+import { IReceiptItem, IReceiptScanProgress } from '@interfaces';
 import { normalizeReceiptItems } from './bill.util';
 
 const MAX_IMAGE_DIMENSION = 1600;
@@ -46,17 +42,17 @@ const getApiUrl = (): string => {
 };
 
 /**
- * Get the scanner status from bill-please-mcp, throws when it is unreachable.
- * `busy` is true while the server's LLM queue is full.
+ * The URL of the scanner status stream on bill-please-mcp, or undefined when
+ * the API URL is not set. EventSource sends `Accept: text/event-stream`, so
+ * the server answers with a `status` event now and another each time its LLM
+ * queue changes. `busy` is true while that queue is full.
  */
-export const getReceiptScannerStatus =
-  async (): Promise<IReceiptScannerStatus> => {
-    const { data } = await axios.get<IReceiptScannerStatus>(
-      `${getApiUrl()}/api/receipts/status`,
-      { timeout: 5_000 },
-    );
-    return data;
-  };
+export const getReceiptScannerStatusUrl = (): string | undefined => {
+  const apiUrl = process.env.VITE_APP_BILL_PLEASE_MCP_URL;
+  return apiUrl
+    ? `${apiUrl.replace(/\/$/, '')}/api/receipts/status`
+    : undefined;
+};
 
 export type ReceiptScanFailureReason =
   | 'busy'

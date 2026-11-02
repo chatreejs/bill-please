@@ -64,8 +64,8 @@ test('button waits while the AI is busy and turns on without a reload', async ({
   ).toBeVisible();
 
   receiptApi.setBusy(false);
-  // The status poll runs every 5 s
-  await expect(addFromBill(page)).toBeEnabled({ timeout: 10_000 });
+  // The server pushes the change on the open status stream
+  await expect(addFromBill(page)).toBeEnabled();
 });
 
 test.describe('with the scan service up', () => {

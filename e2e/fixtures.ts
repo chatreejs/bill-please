@@ -3,7 +3,7 @@ import { test as base, expect, Route } from '@playwright/test';
 export const MOCK_MCP_URL = 'http://mcp.test';
 
 export interface ReceiptApi {
-  /** Make GET /api/receipts/status succeed or fail */
+  /** Make the GET /api/receipts/status stream succeed or fail */
   setHealthy: (healthy: boolean) => void;
   /** Report the LLM queue as full (busy) or with room */
   setBusy: (busy: boolean) => void;
@@ -46,9 +46,14 @@ export const test = base.extend<{
       let scanHandler: (route: Route) => Promise<void> | void = (route) =>
         route.fulfill({ status: 500 });
 
+      // route.fulfill can't stream, so each answer is one status event that ends.
+      // EventSource then reconnects after `retry` ms and gets the current state
       await context.route(`${MOCK_MCP_URL}/api/receipts/status`, (route) =>
         healthy
-          ? route.fulfill({ json: { status: 'ok', busy } })
+          ? route.fulfill({
+              contentType: 'text/event-stream',
+              body: `retry: 500\n\nevent: status\ndata: ${JSON.stringify({ status: 'ok', busy })}\n\n`,
+            })
           : route.fulfill({ status: 503 }),
       );
       await context.route(`${MOCK_MCP_URL}/api/receipts/scan`, (route) =>

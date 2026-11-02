@@ -8,7 +8,10 @@ export interface IReceiptItem {
   vatPercentage?: number;
 }
 
-/** GET /api/receipts/status: how busy the receipt scanner's LLM queue is */
+/**
+ * How busy the receipt scanner's LLM queue is. GET /api/receipts/status
+ * answers it as JSON, or as each `status` event of its Server-Sent Events stream
+ */
 export interface IReceiptScannerStatus {
   status: 'ok';
   /** A new scan would be rejected right now, because the LLM queue is full */

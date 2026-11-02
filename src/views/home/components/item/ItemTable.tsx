@@ -1,5 +1,4 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { useQuery } from '@tanstack/react-query';
 import { App, Button, Flex, Popconfirm, Table, Tooltip } from 'antd';
 import Column from 'antd/es/table/Column';
 import { TableRowSelection } from 'antd/es/table/interface';
@@ -11,13 +10,12 @@ import styled, { keyframes } from 'styled-components';
 import { ActionButtonWrapper, ButtonWrapper, TableCard } from '@components';
 import { RootState } from '@config';
 import { ModalType } from '@enums';
-import { useTurnstile } from '@hooks';
+import { useReceiptScannerStatus, useTurnstile } from '@hooks';
 import { IBillItem, IReceiptScanProgress } from '@interfaces';
 import { addItems, removeAllItems, removeItems } from '@slices';
 import {
   currencyFormat,
   getReceiptScanFailureReason,
-  getReceiptScannerStatus,
   receiptItemToBillItem,
   scanReceipt,
   trackEvent,
@@ -87,18 +85,10 @@ const ItemTable: React.FC = () => {
   const [modalMode, setModalMode] = useState<ModalType>(ModalType.Create);
   const [selectedItemId, setSelectedItemId] = useState<string>();
 
-  // Poll so the button re-enables without a page reload once the server's LLM
-  // queue has room again. TanStack Query pauses the interval while the tab is hidden.
-  const {
-    data: scannerStatus,
-    isSuccess: isReceiptApiHealthy,
-    refetch: refetchScannerStatus,
-  } = useQuery({
-    queryKey: ['receiptScannerStatus'],
-    queryFn: getReceiptScannerStatus,
-    refetchInterval: 5_000,
-    retry: 1,
-  });
+  // The server pushes each change of its LLM queue, so the button re-enables
+  // without a page reload as soon as the queue has room again
+  const { status: scannerStatus, isHealthy: isReceiptApiHealthy } =
+    useReceiptScannerStatus();
   const isReceiptScannerBusy = scannerStatus?.busy === true;
 
   // Only offer "Add from bill" to visitors who pass Turnstile
@@ -118,7 +108,7 @@ const ItemTable: React.FC = () => {
       active: scannerStatus?.queue?.active ?? 0,
       waiting: scannerStatus?.queue?.waiting ?? 0,
     });
-    // Track the change to busy, not every poll that repeats it
+    // Track the change to busy, not every status event that repeats it
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isReceiptScannerBusy, turnstileStatus]);
 
@@ -256,7 +246,6 @@ const ItemTable: React.FC = () => {
             : 'home.itemList.importModal.error',
         ),
       );
-      if (isBusy) void refetchScannerStatus();
       setIsImportModalVisible(false);
     } finally {
       if (requestId === scanRequestRef.current) setIsScanning(false);
