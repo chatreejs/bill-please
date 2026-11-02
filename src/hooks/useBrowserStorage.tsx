@@ -29,6 +29,7 @@ const useBrowserStorage = <T,>(
     try {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
+      setStoredValue(valueToStore);
       storage.setItem(key, JSON.stringify(valueToStore));
     } catch {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
