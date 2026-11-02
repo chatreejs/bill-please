@@ -58,7 +58,20 @@ Redux Toolkit + `redux-persist` (key `bp-store`, localStorage). Two slices:
 
 ### Receipt import ("Add from bill")
 
-`ItemTable` opens a hidden `<input type="file" accept="image/*">` and sends the photo to the sibling backend **bill-please-mcp** (`../bill-please-mcp`, Bun + Elysia, also an MCP server) via `scanReceipt` in `@utils/receipt.util.ts`: resized to ≤1600px JPEG, `POST {VITE_APP_BILL_PLEASE_MCP_URL}/api/receipts/scan`. The button is disabled unless `GET /api/receipts/status` succeeds (TanStack Query, 5 s refetch, paused while the tab is hidden), and also while it answers `busy: true` because the server's LLM queue is full. The tooltip then says `home.itemList.importModal.busy` ("AI กำลังทำงานอย่างหนัก โปรดรอสักครู่"), and the button turns back on by itself on the next poll. The tooltip hangs on a `TooltipTarget` wrapper, because a disabled button gets no pointer events; on phones it opens on tap. A scan that still gets a 503 shows the same busy message and refetches the status. The response (`IReceiptScanResult`, per-item `servicePercentage` / `vatPercentage`) is sanitized by `normalizeReceiptItems`, converted by `receiptItemToBillItem` (`@utils/bill.util.ts`, shares `calculateService` / `calculateVat` with `ItemListModal`), previewed in `ReceiptImportModal`, then appended with the `addItems` action. Keep `src/interfaces/receipt.ts` in sync with the backend's zod schema.
+`ItemTable` opens a hidden `<input type="file" accept="image/*">` and sends the photo to the sibling backend **bill-please-mcp** (`../bill-please-mcp`, Bun + Elysia, also an MCP server) via `scanReceipt` in `@utils/receipt.util.ts`: resized to ≤1600px JPEG, `POST {VITE_APP_BILL_PLEASE_MCP_URL}/api/receipts/scan`. The button is disabled unless `GET /api/receipts/status` succeeds (TanStack Query, 5 s refetch, paused while the tab is hidden), and also while it answers `busy: true` because the server's LLM queue is full. The tooltip then says `home.itemList.importModal.busy` ("AI กำลังทำงานอย่างหนัก โปรดรอสักครู่"), and the button turns back on by itself on the next poll. The tooltip hangs on a `TooltipTarget` wrapper, because a disabled button gets no pointer events; on phones it opens on tap. A scan that still gets a 503 shows the same busy message and refetches the status.
+
+Bill-scan analytics events (GA4 via `trackEvent`, no personal data):
+
+| Event | Params |
+|---|---|
+| `receipt_scan_started` | `file_type`, `file_size_kb` |
+| `receipt_scan_succeeded` | `count`, `duration_ms` |
+| `receipt_scan_failed` | `reason` (`turnstile` client-side, or `getReceiptScanFailureReason`: `busy`, `unreadable`, `rate_limited`, `turnstile_rejected`, `turnstile_unavailable`, `too_large`, `unsupported_type`, `timeout`, `network`, `server_error`, `unknown`), `duration_ms` |
+| `receipt_scan_cancelled` | `duration_ms` (the user closed the modal while scanning) |
+| `receipt_scanner_busy_shown` | `active`, `waiting` (once each time the button turns busy) |
+| `receipt_items_imported` | `count`, `scanned_count` |
+
+The backend's busy 503 has the body `code: 'scanner_busy'`; any other 503 is the Turnstile siteverify one. The response (`IReceiptScanResult`, per-item `servicePercentage` / `vatPercentage`) is sanitized by `normalizeReceiptItems`, converted by `receiptItemToBillItem` (`@utils/bill.util.ts`, shares `calculateService` / `calculateVat` with `ItemListModal`), previewed in `ReceiptImportModal`, then appended with the `addItems` action. Keep `src/interfaces/receipt.ts` in sync with the backend's zod schema.
 
 Scans are gated by Cloudflare Turnstile: `useTurnstile` (`@hooks`) runs an invisible check when `ItemTable` mounts (a managed challenge, if any, shows under the buttons). The hook exposes `status` (`verifying` / `interactive` / `passed` / `failed`): while verifying, `TurnstileVerifying` shows an animated placeholder in the button slot, and the "Add from bill" button fades in only on `passed`. On `failed` neither shows. Each scan takes the current single-use token via `getToken()`, which starts the next challenge in the background, and `scanReceipt` sends it as the `cf-turnstile-response` form field. With `VITE_APP_TURNSTILE_SITE_KEY` unset the check is skipped and the button always shows.
 

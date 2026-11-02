@@ -15,6 +15,8 @@ type AnalyticsEvent =
   | 'receipt_scan_started'
   | 'receipt_scan_succeeded'
   | 'receipt_scan_failed'
+  | 'receipt_scan_cancelled'
+  | 'receipt_scanner_busy_shown'
   | 'receipt_items_imported'
   | 'payer_added'
   | 'payer_edited'

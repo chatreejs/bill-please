@@ -54,9 +54,53 @@ export const getReceiptScannerStatus =
     return data;
   };
 
-/** The server answered 503 because its LLM queue is full */
-export const isReceiptScannerBusyError = (error: unknown): boolean =>
-  axios.isAxiosError(error) && error.response?.status === 503;
+export type ReceiptScanFailureReason =
+  | 'busy'
+  | 'unreadable'
+  | 'rate_limited'
+  | 'turnstile_rejected'
+  | 'turnstile_unavailable'
+  | 'too_large'
+  | 'unsupported_type'
+  | 'timeout'
+  | 'network'
+  | 'server_error'
+  | 'unknown';
+
+/**
+ * Why a scan failed, from the bill-please-mcp response, for the busy message
+ * and analytics. The busy 503 has `code: 'scanner_busy'`, which tells it
+ * apart from the 503 for an unreachable Turnstile siteverify.
+ */
+export const getReceiptScanFailureReason = (
+  error: unknown,
+): ReceiptScanFailureReason => {
+  if (!axios.isAxiosError(error)) return 'unknown';
+  if (!error.response) {
+    return error.code === 'ECONNABORTED' || error.code === 'ETIMEDOUT'
+      ? 'timeout'
+      : 'network';
+  }
+  const { status } = error.response;
+  const data = error.response.data as { code?: unknown } | undefined;
+  const code = data?.code;
+  switch (status) {
+    case 503:
+      return code === 'scanner_busy' ? 'busy' : 'turnstile_unavailable';
+    case 422:
+      return 'unreadable';
+    case 429:
+      return 'rate_limited';
+    case 403:
+      return 'turnstile_rejected';
+    case 413:
+      return 'too_large';
+    case 415:
+      return 'unsupported_type';
+    default:
+      return status >= 500 ? 'server_error' : 'unknown';
+  }
+};
 
 /**
  * Send a receipt image to bill-please-mcp and get bill items back.

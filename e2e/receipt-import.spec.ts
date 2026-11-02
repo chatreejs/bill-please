@@ -194,6 +194,39 @@ test.describe('with the scan service up', () => {
     await expect(tableRows(page)).toHaveCount(0);
   });
 
+  test('shows the busy message when the queue fills up during upload', async ({
+    page,
+    receiptApi,
+  }) => {
+    receiptApi.onScan((route) =>
+      route.fulfill({
+        status: 503,
+        json: { error: 'busy', code: 'scanner_busy' },
+      }),
+    );
+    await uploadReceipt(page);
+    await expect(
+      page.getByText('AI is working hard, please wait a moment'),
+    ).toBeVisible();
+    await expect(importModal(page)).toBeHidden();
+  });
+
+  test('a Turnstile 503 shows the generic error, not busy', async ({
+    page,
+    receiptApi,
+  }) => {
+    receiptApi.onScan((route) =>
+      route.fulfill({
+        status: 503,
+        json: { error: 'Could not verify the Turnstile challenge' },
+      }),
+    );
+    await uploadReceipt(page);
+    await expect(
+      page.getByText('Could not read the bill, please try again'),
+    ).toBeVisible();
+  });
+
   test('can scan the same file twice', async ({ page, receiptApi }) => {
     let scans = 0;
     receiptApi.onScan((route) => {

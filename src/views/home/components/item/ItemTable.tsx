@@ -16,8 +16,8 @@ import { IBillItem } from '@interfaces';
 import { addItems, removeAllItems, removeItems } from '@slices';
 import {
   currencyFormat,
+  getReceiptScanFailureReason,
   getReceiptScannerStatus,
-  isReceiptScannerBusyError,
   receiptItemToBillItem,
   scanReceipt,
   trackEvent,
@@ -108,8 +108,26 @@ const ItemTable: React.FC = () => {
     status: turnstileStatus,
   } = useTurnstile('receipt_scan');
 
+  // Count how often visitors find "Add from bill" disabled by a full queue,
+  // once each time the button turns busy
+  useEffect(() => {
+    if (turnstileStatus !== 'passed' || !isReceiptScannerBusy || isScanning) {
+      return;
+    }
+    trackEvent('receipt_scanner_busy_shown', {
+      active: scannerStatus?.queue?.active ?? 0,
+      waiting: scannerStatus?.queue?.waiting ?? 0,
+    });
+    // Track the change to busy, not every poll that repeats it
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isReceiptScannerBusy, turnstileStatus]);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const scanRequestRef = useRef(0);
+  // When the current scan started, for duration_ms in analytics
+  const scanStartedAtRef = useRef(0);
+  const scanDurationMs = () =>
+    Math.round(performance.now() - scanStartedAtRef.current);
   const [isImportModalVisible, setIsImportModalVisible] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [scannedItems, setScannedItems] = useState<IBillItem[]>([]);
@@ -184,7 +202,11 @@ const ItemTable: React.FC = () => {
     if (!file) return;
 
     const requestId = ++scanRequestRef.current;
-    trackEvent('receipt_scan_started');
+    scanStartedAtRef.current = performance.now();
+    trackEvent('receipt_scan_started', {
+      file_type: file.type || 'unknown',
+      file_size_kb: Math.round(file.size / 1024),
+    });
     setScannedItems([]);
     setIsScanning(true);
 
@@ -195,7 +217,10 @@ const ItemTable: React.FC = () => {
       turnstileToken = await getTurnstileToken();
     } catch {
       if (requestId !== scanRequestRef.current) return;
-      trackEvent('receipt_scan_failed', { reason: 'turnstile' });
+      trackEvent('receipt_scan_failed', {
+        reason: 'turnstile',
+        duration_ms: scanDurationMs(),
+      });
       void message.error(t('home.itemList.importModal.verifyError'));
       setIsScanning(false);
       return;
@@ -207,15 +232,19 @@ const ItemTable: React.FC = () => {
       const receiptItems = await scanReceipt(file, turnstileToken);
       // Ignore results from a scan the user already cancelled
       if (requestId !== scanRequestRef.current) return;
-      trackEvent('receipt_scan_succeeded', { count: receiptItems.length });
+      trackEvent('receipt_scan_succeeded', {
+        count: receiptItems.length,
+        duration_ms: scanDurationMs(),
+      });
       setScannedItems(receiptItems.map(receiptItemToBillItem));
     } catch (error) {
       if (requestId !== scanRequestRef.current) return;
-      const isBusy = isReceiptScannerBusyError(error);
-      trackEvent(
-        'receipt_scan_failed',
-        isBusy ? { reason: 'busy' } : undefined,
-      );
+      const reason = getReceiptScanFailureReason(error);
+      const isBusy = reason === 'busy';
+      trackEvent('receipt_scan_failed', {
+        reason,
+        duration_ms: scanDurationMs(),
+      });
       void message.error(
         t(
           isBusy
@@ -231,6 +260,9 @@ const ItemTable: React.FC = () => {
   };
 
   const closeImportModal = () => {
+    if (isScanning) {
+      trackEvent('receipt_scan_cancelled', { duration_ms: scanDurationMs() });
+    }
     scanRequestRef.current++;
     setIsScanning(false);
     setIsImportModalVisible(false);
