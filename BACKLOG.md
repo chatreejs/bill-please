@@ -137,3 +137,13 @@ The app supports only English and Thai. Add each language as `public/locales/{la
 Idea, size S.
 
 Several ideas above change the shape of persisted state. The pre-v0.9.0 currency backfill showed that old `bp-store` data needs handling. Set a redux-persist `version` and a `migrate` function so each shape change gets its own migration step.
+
+### 17. Accessibility
+
+Idea, size S.
+
+Parts of the app don't work with a screen reader or a keyboard. The item cards on the mapping page and the payer tags in `BillItemMappingModal` respond only to taps. A screen reader doesn't announce them as buttons, the Tab key skips them, and the tags don't say whether a payer is selected. The friend delete button in `PayerListModal` shows only an icon, so a screen reader reads it as "button". `index.html` always sets `lang="en"`, so a phone may read Thai text with an English voice. No test checks any of this.
+
+Give the cards and tags a button role and a selected state, and add an `aria-label` to each icon-only button. Set `document.documentElement.lang` when the language changes. Add an axe check to the e2e tests with `@axe-core/playwright`. The share controls in `BillItemMappingModal` already have labels to copy.
+
+It changes `BillItemMapping`, `BillItemMappingModal`, `PayerListModal`, `src/i18n.ts` and the e2e fixtures.
