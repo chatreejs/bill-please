@@ -26,6 +26,7 @@ type AnalyticsEvent =
   | 'home_tab_switched'
   // Mapping
   | 'mapping_select_all'
+  | 'mapping_uneven_split'
   // Currency
   | 'currency_settings_opened'
   | 'main_currency_changed'

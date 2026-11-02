@@ -7,29 +7,52 @@ import {
   IPayer,
 } from '@interfaces';
 
+/** The highest weight a payer can have on one item */
+export const MAX_SHARE_WEIGHT = 99;
+
+/** The ids of everyone who shares a mapped item */
+export const getMappingPayerIds = (mapping: IBillItemMapping): string[] =>
+  mapping.shares.map((share) => share.payerId);
+
 /**
- * Split one mapped bill item equally between the payers assigned to it.
- * Returns undefined when the mapping points to an item that no longer exists
- * or has no payers.
+ * The part of an item one payer pays, from 0 to 1. It is their weight
+ * divided by the sum of all weights, or 0 when the payer is not on the item.
+ */
+export const getShareRatio = (
+  mapping: IBillItemMapping,
+  payerId: string,
+): number => {
+  const share = mapping.shares.find((s) => s.payerId === payerId);
+  const totalWeight = mapping.shares.reduce((sum, s) => sum + s.weight, 0);
+  if (!share || totalWeight <= 0) return 0;
+  return share.weight / totalWeight;
+};
+
+/** The item's full price, with service and VAT */
+export const getBillItemTotal = (billItem: IBillItem): number =>
+  billItem.total ??
+  billItem.price * billItem.quantity + billItem.service + billItem.vat;
+
+/**
+ * One payer's part of a mapped bill item, split by the weights in the
+ * mapping. Returns undefined when the mapping points to an item that no
+ * longer exists, or the payer is not on it.
  */
 export const calculateExpenseItem = (
   mapping: IBillItemMapping,
   billItems: IBillItem[],
+  payerId: string,
 ): IExpenseItem | undefined => {
   const billItem = billItems.find((item) => item.id === mapping.itemId);
-  const payerCount = mapping.payerId.length;
-  if (!billItem || payerCount === 0) return;
-
-  const total =
-    billItem.total ??
-    billItem.price * billItem.quantity + billItem.service + billItem.vat;
+  const ratio = getShareRatio(mapping, payerId);
+  if (!billItem || ratio === 0) return;
 
   return {
     itemName: billItem.name,
-    itemQuantity: billItem.quantity / payerCount,
-    itemService: billItem.service / payerCount,
-    itemVat: billItem.vat / payerCount,
-    itemTotalPrice: total / payerCount,
+    itemQuantity: billItem.quantity * ratio,
+    itemService: billItem.service * ratio,
+    itemVat: billItem.vat * ratio,
+    itemTotalPrice: getBillItemTotal(billItem) * ratio,
   };
 };
 
@@ -39,8 +62,7 @@ const collectExpenseItems = (
   itemMapping: IBillItemMapping[],
 ): { total: number; items: IExpenseItem[] } => {
   const items = itemMapping
-    .filter((mapping) => mapping.payerId.includes(payerId))
-    .map((mapping) => calculateExpenseItem(mapping, billItems))
+    .map((mapping) => calculateExpenseItem(mapping, billItems, payerId))
     .filter((item): item is IExpenseItem => item !== undefined);
 
   return {

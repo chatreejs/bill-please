@@ -135,10 +135,22 @@
     "modal": {
       "title": "Select payer for {{itemName}}",
       "selectAll": "Select all",
-      "deselectAll": "Deselect all"
+      "deselectAll": "Deselect all",
+      "shareHint": "Choose how much each person pays. To split evenly, put 1 for everyone.",
+      "increaseShare": "More for {{name}}",
+      "decreaseShare": "Less for {{name}}",
+      "shareOf": "Share for {{name}}",
+      "splitEvenly": "✓ Split evenly",
+      "totalMatch": "✓ Adds up to {{quantity}}, so each person pays for their number",
+      "totalOff": "Adds up to {{total}}, not {{quantity}}, so it's split as a ratio",
+      "shareRemark": "You can enter how many each person takes, or a ratio. If the numbers don't add up to {{quantity}}, they're used as a ratio. For example, 2 and 1 means the first person pays twice as much."
     },
     "button": {
       "submit": "Summarize"
+    },
+    "itemPrice": {
+      "service": "Service {{percent}}% {{amount}}",
+      "vat": "VAT {{percent}}% {{amount}}"
     }
   },
   "result": {

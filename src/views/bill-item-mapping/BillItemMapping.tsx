@@ -1,16 +1,23 @@
 import { RightOutlined } from '@ant-design/icons';
-import { Button, Card, Flex, Tag, Typography } from 'antd';
+import { Button, Card, Flex, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { BillCard, ButtonWrapper, PayerTag } from '@components';
 import { RootState } from '@config';
+import { IBillItemShare } from '@interfaces';
 import { getColorByName, trackEvent } from '@utils';
 import BillItemMappingModal from './components/BillItemMappingModal';
 
 const { Title, Text } = Typography;
+
+const ShareWeight = styled.span`
+  margin-left: 4px;
+  font-weight: 600;
+`;
 
 const BillItemMapping: React.FC = () => {
   const { t } = useTranslation();
@@ -26,21 +33,17 @@ const BillItemMapping: React.FC = () => {
   const [selectedItemId, setSelectedItemId] = useState<string>();
   const [isDisableButton, setIsDisableButton] = useState<boolean>(true);
 
-  const getPayerNameList = (payerIds: string[]) => {
-    const payerNameList: string[] = [];
+  const getPayerShareList = (shares: IBillItemShare[]) => {
+    const payerShareList: { id: string; name: string; weight: number }[] = [];
+    const add = (id: string, name: string) => {
+      const share = shares.find((s) => s.payerId === id);
+      if (share) payerShareList.push({ id, name, weight: share.weight });
+    };
     billPayers.forEach((payer) => {
-      if (payerIds.includes(payer.id)) {
-        payerNameList.push(payer.name);
-      }
-      if (payer.friend) {
-        payer.friend.forEach((friend) => {
-          if (payerIds.includes(friend.id)) {
-            payerNameList.push(friend.name);
-          }
-        });
-      }
+      add(payer.id, payer.name);
+      payer.friend?.forEach((friend) => add(friend.id, friend.name));
     });
-    return payerNameList;
+    return payerShareList;
   };
 
   const openModal = (id: string) => {
@@ -55,7 +58,7 @@ const BillItemMapping: React.FC = () => {
 
   useEffect(() => {
     setIsDisableButton(
-      billItemMappings.some((mapping) => mapping.payerId.length === 0),
+      billItemMappings.some((mapping) => mapping.shares.length === 0),
     );
   }, [billItemMappings]);
 
@@ -72,6 +75,8 @@ const BillItemMapping: React.FC = () => {
               <Card
                 key={item.id}
                 style={{ marginBottom: '6px' }}
+                // The bottom padding is smaller because each payer tag adds an 8px margin below itself
+                styles={{ body: { paddingTop: 16, paddingBottom: 8 } }}
                 onClick={() => openModal(item.id)}
               >
                 <div
@@ -90,24 +95,27 @@ const BillItemMapping: React.FC = () => {
                 <Flex wrap>
                   {billItemMappings?.some((mapping) => {
                     if (mapping.itemId === item.id) {
-                      return mapping.payerId.length > 0;
+                      return mapping.shares.length > 0;
                     }
                   }) ? (
                     <>
                       {billItemMappings?.map((mapping) => {
                         if (mapping.itemId === item.id) {
-                          return getPayerNameList(mapping.payerId).map(
-                            (payerName) => (
+                          return getPayerShareList(mapping.shares).map(
+                            (payer) => (
                               <PayerTag
                                 style={{
                                   marginBottom: '8px',
                                   height: 30,
                                   fontSize: 16,
                                 }}
-                                key={payerName}
-                                color={getColorByName(payerName)}
+                                key={payer.id}
+                                color={getColorByName(payer.name)}
                               >
-                                {payerName}
+                                {payer.name}
+                                {payer.weight > 1 && (
+                                  <ShareWeight>×{payer.weight}</ShareWeight>
+                                )}
                               </PayerTag>
                             ),
                           );
@@ -115,15 +123,9 @@ const BillItemMapping: React.FC = () => {
                       })}
                     </>
                   ) : (
-                    <Tag
-                      style={{
-                        height: 26,
-                        fontSize: 16,
-                        borderStyle: 'dashed',
-                      }}
-                    >
+                    <PayerTag style={{ borderStyle: 'dashed' }}>
                       {t('mapping.noPayer')}
-                    </Tag>
+                    </PayerTag>
                   )}
                 </Flex>
               </Card>
@@ -143,7 +145,7 @@ const BillItemMapping: React.FC = () => {
             size="large"
             onClick={() => {
               const totalAssigned = billItemMappings.reduce(
-                (sum, mapping) => sum + mapping.payerId.length,
+                (sum, mapping) => sum + mapping.shares.length,
                 0,
               );
               trackEvent('bill_step_mapping_completed', {
@@ -155,7 +157,7 @@ const BillItemMapping: React.FC = () => {
                       ) / 10
                     : 0,
               });
-              navigate('/result', { replace: true });
+              void navigate('/result', { replace: true });
             }}
             disabled={isDisableButton}
           >

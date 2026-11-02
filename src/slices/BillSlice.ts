@@ -1,6 +1,16 @@
 import { IBillItem, IBillItemMapping, IBillState, IPayer } from '@interfaces';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+/** Take the given payers and friends off every item */
+const removeFromMappings = (
+  itemMapping: IBillItemMapping[],
+  payerIds: string[],
+): IBillItemMapping[] =>
+  itemMapping.map((mapping) => ({
+    ...mapping,
+    shares: mapping.shares.filter((share) => !payerIds.includes(share.payerId)),
+  }));
+
 const initialState: IBillState = {
   title: '',
   items: [],
@@ -77,12 +87,10 @@ const billSlice = createSlice({
       );
       // Remove payer from itemMapping by removed friend id list
       if (removedFriendIds.length > 0) {
-        state.itemMapping = state.itemMapping.map((mapping) => {
-          const payerId = mapping.payerId.filter(
-            (id) => !removedFriendIds.includes(id),
-          );
-          return { ...mapping, payerId };
-        });
+        state.itemMapping = removeFromMappings(
+          state.itemMapping,
+          removedFriendIds,
+        );
       }
     },
     removePayer(state, action: PayloadAction<string>) {
@@ -96,10 +104,7 @@ const billSlice = createSlice({
       state.payers = state.payers.filter(
         (payer) => payer.id !== action.payload,
       );
-      state.itemMapping = state.itemMapping.map((mapping) => {
-        const payerId = mapping.payerId.filter((id) => !payerIds.includes(id));
-        return { ...mapping, payerId };
-      });
+      state.itemMapping = removeFromMappings(state.itemMapping, payerIds);
     },
     removePayers(state, action: PayloadAction<string[]>) {
       // store payer id and friend id list
@@ -123,16 +128,13 @@ const billSlice = createSlice({
       state.payers = state.payers.filter(
         (payer) => !action.payload.includes(payer.id),
       );
-      state.itemMapping = state.itemMapping.map((mapping) => {
-        const payerId = mapping.payerId.filter((id) => !allIds.includes(id));
-        return { ...mapping, payerId };
-      });
+      state.itemMapping = removeFromMappings(state.itemMapping, allIds);
     },
     removeAllPayers(state) {
       state.payers = [];
       state.itemMapping = state.itemMapping.map((mapping) => ({
         ...mapping,
-        payerId: [],
+        shares: [],
       }));
     },
     addBillItemMapping(state, action: PayloadAction<IBillItemMapping>) {

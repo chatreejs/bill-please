@@ -134,10 +134,22 @@
     "modal": {
       "title": "เลือกคนจ่ายสำหรับรายการ {{itemName}}",
       "selectAll": "เลือกทุกคน",
-      "deselectAll": "ไม่เลือกทุกคน"
+      "deselectAll": "ไม่เลือกทุกคน",
+      "shareHint": "เลือกจำนวนที่แต่ละคนต้องจ่าย หารเท่ากันให้ใส่ทุกคนเป็น 1",
+      "increaseShare": "เพิ่มส่วนของ {{name}}",
+      "decreaseShare": "ลดส่วนของ {{name}}",
+      "shareOf": "ส่วนของ {{name}}",
+      "splitEvenly": "✓ หารเท่ากัน",
+      "totalMatch": "✓ รวมได้ {{quantity}} พอดี แต่ละคนจ่ายตามจำนวนที่ใส่",
+      "totalOff": "รวมได้ {{total}} ไม่ใช่ {{quantity}} จึงหารตามสัดส่วน",
+      "shareRemark": "ใส่เป็นจำนวนชิ้นของแต่ละคน หรือใส่เป็นสัดส่วนก็ได้ ถ้ารวมกันแล้วไม่เท่ากับ {{quantity}} จะหารตามสัดส่วนแทน เช่น ใส่ 2 กับ 1 คนแรกจะจ่ายเป็น 2 เท่าของอีกคน"
     },
     "button": {
       "submit": "สรุปยอด"
+    },
+    "itemPrice": {
+      "service": "ค่าบริการ {{percent}}% {{amount}}",
+      "vat": "VAT {{percent}}% {{amount}}"
     }
   },
   "result": {
