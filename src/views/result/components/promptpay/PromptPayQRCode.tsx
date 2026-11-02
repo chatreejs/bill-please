@@ -4,7 +4,7 @@ import generatePayload from 'promptpay-qr';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useBrowserStorage } from '@hooks';
+import { useBrowserStorage, useRevalidateOnLanguageChange } from '@hooks';
 import { trackError, trackEvent } from '@utils';
 import PromptPayLogo from '/src/assets/images/PromptPay-logo.png';
 import ThaiQRPayment from '/src/assets/images/thai-qr-payment.png';
@@ -23,6 +23,7 @@ const PromptPayQRCode: React.FC = () => {
   );
   const [qrCodePayload, setQrCodePayload] = useState<string>();
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
+  useRevalidateOnLanguageChange(form);
 
   const onSubmit = (isRestored = false) => {
     form

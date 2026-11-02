@@ -1,10 +1,12 @@
-import { Flex } from 'antd';
+import { BankOutlined } from '@ant-design/icons';
+import { Button, Flex } from 'antd';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 import { PaymentMethod } from '@enums';
 import { trackEvent } from '@utils';
+import BankAccount from './bank-account/BankAccount';
 import PromptPayQRCode from './promptpay/PromptPayQRCode';
 import PromptPayLogo from '/src/assets/images/PromptPay-logo.png';
 
@@ -41,21 +43,32 @@ const Payment: React.FC = () => {
         {selectedPaymentMethod === PaymentMethod.None && (
           <Flex vertical justify="center" align="center" gap={6}>
             <div>{t('result.payment.selectPaymentMethod')}</div>
-            <div
-              role="button"
-              onClick={() => onPaymentMethodSelected(PaymentMethod.PromptPay)}
-            >
-              <img
-                src={PromptPayLogo}
-                alt="prompt-pay"
-                style={{ width: '84px' }}
-              />
-            </div>
+            <Flex align="center" gap={16}>
+              <div
+                role="button"
+                onClick={() => onPaymentMethodSelected(PaymentMethod.PromptPay)}
+              >
+                <img
+                  src={PromptPayLogo}
+                  alt="prompt-pay"
+                  style={{ width: '84px' }}
+                />
+              </div>
+              <Button
+                icon={<BankOutlined />}
+                onClick={() =>
+                  onPaymentMethodSelected(PaymentMethod.BankAccount)
+                }
+              >
+                {t('result.payment.bankAccount.label')}
+              </Button>
+            </Flex>
           </Flex>
         )}
         {selectedPaymentMethod === PaymentMethod.PromptPay && (
           <PromptPayQRCode />
         )}
+        {selectedPaymentMethod === PaymentMethod.BankAccount && <BankAccount />}
       </PaymentWrapper>
       {selectedPaymentMethod !== PaymentMethod.None && (
         <span

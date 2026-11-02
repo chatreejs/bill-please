@@ -162,6 +162,19 @@
         "inputLabel": "ใส่หมายเลขโทรศัพท์ / เลขบัตรประชาชน",
         "inputError": "ต้องกรอกข้อมูลในช่องนี้"
       },
+      "bankAccount": {
+        "label": "บัญชีธนาคาร",
+        "bankLabel": "ธนาคาร",
+        "bankPlaceholder": "เลือกธนาคาร",
+        "bankError": "กรุณาเลือกธนาคาร",
+        "numberLabel": "เลขที่บัญชี",
+        "numberError": "กรุณากรอกเลขที่บัญชี",
+        "numberFormatError": "รูปแบบเลขที่บัญชีไม่ถูกต้อง",
+        "transferTo": "โอนเงินเข้าบัญชี",
+        "copy": "คัดลอกเลขที่บัญชี",
+        "copied": "คัดลอกแล้ว",
+        "change": "เปลี่ยนบัญชีธนาคาร"
+      },
       "qr": {
         "scanToPay": "สแกน QR Code เพื่อชำระเงิน",
         "changeQRCode": "เปลี่ยน QR Code"

@@ -77,6 +77,10 @@ The backend's busy 503, or busy error event, has `code: 'scanner_busy'`; any oth
 
 Scans are gated by Cloudflare Turnstile: `useTurnstile` (`@hooks`) runs an invisible check when `ItemTable` mounts (a managed challenge, if any, shows under the buttons). The hook exposes `status` (`verifying` / `interactive` / `passed` / `failed`): while verifying, `TurnstileVerifying` shows an animated placeholder in the button slot, and the "Add from bill" button fades in only on `passed`. On `failed` neither shows. Each scan takes the current single-use token via `getToken()`, which starts the next challenge in the background, and `scanReceipt` sends it as the `cf-turnstile-response` form field. With `VITE_APP_TURNSTILE_SITE_KEY` unset the check is skipped and the button always shows.
 
+### Payment methods
+
+`Payment` on the Result page offers PromptPay QR (`PromptPayQRCode`) and Thai bank accounts (`BankAccount`). Banks come from `src/config/banks.json`: each has an `id`, a Bank of Thailand `code`, `name` per language, an `icon` (logos are in `public/banks/{id}.png`, taken from the ISC-licensed `thai-banks-logo` package and precached by the PWA), a fallback badge `color`, and `minDigits` / `maxDigits`. Every bank shares `accountNumberMask` (`XXX-X-XXXXX-XXXXXXX`, each `X` one digit), so the box takes digits only and stops at 19 characters. `@utils/bank.util.ts` formats the number into the mask, and `isValidAccountNumber` checks the digit count against the bank's range. The form checks the number on blur and again when the bank changes, and shows `numberFormatError`. The PromptPay ID and the bank account are saved in localStorage with `useBrowserStorage`, and analytics never gets either number.
+
 ### Path aliases
 
 Defined in `tsconfig.json` and resolved by `vite-tsconfig-paths`:

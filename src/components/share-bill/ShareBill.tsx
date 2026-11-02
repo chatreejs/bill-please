@@ -68,9 +68,22 @@ const ShareBill: React.FC<Props> = ({ show, elementRef }) => {
   };
 
   const filter = (node: Node) => {
-    const exclusionClasses = ['change-qr-code', 'change-payment-method'];
-    return !exclusionClasses.some((className) =>
-      node.parentElement?.classList.contains(className),
+    // Hide the text of these links in the image
+    const textExclusionClasses = [
+      'change-qr-code',
+      'change-payment-method',
+      'change-bank-account',
+    ];
+    // Leave these out of the image
+    const exclusionClasses = ['ant-typography-copy'];
+    return (
+      !textExclusionClasses.some((className) =>
+        node.parentElement?.classList.contains(className),
+      ) &&
+      !(
+        node instanceof Element &&
+        exclusionClasses.some((className) => node.classList.contains(className))
+      )
     );
   };
 

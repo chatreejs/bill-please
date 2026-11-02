@@ -1,0 +1,186 @@
+{
+  "accountNumberMask": "XXX-X-XXXXX-XXXXXXX",
+  "banks": [
+    {
+      "id": "KBANK",
+      "code": "004",
+      "name": {
+        "en": "KBANK",
+        "th": "กสิกรไทย"
+      },
+      "icon": "/banks/KBANK.png",
+      "color": "#138f2d",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
+      "id": "SCB",
+      "code": "014",
+      "name": {
+        "en": "SCB",
+        "th": "ไทยพาณิชย์"
+      },
+      "icon": "/banks/SCB.png",
+      "color": "#4e2e7f",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
+      "id": "KTB",
+      "code": "006",
+      "name": {
+        "en": "KTB",
+        "th": "กรุงไทย"
+      },
+      "icon": "/banks/KTB.png",
+      "color": "#1ba5e1",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
+      "id": "BBL",
+      "code": "002",
+      "name": {
+        "en": "BBL",
+        "th": "กรุงเทพ"
+      },
+      "icon": "/banks/BBL.png",
+      "color": "#1e4598",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
+      "id": "BAY",
+      "code": "025",
+      "name": {
+        "en": "BAY",
+        "th": "กรุงศรีอยุธยา"
+      },
+      "icon": "/banks/BAY.png",
+      "color": "#fec43b",
+      "textColor": "#5a4a42",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
+      "id": "TTB",
+      "code": "011",
+      "name": {
+        "en": "TTB",
+        "th": "ทหารไทยธนชาต"
+      },
+      "icon": "/banks/TTB.png",
+      "color": "#0050f0",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
+      "id": "GSB",
+      "code": "030",
+      "name": {
+        "en": "GSB",
+        "th": "ออมสิน"
+      },
+      "icon": "/banks/GSB.png",
+      "color": "#eb198d",
+      "minDigits": 12,
+      "maxDigits": 15
+    },
+    {
+      "id": "BAAC",
+      "code": "034",
+      "name": {
+        "en": "BAAC",
+        "th": "ธ.ก.ส."
+      },
+      "icon": "/banks/BAAC.png",
+      "color": "#4b9b1d",
+      "minDigits": 12,
+      "maxDigits": 12
+    },
+    {
+      "id": "GHB",
+      "code": "033",
+      "name": {
+        "en": "GHB",
+        "th": "ธอส."
+      },
+      "icon": "/banks/GHB.png",
+      "color": "#f57d23",
+      "minDigits": 12,
+      "maxDigits": 12
+    },
+    {
+      "id": "UOB",
+      "code": "024",
+      "name": {
+        "en": "UOB",
+        "th": "ยูโอบี"
+      },
+      "icon": "/banks/UOB.png",
+      "color": "#0b3979",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
+      "id": "CIMB",
+      "code": "022",
+      "name": {
+        "en": "CIMB",
+        "th": "ซีไอเอ็มบี ไทย"
+      },
+      "icon": "/banks/CIMB.png",
+      "color": "#7e2f36",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
+      "id": "KKP",
+      "code": "069",
+      "name": {
+        "en": "KKP",
+        "th": "เกียรตินาคินภัทร"
+      },
+      "icon": "/banks/KKP.png",
+      "color": "#5b4b8a",
+      "minDigits": 10,
+      "maxDigits": 14
+    },
+    {
+      "id": "TISCO",
+      "code": "067",
+      "name": {
+        "en": "TISCO",
+        "th": "ทิสโก้"
+      },
+      "icon": "/banks/TISCO.png",
+      "color": "#12549f",
+      "minDigits": 10,
+      "maxDigits": 14
+    },
+    {
+      "id": "LHB",
+      "code": "073",
+      "name": {
+        "en": "LHB",
+        "th": "แลนด์ แอนด์ เฮ้าส์"
+      },
+      "icon": "/banks/LHB.png",
+      "color": "#6d6e71",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
+      "id": "IBANK",
+      "code": "066",
+      "name": {
+        "en": "IBANK",
+        "th": "อิสลามแห่งประเทศไทย"
+      },
+      "icon": "/banks/IBANK.png",
+      "color": "#184615",
+      "minDigits": 10,
+      "maxDigits": 10
+    }
+  ]
+}

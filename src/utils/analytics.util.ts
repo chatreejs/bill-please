@@ -38,6 +38,9 @@ type AnalyticsEvent =
   | 'payment_method_changed'
   | 'promptpay_qr_generated'
   | 'promptpay_qr_changed'
+  | 'bank_account_saved'
+  | 'bank_account_copied'
+  | 'bank_account_changed'
   | 'share'
   | 'bill_image_downloaded'
   | 'share_failed'
@@ -65,7 +68,7 @@ const PAGE_TITLES: Record<string, string> = {
 let isInitialized = false;
 
 // Lazily initialize so events fired before App mounts are not lost.
-// Never pass personal data (bill title, item/payer names, PromptPay ID) here.
+// Never pass personal data (bill title, item/payer names, PromptPay ID, bank account number) here.
 const ensureInitialized = (): boolean => {
   if (isInitialized) return true;
   const gaMeasurementId = process.env.VITE_APP_GA_MEASUREMENT_ID;

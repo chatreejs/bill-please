@@ -1,4 +1,5 @@
 export * from './app';
+export * from './bank';
 export * from './bill';
 export * from './bill-item';
 export * from './bill-item-mapping';

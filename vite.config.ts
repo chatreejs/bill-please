@@ -19,7 +19,7 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,json,woff2}'],
+        globPatterns: ['**/*.{js,css,html,json,woff2}', 'banks/*.png'],
       },
       manifest: {
         name: 'Bill Please',

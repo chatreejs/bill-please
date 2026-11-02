@@ -102,11 +102,13 @@ It changes `src/interfaces/receipt.ts` and the backend zod schema together, plus
 
 ### 11. More payment methods
 
-Idea, size M.
+In progress, size M.
 
-The only payment method is Thai PromptPay QR. Offer payment options per currency, such as bank account details to copy or other countries' QR standards.
+The only payment method was Thai PromptPay QR. Offer payment options per currency, such as bank account details to copy or other countries' QR standards.
 
-It changes `Payment` and `PromptPayQRCode`.
+Thai bank accounts are built on `feature/settle-up-payment-methods`. The user picks a bank and types the account number, which `formatAccountNumber` formats as `XXX-X-XXXXX-X`. The bank list, with each bank's code, names, logo and digit range, is `src/config/banks.json`. The GSB, BAAC, GHB, KKP and TISCO digit ranges come from a 2019 government table and need checking against real passbooks. Other countries' methods are still open.
+
+It changes `Payment`, `BankAccount` and `@utils/bank.util.ts`.
 
 ### 12. Live exchange rates
 

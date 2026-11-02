@@ -163,6 +163,19 @@
         "inputLabel": "Phone number or Thai National ID",
         "inputError": "This field is required"
       },
+      "bankAccount": {
+        "label": "Bank account",
+        "bankLabel": "Bank",
+        "bankPlaceholder": "Select a bank",
+        "bankError": "Please select a bank",
+        "numberLabel": "Account number",
+        "numberError": "Please enter the account number",
+        "numberFormatError": "Invalid account number format",
+        "transferTo": "Transfer to",
+        "copy": "Copy account number",
+        "copied": "Copied",
+        "change": "Change bank account"
+      },
       "qr": {
         "scanToPay": "Scan QR Code to pay",
         "changeQRCode": "Change QR Code"
