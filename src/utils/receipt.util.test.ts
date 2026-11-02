@@ -1,7 +1,11 @@
 import { AxiosError, AxiosHeaders } from 'axios';
 import { describe, expect, it } from 'vitest';
 
-import { getReceiptScanFailureReason } from './receipt.util';
+import {
+  getReceiptScanFailureReason,
+  parseServerSentEvents,
+  ReceiptScanError,
+} from './receipt.util';
 
 const httpError = (status: number, data: unknown = {}) =>
   new AxiosError('failed', 'ERR_BAD_RESPONSE', undefined, undefined, {
@@ -47,7 +51,51 @@ describe('getReceiptScanFailureReason', () => {
     ).toBe('network');
   });
 
+  it('reads the status and code of an error event from the scan stream', () => {
+    expect(
+      getReceiptScanFailureReason(new ReceiptScanError(503, 'scanner_busy')),
+    ).toBe('busy');
+    expect(getReceiptScanFailureReason(new ReceiptScanError(422))).toBe(
+      'unreadable',
+    );
+  });
+
+  it('reads the code from a text body, because a scan asks for text', () => {
+    expect(
+      getReceiptScanFailureReason(
+        httpError(503, JSON.stringify({ code: 'scanner_busy' })),
+      ),
+    ).toBe('busy');
+  });
+
   it('reports unknown for other errors', () => {
     expect(getReceiptScanFailureReason(new Error('boom'))).toBe('unknown');
+  });
+});
+
+describe('parseServerSentEvents', () => {
+  it('parses complete events and skips comments and the one still arriving', () => {
+    const text = [
+      'event: progress',
+      'data: {"stage":"ocr"}',
+      '',
+      ': ping',
+      '',
+      'event: result',
+      'data: {"items":[]}',
+      '',
+      'event: progress',
+      'data: {"stage":"ll',
+    ].join('\n');
+    expect(parseServerSentEvents(text)).toEqual([
+      { event: 'progress', data: { stage: 'ocr' } },
+      { event: 'result', data: { items: [] } },
+    ]);
+  });
+
+  it('accepts CRLF line endings', () => {
+    expect(
+      parseServerSentEvents('event: error\r\ndata: {"status":502}\r\n\r\n'),
+    ).toEqual([{ event: 'error', data: { status: 502 } }]);
   });
 });

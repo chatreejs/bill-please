@@ -1,4 +1,4 @@
-import { Empty, Flex, Spin, Table, Typography } from 'antd';
+import { Empty, Flex, Table, Typography } from 'antd';
 import Modal from 'antd/es/modal/Modal';
 import Column from 'antd/es/table/Column';
 import React, { useEffect, useState } from 'react';
@@ -6,14 +6,11 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
 import { TableCard } from '@components';
-import { IBillItem } from '@interfaces';
+import { IBillItem, IReceiptScanProgress } from '@interfaces';
 import { currencyFormat } from '@utils';
+import ReceiptScanProgress from './ReceiptScanProgress';
 
 const { Text } = Typography;
-
-const LoadingWrapper = styled(Flex)`
-  padding: 2rem 0;
-`;
 
 const SummaryContainer = styled(Flex)`
   margin-top: 0.5rem;
@@ -23,6 +20,7 @@ const SummaryContainer = styled(Flex)`
 interface Props {
   isOpen: boolean;
   isLoading: boolean;
+  progress?: IReceiptScanProgress;
   items: IBillItem[];
   onConfirm: (items: IBillItem[]) => void;
   onClose: () => void;
@@ -31,6 +29,7 @@ interface Props {
 const ReceiptImportModal: React.FC<Props> = ({
   isOpen,
   isLoading,
+  progress,
   items,
   onConfirm,
   onClose,
@@ -65,10 +64,7 @@ const ReceiptImportModal: React.FC<Props> = ({
       maskClosable={!isLoading}
     >
       {isLoading ? (
-        <LoadingWrapper vertical align="center" gap={16}>
-          <Spin size="large" />
-          <Text type="secondary">{t('home.itemList.importModal.loading')}</Text>
-        </LoadingWrapper>
+        <ReceiptScanProgress progress={progress} />
       ) : items.length === 0 ? (
         <Empty description={t('home.itemList.importModal.empty')} />
       ) : (

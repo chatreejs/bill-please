@@ -12,7 +12,7 @@ import { ActionButtonWrapper, ButtonWrapper, TableCard } from '@components';
 import { RootState } from '@config';
 import { ModalType } from '@enums';
 import { useTurnstile } from '@hooks';
-import { IBillItem } from '@interfaces';
+import { IBillItem, IReceiptScanProgress } from '@interfaces';
 import { addItems, removeAllItems, removeItems } from '@slices';
 import {
   currencyFormat,
@@ -131,6 +131,7 @@ const ItemTable: React.FC = () => {
   const [isImportModalVisible, setIsImportModalVisible] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [scannedItems, setScannedItems] = useState<IBillItem[]>([]);
+  const [scanProgress, setScanProgress] = useState<IReceiptScanProgress>();
 
   const [total, setTotal] = useState(0);
   const [service, setService] = useState(0);
@@ -208,6 +209,7 @@ const ItemTable: React.FC = () => {
       file_size_kb: Math.round(file.size / 1024),
     });
     setScannedItems([]);
+    setScanProgress(undefined);
     setIsScanning(true);
 
     // Verify before opening the modal so a managed challenge, if Cloudflare
@@ -229,7 +231,9 @@ const ItemTable: React.FC = () => {
 
     setIsImportModalVisible(true);
     try {
-      const receiptItems = await scanReceipt(file, turnstileToken);
+      const receiptItems = await scanReceipt(file, turnstileToken, (next) => {
+        if (requestId === scanRequestRef.current) setScanProgress(next);
+      });
       // Ignore results from a scan the user already cancelled
       if (requestId !== scanRequestRef.current) return;
       trackEvent('receipt_scan_succeeded', {
@@ -439,6 +443,7 @@ const ItemTable: React.FC = () => {
       <ReceiptImportModal
         isOpen={isImportModalVisible}
         isLoading={isScanning}
+        progress={scanProgress}
         items={scannedItems}
         onConfirm={importScannedItems}
         onClose={closeImportModal}

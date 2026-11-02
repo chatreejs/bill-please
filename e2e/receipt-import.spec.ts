@@ -14,6 +14,14 @@ const importModal = (page: Page) =>
 const uploadReceipt = (page: Page) =>
   page.locator('input[type="file"]').setInputFiles(RECEIPT);
 
+/** A Server-Sent Events body like POST /api/receipts/scan streams */
+const sse = (events: [string, unknown][]) =>
+  events
+    .map(
+      ([event, data]) => `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`,
+    )
+    .join('');
+
 const SCANNED = {
   items: [
     {
@@ -137,7 +145,9 @@ test.describe('with the scan service up', () => {
     await uploadReceipt(page);
 
     const modal = importModal(page);
-    await expect(modal).toContainText('Reading your bill');
+    const progress = modal.getByTestId('receipt-scan-progress');
+    await expect(progress).toContainText('Reading receipt image');
+    await expect(progress.locator('.ant-spin')).toBeVisible();
     await expect(modal.getByRole('button', { name: /^Add \d/ })).toBeDisabled();
     release();
     await expect(modal.locator('.ant-table-row')).toHaveCount(2);
@@ -225,6 +235,45 @@ test.describe('with the scan service up', () => {
     await expect(
       page.getByText('Could not read the bill, please try again'),
     ).toBeVisible();
+  });
+
+  test('reads the items from a scan stream', async ({ page, receiptApi }) => {
+    let accept: string | undefined;
+    receiptApi.onScan((route) => {
+      accept = route.request().headers()['accept'];
+      return route.fulfill({
+        contentType: 'text/event-stream',
+        body: sse([
+          ['progress', { stage: 'ocr' }],
+          ['progress', { stage: 'queue', position: 1 }],
+          ['progress', { stage: 'llm', items: 1 }],
+          ['result', SCANNED],
+        ]),
+      });
+    });
+    await uploadReceipt(page);
+    await expect(importModal(page).locator('.ant-table-row')).toHaveCount(2);
+    expect(accept).toContain('text/event-stream');
+  });
+
+  test('shows the busy message from an error event in the stream', async ({
+    page,
+    receiptApi,
+  }) => {
+    receiptApi.onScan((route) =>
+      route.fulfill({
+        contentType: 'text/event-stream',
+        body: sse([
+          ['progress', { stage: 'ocr' }],
+          ['error', { status: 503, code: 'scanner_busy', error: 'busy' }],
+        ]),
+      }),
+    );
+    await uploadReceipt(page);
+    await expect(
+      page.getByText('AI is working hard, please wait a moment'),
+    ).toBeVisible();
+    await expect(importModal(page)).toBeHidden();
   });
 
   test('can scan the same file twice', async ({ page, receiptApi }) => {

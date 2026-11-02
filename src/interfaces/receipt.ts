@@ -25,3 +25,17 @@ export interface IReceiptScannerStatus {
 export interface IReceiptScanResult {
   items: IReceiptItem[];
 }
+
+/**
+ * One step of a scan. POST /api/receipts/scan streams ocr, queue and llm as
+ * Server-Sent Events, and the web adds upload while it sends the photo.
+ */
+export interface IReceiptScanProgress {
+  stage: 'upload' | 'ocr' | 'queue' | 'llm';
+  /** Share of the photo sent so far, 0 to 100, while stage is upload */
+  uploadPercent?: number;
+  /** Place in the LLM queue while stage is queue. 1 is next */
+  position?: number;
+  /** Items the AI has read so far while stage is llm */
+  items?: number;
+}
