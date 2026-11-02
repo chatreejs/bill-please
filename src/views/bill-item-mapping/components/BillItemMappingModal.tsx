@@ -144,17 +144,20 @@ const BillItemMappingModal: React.FC<Props> = ({ isOpen, itemId, onClose }) => {
     const itemMapping = billItemMappings.find(
       (mapping) => mapping.itemId === itemId,
     );
-    const maxWeight = Math.max(0, ...shares.map((share) => share.weight));
+    // A payer who is alone on an item pays for all of it, so their weight goes back to 1
+    const savedShares =
+      shares.length === 1 ? [{ ...shares[0], weight: 1 }] : shares;
+    const maxWeight = Math.max(0, ...savedShares.map((share) => share.weight));
     if (maxWeight > 1) {
       trackEvent('mapping_uneven_split', {
-        payer_count: shares.length,
+        payer_count: savedShares.length,
         max_weight: maxWeight,
       });
     }
     if (itemMapping) {
-      dispatch(editBillItemMapping({ itemId, shares }));
+      dispatch(editBillItemMapping({ itemId, shares: savedShares }));
     } else {
-      dispatch(addBillItemMapping({ itemId, shares }));
+      dispatch(addBillItemMapping({ itemId, shares: savedShares }));
     }
     onClose();
   };

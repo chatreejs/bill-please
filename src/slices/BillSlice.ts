@@ -6,10 +6,16 @@ const removeFromMappings = (
   itemMapping: IBillItemMapping[],
   payerIds: string[],
 ): IBillItemMapping[] =>
-  itemMapping.map((mapping) => ({
-    ...mapping,
-    shares: mapping.shares.filter((share) => !payerIds.includes(share.payerId)),
-  }));
+  itemMapping.map((mapping) => {
+    const shares = mapping.shares.filter(
+      (share) => !payerIds.includes(share.payerId),
+    );
+    // A payer who is alone on an item pays for all of it, so their weight goes back to 1
+    return {
+      ...mapping,
+      shares: shares.length === 1 ? [{ ...shares[0], weight: 1 }] : shares,
+    };
+  });
 
 const initialState: IBillState = {
   title: '',

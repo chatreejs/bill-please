@@ -100,7 +100,10 @@ export const assignItem = async (
     ).toBeVisible();
   } else {
     for (const person of people) {
-      await modal.getByText(person, { exact: true }).click();
+      await modal
+        .locator('.ant-tag')
+        .getByText(person, { exact: true })
+        .click();
     }
   }
   await modal.getByRole('button', { name: 'Save' }).click();

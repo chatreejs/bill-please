@@ -1,3 +1,5 @@
+import { Page } from '@playwright/test';
+
 import { expect, test } from './fixtures';
 import {
   addItem,
@@ -6,8 +8,10 @@ import {
   goToMapping,
   goToResult,
   mappingCard,
+  openTab,
   payerSummary,
   resultTotal,
+  tableRow,
 } from './helpers';
 
 test.beforeEach(async ({ page }) => {
@@ -134,4 +138,73 @@ test('assignments survive a reload', async ({ page }) => {
   await assignItem(page, 'Pizza', ['Alice']);
   await page.reload();
   await expect(mappingCard(page, 'Pizza')).toContainText('Alice');
+});
+
+test.describe('uneven split', () => {
+  const raiseShare = async (
+    modal: ReturnType<Page['getByRole']>,
+    name: string,
+    times: number,
+  ) => {
+    for (let i = 0; i < times; i++) {
+      await modal.getByRole('button', { name: `More for ${name}` }).click();
+    }
+  };
+
+  test('shows the weight on the card', async ({ page }) => {
+    await assignItem(page, 'Pizza', ['Alice', 'Bob']);
+    await mappingCard(page, 'Pizza').click();
+    const modal = page.getByRole('dialog', { name: 'Select payer for Pizza' });
+    await raiseShare(modal, 'Alice', 2);
+    await expect(modal.getByLabel('Share for Alice')).toHaveValue('3');
+    await modal.getByRole('button', { name: 'Save' }).click();
+
+    await expect(mappingCard(page, 'Pizza')).toContainText('Alice×3');
+    await expect(mappingCard(page, 'Pizza')).not.toContainText('Bob×');
+  });
+
+  test('a payer left alone on an item goes back to weight 1', async ({
+    page,
+  }) => {
+    await assignItem(page, 'Pizza', ['Alice', 'Bob']);
+    await mappingCard(page, 'Pizza').click();
+    const modal = page.getByRole('dialog', { name: 'Select payer for Pizza' });
+    await raiseShare(modal, 'Alice', 8);
+    await expect(modal.getByLabel('Share for Alice')).toHaveValue('9');
+    await modal.locator('.ant-tag').getByText('Bob', { exact: true }).click();
+    await modal.getByRole('button', { name: 'Save' }).click();
+    await expect(modal).toBeHidden();
+
+    await expect(mappingCard(page, 'Pizza')).toContainText('Alice');
+    await expect(mappingCard(page, 'Pizza')).not.toContainText('×');
+
+    // Alice is back at 1 and Bob starts at 1, so the split is even again
+    await assignItem(page, 'Pizza', ['Bob']);
+    await mappingCard(page, 'Pizza').click();
+    await expect(modal.getByLabel('Share for Alice')).toHaveValue('1');
+    await expect(modal.getByLabel('Share for Bob')).toHaveValue('1');
+  });
+
+  test('deleting a payer resets the weight of the one left', async ({
+    page,
+  }) => {
+    await assignItem(page, 'Pizza', ['Alice', 'Bob']);
+    await mappingCard(page, 'Pizza').click();
+    const modal = page.getByRole('dialog', { name: 'Select payer for Pizza' });
+    await raiseShare(modal, 'Alice', 8);
+    await modal.getByRole('button', { name: 'Save' }).click();
+    await expect(mappingCard(page, 'Pizza')).toContainText('Alice×9');
+
+    await page.goto('/');
+    await openTab(page, 'Payer');
+    await tableRow(page, 'Bob').click();
+    await page
+      .getByRole('dialog', { name: 'Edit payer' })
+      .getByRole('button', { name: 'Delete payer' })
+      .click();
+    await goToMapping(page);
+
+    await expect(mappingCard(page, 'Pizza')).toContainText('Alice');
+    await expect(mappingCard(page, 'Pizza')).not.toContainText('×');
+  });
 });
