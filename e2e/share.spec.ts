@@ -73,4 +73,28 @@ test.describe('on desktop', () => {
     // Spaces become dashes
     expect(download.suggestedFilename()).toBe('bill-Friday-dinner.jpeg');
   });
+
+  test('leaves the page as it was after making the image', async ({ page }) => {
+    await buildBill(page, [{ name: 'Pizza', price: 300 }], [{ name: 'Alice' }]);
+    await goToResult(page);
+    await page.getByRole('button', { name: 'Bank account' }).click();
+    await page
+      .locator('.ant-select')
+      .filter({ has: page.getByRole('combobox', { name: 'Bank' }) })
+      .click();
+    await page
+      .locator('.ant-select-item-option')
+      .getByText('SCB', { exact: true })
+      .click();
+    await page.getByLabel('Account number', { exact: true }).fill('1234567890');
+    await page.getByRole('button', { name: 'Save' }).click();
+
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Download this bill' }).click();
+    await downloadPromise;
+    // The off-screen copy is gone, and the page keeps its buttons
+    await expect(page.locator('.bank-account-number')).toHaveCount(1);
+    await expect(page.locator('.ant-typography-copy')).toBeVisible();
+    await expect(page.getByText('Change bank account')).toBeVisible();
+  });
 });
