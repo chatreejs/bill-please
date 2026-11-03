@@ -95,10 +95,11 @@ const parseBody = (data: unknown): { code?: unknown } | undefined => {
 };
 
 /**
- * Why a scan failed, from the bill-please-mcp response, for the busy and
- * unavailable messages and analytics. The busy 503 has `code: 'scanner_busy'`
- * and the 503 for a down OCR or LLM has `code: 'scanner_unavailable'`, which
- * tell them apart from the 503 for an unreachable Turnstile siteverify.
+ * Why a scan failed, read from the bill-please-mcp response. It picks the
+ * toast message and the analytics reason. bill-please-mcp answers 503 for
+ * three causes. A full LLM queue has `code: 'scanner_busy'`, a down OCR or
+ * LLM has `code: 'scanner_unavailable'`, and an unreachable Turnstile
+ * siteverify has no code.
  */
 export const getReceiptScanFailureReason = (
   error: unknown,

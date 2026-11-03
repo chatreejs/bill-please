@@ -90,8 +90,8 @@ const ItemTable: React.FC = () => {
   const { status: scannerStatus, isHealthy: isReceiptApiHealthy } =
     useReceiptScannerStatus();
   const isReceiptScannerBusy = scannerStatus?.busy === true;
-  // The stream is open, and the server's OCR and LLM are up. Older servers
-  // don't send `available`, which counts as up
+  // True when the status stream is open and the server's OCR and LLM are up.
+  // Older servers don't send `available`, so a missing value counts as up
   const isReceiptScannerAvailable =
     isReceiptApiHealthy && scannerStatus?.available !== false;
 
