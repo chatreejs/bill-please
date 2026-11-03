@@ -39,6 +39,18 @@ test('generates a PromptPay QR code', async ({ page }) => {
   await expect(page.locator('.ant-qrcode svg')).toBeVisible();
 });
 
+test('takes digits only in the PromptPay ID, up to 15', async ({ page }) => {
+  await choosePromptPay(page);
+  const input = page.locator('#promptPayId');
+  await input.pressSequentially('08a1-234 5678');
+  await expect(input).toHaveValue('0812345678');
+  await expect(input).toHaveAttribute('inputmode', 'numeric');
+
+  // Pasted text loses everything that is not a digit
+  await input.fill('081-234-5678-90123-4567');
+  await expect(input).toHaveValue('081234567890123');
+});
+
 test('remembers the PromptPay ID', async ({ page }) => {
   await choosePromptPay(page);
   await page.locator('#promptPayId').fill('0812345678');

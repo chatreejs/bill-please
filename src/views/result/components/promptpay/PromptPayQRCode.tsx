@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useBrowserStorage, useRevalidateOnLanguageChange } from '@hooks';
-import { trackError, trackEvent } from '@utils';
+import { allowDigitsOnly, toDigits, trackError, trackEvent } from '@utils';
 import PromptPayLogo from '/src/assets/images/PromptPay-logo.png';
 import ThaiQRPayment from '/src/assets/images/thai-qr-payment.png';
 
@@ -63,6 +63,9 @@ const PromptPayQRCode: React.FC = () => {
             <Flex gap={6}>
               <Form.Item
                 name="promptPayId"
+                // A phone number has 10 digits, a national ID 13, an e-wallet ID 15.
+                // Cut here, not with maxLength, so pasted dashes do not use up the limit
+                normalize={(value: string) => toDigits(value).slice(0, 15)}
                 rules={[
                   {
                     required: true,
@@ -70,7 +73,11 @@ const PromptPayQRCode: React.FC = () => {
                   },
                 ]}
               >
-                <Input />
+                <Input
+                  inputMode="numeric"
+                  autoComplete="off"
+                  onKeyDown={allowDigitsOnly}
+                />
               </Form.Item>
               <Button
                 type="primary"

@@ -6,6 +6,7 @@ export * from './colors.util';
 export * from './device.util';
 export * from './expense.util';
 export * from './file.util';
+export * from './input.util';
 export * from './receipt.util';
 export * from './string.util';
 export * from './version.util';

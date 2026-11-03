@@ -11,6 +11,7 @@ import {
 import { IBankAccount } from '@interfaces';
 import {
   ACCOUNT_NUMBER_MAX_LENGTH,
+  allowDigitsOnly,
   BANKS,
   formatAccountNumber,
   getBank,
@@ -23,14 +24,6 @@ import {
 import BankBadge from './BankBadge';
 
 const { Text } = Typography;
-
-/** Block letters and symbols as they are typed. Pasted text is cleaned by normalize */
-const allowDigitsOnly = (event: React.KeyboardEvent<HTMLInputElement>) => {
-  const isShortcut = event.ctrlKey || event.metaKey || event.altKey;
-  if (event.key.length === 1 && /\D/.test(event.key) && !isShortcut) {
-    event.preventDefault();
-  }
-};
 
 const BankName = styled.span`
   min-width: 0;
