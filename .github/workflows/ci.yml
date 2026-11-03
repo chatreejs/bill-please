@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint, test and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .tool-versions
+
+      - run: bun install --frozen-lockfile
+
+      - name: ESLint
+        run: bun run eslint
+
+      - name: Type check
+        run: bun run check-types
+
+      - name: Prettier
+        run: bun run format:check
+
+      # `bun run test` runs Vitest; `bun test` would start Bun's own runner
+      - name: Unit tests
+        run: bun run test
+
+      - name: Build
+        run: bun run build
+
+  e2e:
+    name: E2E tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .tool-versions
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .tool-versions
+
+      - run: bun install --frozen-lockfile
+
+      - name: Install Chromium
+        run: bunx playwright install --with-deps chromium
+
+      # The fixtures stub GitHub and the receipt backend and block every
+      # other host, so no secrets or network access are needed
+      - name: Playwright
+        run: bun run test:e2e
+
+      - name: Upload traces
+        if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-test-results
+          path: test-results/
+          retention-days: 7
