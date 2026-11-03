@@ -183,14 +183,50 @@
       "maxDigits": 10
     },
     {
+      "id": "ICBC",
+      "code": "070",
+      "name": {
+        "en": "ICBC",
+        "th": "ไอซีบีซี (ไทย)"
+      },
+      "icon": "/banks/ICBC.png",
+      "color": "#c4161c",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
+      "id": "TCRB",
+      "code": "071",
+      "name": {
+        "en": "TCRB",
+        "th": "ไทยเครดิต"
+      },
+      "icon": "/banks/TCRB.png",
+      "color": "#0e3f9e",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
       "id": "CLICX",
       "code": "088",
       "name": {
         "en": "CLICX",
-        "th": "CLICX"
+        "th": "คลิกซ์"
       },
       "icon": "/banks/CLICX.png",
       "color": "#1b74d4",
+      "minDigits": 10,
+      "maxDigits": 10
+    },
+    {
+      "id": "SMED",
+      "code": "098",
+      "name": {
+        "en": "SME D Bank",
+        "th": "เอสเอ็มอี ดี แบงก์"
+      },
+      "icon": "/banks/SMED.png",
+      "color": "#1b6fb8",
       "minDigits": 10,
       "maxDigits": 10
     }

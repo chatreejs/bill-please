@@ -125,6 +125,23 @@ test.describe('bank account', () => {
       .toBeGreaterThan(0);
   });
 
+  test('loads a logo for every bank', async ({ page }) => {
+    await chooseBankAccount(page);
+    await page
+      .locator('.ant-select')
+      .filter({ has: page.getByRole('combobox', { name: 'Bank' }) })
+      .click();
+    const logos = page.locator('.ant-select-item-option img');
+    await expect(logos).toHaveCount(19);
+    await expect
+      .poll(() =>
+        logos.evaluateAll((imgs: HTMLImageElement[]) =>
+          imgs.filter((img) => img.naturalWidth === 0).map((img) => img.src),
+        ),
+      )
+      .toEqual([]);
+  });
+
   test('offers CLICX with its logo and 10-digit numbers', async ({ page }) => {
     await chooseBankAccount(page);
     await selectBank(page, 'CLICX');
