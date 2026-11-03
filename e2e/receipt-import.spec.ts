@@ -68,6 +68,23 @@ test('button waits while the AI is busy and turns on without a reload', async ({
   await expect(addFromBill(page)).toBeEnabled();
 });
 
+test('button turns off while the OCR or LLM is down and back on without a reload', async ({
+  page,
+  receiptApi,
+}) => {
+  receiptApi.setHealthy(true);
+  receiptApi.setAvailable(false);
+  await page.goto('/');
+  await expect(addFromBill(page)).toBeDisabled();
+  await page.getByTestId('add-from-bill-target').tap();
+  await expect(
+    page.getByText('Bill scanning is unavailable right now'),
+  ).toBeVisible();
+
+  receiptApi.setAvailable(true);
+  await expect(addFromBill(page)).toBeEnabled();
+});
+
 test.describe('with the scan service up', () => {
   test.beforeEach(async ({ page, receiptApi }) => {
     receiptApi.setHealthy(true);
@@ -217,6 +234,23 @@ test.describe('with the scan service up', () => {
     await uploadReceipt(page);
     await expect(
       page.getByText('AI is working hard, please wait a moment'),
+    ).toBeVisible();
+    await expect(importModal(page)).toBeHidden();
+  });
+
+  test('a scanner_unavailable 503 shows the unavailable message', async ({
+    page,
+    receiptApi,
+  }) => {
+    receiptApi.onScan((route) =>
+      route.fulfill({
+        status: 503,
+        json: { error: 'down', code: 'scanner_unavailable' },
+      }),
+    );
+    await uploadReceipt(page);
+    await expect(
+      page.getByText('Bill scanning is unavailable right now'),
     ).toBeVisible();
     await expect(importModal(page)).toBeHidden();
   });

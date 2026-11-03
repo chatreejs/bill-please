@@ -90,6 +90,10 @@ const ItemTable: React.FC = () => {
   const { status: scannerStatus, isHealthy: isReceiptApiHealthy } =
     useReceiptScannerStatus();
   const isReceiptScannerBusy = scannerStatus?.busy === true;
+  // The stream is open, and the server's OCR and LLM are up. Older servers
+  // don't send `available`, which counts as up
+  const isReceiptScannerAvailable =
+    isReceiptApiHealthy && scannerStatus?.available !== false;
 
   // Only offer "Add from bill" to visitors who pass Turnstile
   const {
@@ -235,6 +239,7 @@ const ItemTable: React.FC = () => {
       if (requestId !== scanRequestRef.current) return;
       const reason = getReceiptScanFailureReason(error);
       const isBusy = reason === 'busy';
+      const isUnavailable = reason === 'unavailable';
       trackEvent('receipt_scan_failed', {
         reason,
         duration_ms: scanDurationMs(),
@@ -243,7 +248,9 @@ const ItemTable: React.FC = () => {
         t(
           isBusy
             ? 'home.itemList.importModal.busy'
-            : 'home.itemList.importModal.error',
+            : isUnavailable
+              ? 'home.itemList.importModal.unavailable'
+              : 'home.itemList.importModal.error',
         ),
       );
       setIsImportModalVisible(false);
@@ -392,7 +399,7 @@ const ItemTable: React.FC = () => {
           <RevealWrapper>
             <Tooltip
               title={
-                !isReceiptApiHealthy
+                !isReceiptScannerAvailable
                   ? t('home.itemList.importModal.unavailable')
                   : isReceiptScannerBusy && !isScanning
                     ? t('home.itemList.importModal.busy')
@@ -403,7 +410,7 @@ const ItemTable: React.FC = () => {
                 <AiButton
                   size="large"
                   loading={isScanning}
-                  disabled={!isReceiptApiHealthy || isReceiptScannerBusy}
+                  disabled={!isReceiptScannerAvailable || isReceiptScannerBusy}
                   onClick={() => fileInputRef.current?.click()}
                   block
                 >

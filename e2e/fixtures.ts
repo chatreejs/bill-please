@@ -7,6 +7,8 @@ export interface ReceiptApi {
   setHealthy: (healthy: boolean) => void;
   /** Report the LLM queue as full (busy) or with room */
   setBusy: (busy: boolean) => void;
+  /** Report the server's OCR and LLM as up or down */
+  setAvailable: (available: boolean) => void;
   /** Respond to the next scans with this handler */
   onScan: (handler: (route: Route) => Promise<void> | void) => void;
 }
@@ -43,6 +45,7 @@ export const test = base.extend<{
     async ({ context }, use) => {
       let healthy = false;
       let busy = false;
+      let available = true;
       let scanHandler: (route: Route) => Promise<void> | void = (route) =>
         route.fulfill({ status: 500 });
 
@@ -52,7 +55,7 @@ export const test = base.extend<{
         healthy
           ? route.fulfill({
               contentType: 'text/event-stream',
-              body: `retry: 500\n\nevent: status\ndata: ${JSON.stringify({ status: 'ok', busy })}\n\n`,
+              body: `retry: 500\n\nevent: status\ndata: ${JSON.stringify({ status: 'ok', busy, available })}\n\n`,
             })
           : route.fulfill({ status: 503 }),
       );
@@ -62,6 +65,7 @@ export const test = base.extend<{
       await use({
         setHealthy: (next) => (healthy = next),
         setBusy: (next) => (busy = next),
+        setAvailable: (next) => (available = next),
         onScan: (handler) => (scanHandler = handler),
       });
     },

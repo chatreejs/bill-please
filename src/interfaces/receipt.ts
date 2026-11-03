@@ -16,6 +16,11 @@ export interface IReceiptScannerStatus {
   status: 'ok';
   /** A new scan would be rejected right now, because the LLM queue is full */
   busy: boolean;
+  /**
+   * False while the server's OCR or LLM is down, so a scan can't work.
+   * Missing from older servers, which counts as available
+   */
+  available?: boolean;
   queue?: {
     active: number;
     waiting: number;

@@ -56,6 +56,7 @@ export const getReceiptScannerStatusUrl = (): string | undefined => {
 
 export type ReceiptScanFailureReason =
   | 'busy'
+  | 'unavailable'
   | 'unreadable'
   | 'rate_limited'
   | 'turnstile_rejected'
@@ -94,9 +95,10 @@ const parseBody = (data: unknown): { code?: unknown } | undefined => {
 };
 
 /**
- * Why a scan failed, from the bill-please-mcp response, for the busy message
- * and analytics. The busy 503 has `code: 'scanner_busy'`, which tells it
- * apart from the 503 for an unreachable Turnstile siteverify.
+ * Why a scan failed, from the bill-please-mcp response, for the busy and
+ * unavailable messages and analytics. The busy 503 has `code: 'scanner_busy'`
+ * and the 503 for a down OCR or LLM has `code: 'scanner_unavailable'`, which
+ * tell them apart from the 503 for an unreachable Turnstile siteverify.
  */
 export const getReceiptScanFailureReason = (
   error: unknown,
@@ -122,7 +124,9 @@ const reasonFromStatus = (
 ): ReceiptScanFailureReason => {
   switch (status) {
     case 503:
-      return code === 'scanner_busy' ? 'busy' : 'turnstile_unavailable';
+      if (code === 'scanner_busy') return 'busy';
+      if (code === 'scanner_unavailable') return 'unavailable';
+      return 'turnstile_unavailable';
     case 422:
       return 'unreadable';
     case 429:

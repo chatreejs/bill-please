@@ -28,6 +28,16 @@ describe('getReceiptScanFailureReason', () => {
         httpError(503, { error: 'Could not verify the Turnstile challenge' }),
       ),
     ).toBe('turnstile_unavailable');
+    expect(
+      getReceiptScanFailureReason(
+        httpError(503, { error: 'down', code: 'scanner_unavailable' }),
+      ),
+    ).toBe('unavailable');
+    expect(
+      getReceiptScanFailureReason(
+        new ReceiptScanError(503, 'scanner_unavailable'),
+      ),
+    ).toBe('unavailable');
   });
 
   it.each([
