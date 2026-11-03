@@ -48,10 +48,11 @@ const Payment: React.FC = () => {
                 role="button"
                 onClick={() => onPaymentMethodSelected(PaymentMethod.PromptPay)}
               >
+                {/* As tall as the Bank account button */}
                 <img
                   src={PromptPayLogo}
                   alt="prompt-pay"
-                  style={{ width: '84px' }}
+                  style={{ display: 'block', height: 32, width: 'auto' }}
                 />
               </div>
               <Button
