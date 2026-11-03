@@ -157,8 +157,8 @@
     "people": "People",
     "expenseList": "Expense List",
     "payment": {
-      "selectPaymentMethod": "Select your payment method",
-      "changePaymentMethod": "Change your payment method",
+      "selectPaymentMethod": "Choose how to get paid",
+      "changePaymentMethod": "Change how to get paid",
       "promptPay": {
         "inputLabel": "Phone number or Thai National ID",
         "inputError": "This field is required"

@@ -156,8 +156,8 @@
     "people": "จำนวนคน",
     "expenseList": "รายการค่าใช้จ่าย",
     "payment": {
-      "selectPaymentMethod": "เลือกวิธีการชำระเงิน",
-      "changePaymentMethod": "เปลี่ยนวิธีการชำระเงิน",
+      "selectPaymentMethod": "เลือกวิธีรับเงิน",
+      "changePaymentMethod": "เปลี่ยนวิธีรับเงิน",
       "promptPay": {
         "inputLabel": "ใส่หมายเลขโทรศัพท์ / เลขบัตรประชาชน",
         "inputError": "ต้องกรอกข้อมูลในช่องนี้"

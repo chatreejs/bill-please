@@ -17,8 +17,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('asks for a payment method first', async ({ page }) => {
-  await expect(page.getByText('Select your payment method')).toBeVisible();
-  await expect(page.getByText('Change your payment method')).toHaveCount(0);
+  await expect(page.getByText('Choose how to get paid')).toBeVisible();
+  await expect(page.getByText('Change how to get paid')).toHaveCount(0);
 });
 
 test('requires a PromptPay ID', async ({ page }) => {
@@ -56,8 +56,8 @@ test('remembers the PromptPay ID', async ({ page }) => {
 
 test('can change the payment method back', async ({ page }) => {
   await choosePromptPay(page);
-  await page.getByText('Change your payment method').click();
-  await expect(page.getByText('Select your payment method')).toBeVisible();
+  await page.getByText('Change how to get paid').click();
+  await expect(page.getByText('Choose how to get paid')).toBeVisible();
 });
 
 test.describe('bank account', () => {
