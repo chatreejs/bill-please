@@ -274,7 +274,7 @@ test.describe('with the scan service up', () => {
   test('reads the items from a scan stream', async ({ page, receiptApi }) => {
     let accept: string | undefined;
     receiptApi.onScan((route) => {
-      accept = route.request().headers()['accept'];
+      accept = route.request().headers().accept;
       return route.fulfill({
         contentType: 'text/event-stream',
         body: sse([

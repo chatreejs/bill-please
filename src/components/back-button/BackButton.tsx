@@ -20,10 +20,10 @@ const BackButton: React.FC<BackButtonProps> = ({ show }) => {
     const index = routes.indexOf(currentRoute);
     trackEvent('navigate_back', { from_page: currentRoute });
     if (index > 0) {
-      navigate(routes[index - 1], { replace: true });
+      void navigate(routes[index - 1], { replace: true });
     } else if (index === -1) {
       // Routes outside the linear bill flow (e.g. /tos) go back in history
-      navigate(-1);
+      void navigate(-1);
     }
   };
 

@@ -125,7 +125,7 @@ const Home: React.FC = () => {
                   (payer) => (payer.friend?.length ?? 0) > 0,
                 ),
               });
-              navigate('/mapping', {
+              void navigate('/mapping', {
                 replace: true,
               });
             }}
