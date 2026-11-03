@@ -181,6 +181,18 @@
       "color": "#184615",
       "minDigits": 10,
       "maxDigits": 10
+    },
+    {
+      "id": "CLICX",
+      "code": "088",
+      "name": {
+        "en": "CLICX",
+        "th": "CLICX"
+      },
+      "icon": "/banks/CLICX.png",
+      "color": "#1b74d4",
+      "minDigits": 10,
+      "maxDigits": 10
     }
   ]
 }

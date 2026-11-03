@@ -125,6 +125,22 @@ test.describe('bank account', () => {
       .toBeGreaterThan(0);
   });
 
+  test('offers CLICX with its logo and 10-digit numbers', async ({ page }) => {
+    await chooseBankAccount(page);
+    await selectBank(page, 'CLICX');
+    const logo = page.locator('.ant-select-selector img');
+    await expect(logo).toHaveAttribute('src', '/banks/CLICX.png');
+    await expect
+      .poll(() => logo.evaluate((img: HTMLImageElement) => img.naturalWidth))
+      .toBeGreaterThan(0);
+
+    await accountNumber(page).fill('123456789');
+    await accountNumber(page).blur();
+    await expect(formatError(page)).toBeVisible();
+    await accountNumber(page).fill('1234567890');
+    await expect(formatError(page)).toHaveCount(0);
+  });
+
   test('checks the number when a tap outside keeps the box focused', async ({
     page,
   }) => {
