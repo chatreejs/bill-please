@@ -20,6 +20,8 @@ const SummaryContainer = styled(Flex)`
 interface Props {
   isOpen: boolean;
   isLoading: boolean;
+  /** A new value for each scan, which remounts the progress and resets its timer */
+  scanId: number;
   progress?: IReceiptScanProgress;
   items: IBillItem[];
   onConfirm: (items: IBillItem[]) => void;
@@ -29,6 +31,7 @@ interface Props {
 const ReceiptImportModal: React.FC<Props> = ({
   isOpen,
   isLoading,
+  scanId,
   progress,
   items,
   onConfirm,
@@ -60,11 +63,17 @@ const ReceiptImportModal: React.FC<Props> = ({
         count: selectedItems.length,
       })}
       cancelText={t('common.button.cancel')}
-      okButtonProps={{ disabled: isLoading || selectedItems.length === 0 }}
+      // Hide the add button while the scan runs
+      okButtonProps={{
+        disabled: selectedItems.length === 0,
+        style: isLoading ? { display: 'none' } : undefined,
+      }}
       maskClosable={!isLoading}
     >
       {isLoading ? (
-        <ReceiptScanProgress progress={progress} />
+        // A closed antd Modal keeps its old children mounted. Without the key,
+        // the next scan's timer keeps counting from the cancelled one
+        <ReceiptScanProgress key={scanId} progress={progress} />
       ) : items.length === 0 ? (
         <Empty description={t('home.itemList.importModal.empty')} />
       ) : (

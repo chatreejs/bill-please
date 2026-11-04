@@ -126,6 +126,7 @@ const ItemTable: React.FC = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [scannedItems, setScannedItems] = useState<IBillItem[]>([]);
   const [scanProgress, setScanProgress] = useState<IReceiptScanProgress>();
+  const [scanId, setScanId] = useState(0);
 
   const [total, setTotal] = useState(0);
   const [service, setService] = useState(0);
@@ -204,6 +205,7 @@ const ItemTable: React.FC = () => {
     });
     setScannedItems([]);
     setScanProgress(undefined);
+    setScanId(requestId);
     setIsScanning(true);
 
     // Verify before opening the modal so a managed challenge, if Cloudflare
@@ -439,6 +441,7 @@ const ItemTable: React.FC = () => {
       <ReceiptImportModal
         isOpen={isImportModalVisible}
         isLoading={isScanning}
+        scanId={scanId}
         progress={scanProgress}
         items={scannedItems}
         onConfirm={importScannedItems}

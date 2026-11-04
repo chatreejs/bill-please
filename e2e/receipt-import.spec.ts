@@ -164,10 +164,27 @@ test.describe('with the scan service up', () => {
     const modal = importModal(page);
     const progress = modal.getByTestId('receipt-scan-progress');
     await expect(progress).toContainText('Reading receipt image');
-    await expect(progress.locator('.ant-spin')).toBeVisible();
-    await expect(modal.getByRole('button', { name: /^Add \d/ })).toBeDisabled();
+    await expect(progress.getByTestId('receipt-scan-animation')).toBeVisible();
+    await expect(modal.getByRole('button', { name: /^Add \d/ })).toBeHidden();
     release();
     await expect(modal.locator('.ant-table-row')).toHaveCount(2);
+    await expect(modal.getByRole('button', { name: /^Add \d/ })).toBeEnabled();
+  });
+
+  test('a new scan after a cancelled one starts its timer over', async ({
+    page,
+    receiptApi,
+  }) => {
+    // Never answers, so the scan stays in progress
+    receiptApi.onScan(() => new Promise<void>(() => undefined));
+    await uploadReceipt(page);
+    const progress = importModal(page).getByTestId('receipt-scan-progress');
+    await expect(progress).toContainText(/(?<!\d)2\.\ds$/);
+    await importModal(page).getByRole('button', { name: 'Cancel' }).click();
+    await expect(importModal(page)).toBeHidden();
+
+    await uploadReceipt(page);
+    await expect(progress).toContainText(/(?<!\d)0\.\ds$/);
   });
 
   test('cancelling a running scan ignores its result', async ({
