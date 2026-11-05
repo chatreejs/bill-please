@@ -38,15 +38,21 @@ Done, size S.
 
 The project had no tests, and the expense calculation in `ExpenseList` breaks most easily. It handles proportional service and VAT and friends, and ideas 4, 5 and 7 all change it. The calculation now lives in `calculateExpenses` and `calculateExpenseItem` in `@utils/expense.util.ts`, and `ExpenseList` only renders the result. Vitest covers it, together with `calculateService` and `calculateVat`, in `expense.util.test.ts`. Run it with `bun run test`.
 
-## Now
-
 ### 4. Uneven splits
 
-In progress, size M.
+Done, size M.
 
-The app splits every item equally between the payers mapped to it, so it can't express one person eating two slices of a shared pizza. Give each payer in a mapping a weight that defaults to 1, so a pizza could split 2, 1, 1. A later step could allow a fixed amount per payer.
+The app split every item equally between the payers mapped to it, so it couldn't express one person eating two slices of a shared pizza. Each payer in a mapping now has a weight that defaults to 1, so a pizza can split 2, 1, 1. When removing payers leaves one payer on an item, that payer's weight goes back to 1. A fixed amount per payer is not built.
 
-It changes `IBillItemMapping`, `BillItemMappingModal` and the split logic in `ExpenseList`. The `payerId: string[]` field becomes a list of payers with weights, which needs a redux-persist migration.
+`IBillItemMapping` now holds `shares` (a payer id and a weight) instead of `payerId: string[]`. Migration 2 in `src/config/migrations.ts` converts old stores. The code is in `BillItemMappingModal`, the `bill` slice and `@utils/expense.util.ts`.
+
+### 16. Store migrations
+
+Done, size S.
+
+Several ideas change the shape of persisted state, and the pre-v0.9.0 currency backfill showed that old `bp-store` data needs handling. Each step now lives in `src/config/migrations.ts`, keyed by the redux-persist `version` set in `src/config/Store.ts`, with tests in `migrations.test.ts`. Migration 2 takes a store from main (version 1) to the current shape. It converts mappings to shares (#4) and drops exchange rates for the base currency (#71).
+
+## Now
 
 ### 5. Bill-level discount, tip and rounding
 
@@ -102,13 +108,13 @@ It changes `src/interfaces/receipt.ts` and the backend zod schema together, plus
 
 ### 11. More payment methods
 
-In progress, size M.
+Idea, size M.
 
-The only payment method was Thai PromptPay QR. Offer payment options per currency, such as bank account details to copy or other countries' QR standards.
+Thai bank accounts ship in 0.11.0 next to PromptPay QR. Other currencies still have no payment method. Offer options per currency, such as other countries' QR standards or bank details.
 
-Thai bank accounts are built on `feature/settle-up-payment-methods`. The user picks a bank and types the account number, which `formatAccountNumber` formats as `XXX-X-XXXXX-X`. The bank list, with each bank's code, names, logo and digit range, is `src/config/banks.json`. The GSB, BAAC, GHB, KKP and TISCO digit ranges come from a 2019 government table and need checking against real passbooks. Other countries' methods are still open.
+A follow-up for the Thai banks: the GSB, BAAC, GHB, KKP and TISCO digit ranges in `src/config/banks.json` come from a 2019 government table and need checking against real passbooks.
 
-It changes `Payment`, `BankAccount` and `@utils/bank.util.ts`.
+It changes `Payment`, `BankAccount`, `src/config/banks.json` and `@utils/bank.util.ts`.
 
 ### 12. Live exchange rates
 
@@ -133,12 +139,6 @@ Idea, size S.
 The app supports only English and Thai. Add each language as `public/locales/{lang}/translation.json` and register it in the language switcher.
 
 ## Tech debt
-
-### 16. Store migrations
-
-Idea, size S.
-
-Several ideas above change the shape of persisted state. The pre-v0.9.0 currency backfill showed that old `bp-store` data needs handling. Set a redux-persist `version` and a `migrate` function so each shape change gets its own migration step.
 
 ### 17. Accessibility
 
