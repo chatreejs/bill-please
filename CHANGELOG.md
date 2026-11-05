@@ -5,22 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.11.0] - 2026-11-01
+## [0.11.0] - 2026-11-05
 
 ### Added
 
 - Add items from a receipt photo with the "Add from bill" button on the items tab:
   - Take or pick a photo, and the bill-please-mcp service reads each item's name, price, quantity, service charge and VAT
   - Review the scanned items in a preview and choose which ones to add to the bill
-  - The button is disabled while the scanning service is unreachable
+  - While scanning, an animated image shows the current step ("Reading receipt image", "Extracting items", "Found N items") and the time since the scan started
+  - The button is disabled, with a tooltip saying why, while the scanning service is unreachable, down or busy, and turns back on by itself as soon as the service is ready
+  - The button has a gradient sparkle style
 - Cloudflare Turnstile bot check before receipt scanning:
   - Runs in the background when the items tab opens, and asks for a click only when Cloudflare needs one
   - The "Add from bill" button appears once the check passes
+- Split an item unevenly between payers:
+  - In the payer popup, set each person's count or ratio with − and + buttons
+  - A note says whether the numbers add up to the item's quantity or work as a ratio, and the popup shows the item's total with service charge and VAT
+  - The mapping page shows ×N next to a payer whose share is above 1
+  - Bills saved before this version split equally as before
+- Bank account as a payment method on the result page:
+  - Pick a Thai bank, including CLICX, ICBC (Thai), TCRB and SME D Bank, and enter the account number
+  - The account number box takes digits only, formats them as XXX-X-XXXXX-XXXXXXX and checks the digit count for the chosen bank
+  - The account is saved on the device for next time
 - Link previews in LINE, Facebook, X and Discord, with a description and preview image
+- Anonymous analytics for receipt scans: the outcome, the failure reason, the duration and how often the scanner is busy (no photos or bill contents are sent)
 
 ### Changed
 
+- The PromptPay ID box opens the number keypad and takes digits only, up to 15
+- Ask "how do you want to get paid" instead of naming the payment method
+- Reword the Thai message shown when bill scanning is unavailable
 - Mention Cloudflare Turnstile in the privacy policy
+- Upgrade dependencies:
+  - eslint: 9.9.0 → 9.39.5
+  - typescript-eslint: 7.18.0 → 8.72.1
+  - eslint-plugin-react-hooks: 4.6.2 → 5.2.0
+  - @types/react-dom: 18.3.5 → 19.3.0
+  - fast-uri: 3.1.8 → 3.1.9
+  - follow-redirects: 1.16.0 → 1.16.1
+
+### Fixed
+
+- Pre-release builds (e.g. 0.11.0-beta.1) never offered the final release in the update prompt
+- A payer left alone on an item kept showing a leftover ×N share
+- The shared bill image had blank space where the hidden copy and change buttons were
+- An exchange rate form left open while the base currency changed could save a rate like "1 JPY = 10 JPY", and such rates are now removed ([#71](https://github.com/chatreejs/bill-please/issues/71))
 
 ## [0.10.1] - 2026-10-11
 
