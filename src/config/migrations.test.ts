@@ -46,18 +46,9 @@ describe('migration 2', () => {
     });
   });
 
-  it('leaves a state without a bill alone', () => {
-    const state = {
-      _persist: { version: 1, rehydrated: false },
-    } as unknown as PersistedState;
-    expect(migrations[2](state)).toBe(state);
-  });
-});
-
-describe('migration 3', () => {
   it('drops an exchange rate for the base currency', () => {
     const state = {
-      _persist: { version: 2, rehydrated: false },
+      _persist: { version: 1, rehydrated: false },
       app: {
         mainCurrency: 'JPY',
         displayCurrency: 'JPY',
@@ -68,15 +59,20 @@ describe('migration 3', () => {
       },
     } as unknown as PersistedState;
 
-    expect(migrations[3](state)).toMatchObject({
-      app: { exchangeRates: [{ currency: 'USD', rate: 0.0067 }] },
+    expect(migrations[2](state)).toEqual({
+      _persist: { version: 1, rehydrated: false },
+      app: {
+        mainCurrency: 'JPY',
+        displayCurrency: 'JPY',
+        exchangeRates: [{ currency: 'USD', rate: 0.0067 }],
+      },
     });
   });
 
-  it('leaves a state without exchange rates alone', () => {
+  it('leaves a state without a bill or app alone', () => {
     const state = {
-      _persist: { version: 2, rehydrated: false },
+      _persist: { version: 1, rehydrated: false },
     } as unknown as PersistedState;
-    expect(migrations[3](state)).toBe(state);
+    expect(migrations[2](state)).toBe(state);
   });
 });

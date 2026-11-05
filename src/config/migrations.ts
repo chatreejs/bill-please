@@ -26,38 +26,43 @@ export const migrations: MigrationManifest = {
       },
     };
   },
+  // Migrates a v1 store, as released on main, to the current shape.
+  //
   // Before uneven splits, a mapping listed its payers as `payerId: string[]`
   // and split the item equally. Give each of them weight 1, which splits the
   // same way.
-  2: (state: PersistedState) => {
-    const rootState = state as PersistedRootState;
-    if (!rootState.bill) return rootState;
-    return {
-      ...rootState,
-      bill: {
-        ...rootState.bill,
-        itemMapping: (rootState.bill.itemMapping ?? []).map((mapping) => ({
-          itemId: mapping.itemId,
-          shares:
-            mapping.shares ??
-            (mapping.payerId ?? []).map((payerId) => ({ payerId, weight: 1 })),
-        })),
-      },
-    } as PersistedState;
-  },
+  //
   // Before the fix for #71, a user could open the add rate form, switch the
   // base currency to the form's target, and save "1 JPY = 10 JPY". Drop
   // rates for the base currency.
-  3: (state: PersistedState) => {
+  2: (state: PersistedState) => {
     const rootState = state as PersistedRootState;
-    if (!rootState.app?.exchangeRates) return rootState;
-    const { mainCurrency, exchangeRates } = rootState.app;
+    const { app, bill } = rootState;
+    if (!app && !bill) return rootState;
     return {
       ...rootState,
-      app: {
-        ...rootState.app,
-        exchangeRates: exchangeRates.filter((r) => r.currency !== mainCurrency),
-      },
-    } as PersistedState;
+      ...(app && {
+        app: {
+          ...app,
+          exchangeRates: (app.exchangeRates ?? []).filter(
+            (r) => r.currency !== app.mainCurrency,
+          ),
+        },
+      }),
+      ...(bill && {
+        bill: {
+          ...bill,
+          itemMapping: (bill.itemMapping ?? []).map((mapping) => ({
+            itemId: mapping.itemId,
+            shares:
+              mapping.shares ??
+              (mapping.payerId ?? []).map((payerId) => ({
+                payerId,
+                weight: 1,
+              })),
+          })),
+        },
+      }),
+    };
   },
 };
