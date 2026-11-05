@@ -52,6 +52,16 @@ Done, size S.
 
 Several ideas change the shape of persisted state, and the pre-v0.9.0 currency backfill showed that old `bp-store` data needs handling. Each step now lives in `src/config/migrations.ts`, keyed by the redux-persist `version` set in `src/config/Store.ts`, with tests in `migrations.test.ts`. Migration 2 takes a store from main (version 1) to the current shape. It converts mappings to shares (#4) and drops exchange rates for the base currency (#71).
 
+### 11. More payment methods
+
+Done, size M.
+
+PromptPay QR was the only way to get paid. The Result page now also offers Thai bank accounts. `BankAccount` lets the user pick a bank from `src/config/banks.json`, formats the number into the shared mask, checks the digit count for that bank, and saves the account on the device. Analytics never gets the number.
+
+Not built: payment methods for other currencies, such as other countries' QR standards. The GSB, BAAC, GHB, KKP and TISCO digit ranges come from a 2019 government table and still need checking against real passbooks.
+
+The code is in `Payment`, `BankAccount`, `src/config/banks.json` and `@utils/bank.util.ts`.
+
 ## Now
 
 ### 5. Bill-level discount, tip and rounding
@@ -105,16 +115,6 @@ Idea, size M. Builds on #1.
 It changes `src/interfaces/receipt.ts` and the backend zod schema together, plus `ReceiptImportModal` and `normalizeReceiptItems`.
 
 ## Later
-
-### 11. More payment methods
-
-Idea, size M.
-
-Thai bank accounts ship in 0.11.0 next to PromptPay QR. Other currencies still have no payment method. Offer options per currency, such as other countries' QR standards or bank details.
-
-A follow-up for the Thai banks: the GSB, BAAC, GHB, KKP and TISCO digit ranges in `src/config/banks.json` come from a 2019 government table and need checking against real passbooks.
-
-It changes `Payment`, `BankAccount`, `src/config/banks.json` and `@utils/bank.util.ts`.
 
 ### 12. Live exchange rates
 
