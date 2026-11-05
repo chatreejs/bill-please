@@ -1,3 +1,4 @@
+export * from './a11y.util';
 export * from './analytics.util';
 export * from './bank.util';
 export * from './bill.util';

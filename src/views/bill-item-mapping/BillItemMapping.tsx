@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { BillCard, ButtonWrapper, PayerTag } from '@components';
 import { RootState } from '@config';
 import { IBillItemShare } from '@interfaces';
-import { getColorByName, trackEvent } from '@utils';
+import { buttonProps, getColorByName, trackEvent } from '@utils';
 import BillItemMappingModal from './components/BillItemMappingModal';
 
 const { Title, Text } = Typography;
@@ -77,7 +77,7 @@ const BillItemMapping: React.FC = () => {
                 style={{ marginBottom: '6px' }}
                 // The bottom padding is smaller because each payer tag adds an 8px margin below itself
                 styles={{ body: { paddingTop: 16, paddingBottom: 8 } }}
-                onClick={() => openModal(item.id)}
+                {...buttonProps(() => openModal(item.id))}
               >
                 <div
                   style={{

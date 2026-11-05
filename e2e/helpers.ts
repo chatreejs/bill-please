@@ -88,7 +88,7 @@ export const assignItem = async (
   itemName: string,
   people: string[] | 'all',
 ) => {
-  await page.locator('.ant-card').filter({ hasText: itemName }).click();
+  await mappingCard(page, itemName).click();
   const modal = page.getByRole('dialog', {
     name: `Select payer for ${itemName}`,
   });
@@ -100,10 +100,7 @@ export const assignItem = async (
     ).toBeVisible();
   } else {
     for (const person of people) {
-      await modal
-        .locator('.ant-tag')
-        .getByText(person, { exact: true })
-        .click();
+      await payerToggle(modal, person).click();
     }
   }
   await modal.getByRole('button', { name: 'Save' }).click();
@@ -161,7 +158,11 @@ export const openEditPayer = async (page: Page, name: string) => {
 
 /** The item card on the mapping page. */
 export const mappingCard = (page: Page, itemName: string) =>
-  page.locator('.ant-card').filter({ hasText: itemName });
+  page.getByRole('button').filter({ hasText: itemName });
+
+/** A payer's toggle button in the mapping modal. */
+export const payerToggle = (modal: Locator, name: string) =>
+  modal.getByRole('button', { name, exact: true });
 
 /** Add the items and payers, then assign every item to everyone. */
 export const buildBill = async (

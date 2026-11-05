@@ -11,6 +11,7 @@ import { getCurrencySymbol } from '@enums';
 import { IBillItemMapping, IBillItemShare, IPayer } from '@interfaces';
 import { addBillItemMapping, editBillItemMapping } from '@slices';
 import {
+  buttonProps,
   currencyFormat,
   getBillItemTotal,
   getColorByName,
@@ -224,7 +225,9 @@ const BillItemMappingModal: React.FC<Props> = ({ isOpen, itemId, onClose }) => {
               isSelected(payer.id) ? getColorByName(payer.name) : 'default'
             }
             bordered={isSelected(payer.id)}
-            onClick={() => handleTagClick(payer.id)}
+            {...buttonProps(() => handleTagClick(payer.id))}
+            aria-pressed={isSelected(payer.id)}
+            aria-label={payer.name}
             style={{
               cursor: 'pointer',
             }}

@@ -10,6 +10,7 @@ import {
   mappingCard,
   openTab,
   payerSummary,
+  payerToggle,
   resultTotal,
   tableRow,
 } from './helpers';
@@ -66,16 +67,14 @@ test('reopening an item keeps the current selection', async ({ page }) => {
   await mappingCard(page, 'Pizza').click();
   const modal = page.getByRole('dialog', { name: 'Select payer for Pizza' });
   await expect(modal).toContainText('Quantity: 1');
-  await expect(
-    modal.locator('.ant-tag').filter({ hasText: 'Bob' }).getByRole('img', {
-      name: 'check',
-    }),
-  ).toBeVisible();
-  await expect(
-    modal.locator('.ant-tag').filter({ hasText: 'Alice' }).getByRole('img', {
-      name: 'plus',
-    }),
-  ).toBeVisible();
+  await expect(payerToggle(modal, 'Bob')).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await expect(payerToggle(modal, 'Alice')).toHaveAttribute(
+    'aria-pressed',
+    'false',
+  );
 });
 
 test('cancel does not save the selection', async ({ page }) => {
@@ -171,7 +170,7 @@ test.describe('uneven split', () => {
     const modal = page.getByRole('dialog', { name: 'Select payer for Pizza' });
     await raiseShare(modal, 'Alice', 8);
     await expect(modal.getByLabel('Share for Alice')).toHaveValue('9');
-    await modal.locator('.ant-tag').getByText('Bob', { exact: true }).click();
+    await payerToggle(modal, 'Bob').click();
     await modal.getByRole('button', { name: 'Save' }).click();
     await expect(modal).toBeHidden();
 
