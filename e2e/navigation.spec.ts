@@ -10,7 +10,7 @@ import {
 } from './helpers';
 
 const backButton = (page: import('@playwright/test').Page) =>
-  page.getByRole('button', { name: 'arrow-left' });
+  page.getByRole('button', { name: 'Back' });
 
 test.describe('Next button', () => {
   test.beforeEach(async ({ page }) => {

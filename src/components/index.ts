@@ -10,4 +10,5 @@ export { default as SplashSpinner } from './splash-spinner/SplashSpinner';
 export * from './ui/ActionButtonWrapper';
 export * from './ui/ButtonWrapper';
 export * from './ui/PayerTag';
+export * from './ui/TextButton';
 export { default as TableCard } from './ui/TableCard';

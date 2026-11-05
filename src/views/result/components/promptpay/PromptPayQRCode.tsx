@@ -4,6 +4,7 @@ import generatePayload from 'promptpay-qr';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { TextButton } from '@components';
 import { useBrowserStorage, useRevalidateOnLanguageChange } from '@hooks';
 import { allowDigitsOnly, toDigits, trackError, trackEvent } from '@utils';
 import PromptPayLogo from '/src/assets/images/PromptPay-logo.png';
@@ -96,27 +97,22 @@ const PromptPayQRCode: React.FC = () => {
             alt="ThaiQRPayment"
             style={{ width: '160px' }}
           />
-          <img
-            src={PromptPayLogo}
-            alt="PromptPayLogo"
-            style={{ width: '64px' }}
-          />
+          <img src={PromptPayLogo} alt="PromptPay" style={{ width: '64px' }} />
           <QRCode
             type={'svg'}
             bordered={false}
             value={qrCodePayload ?? '-'}
             size={160}
           />
-          <span
+          <TextButton
             className="change-qr-code"
-            style={{ fontSize: 12, textDecoration: 'underline' }}
             onClick={() => {
               trackEvent('promptpay_qr_changed');
               setIsSubmit(false);
             }}
           >
             {t('result.payment.qr.changeQRCode')}
-          </span>
+          </TextButton>
         </Flex>
       )}
     </>

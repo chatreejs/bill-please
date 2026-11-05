@@ -9,7 +9,11 @@ import { useBrowserStorage } from '@hooks';
 import { ILanguage } from '@interfaces';
 import { trackEvent } from '@utils';
 
-const LanguageSwitcherDropdown = styled.div`
+const LanguageSwitcherDropdown = styled.button`
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
   cursor: pointer;
   color: white;
 `;

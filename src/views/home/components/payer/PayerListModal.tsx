@@ -162,6 +162,9 @@ const PayerListModal: React.FC<Props> = ({
                           size="middle"
                           onClick={() => remove(name)}
                           icon={<DeleteOutlined />}
+                          aria-label={t(
+                            'home.payerList.modal.form.deleteFriend',
+                          )}
                           danger
                         />
                       </Flex>

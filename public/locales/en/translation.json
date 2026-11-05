@@ -1,6 +1,7 @@
 {
   "common": {
     "button": {
+      "back": "Back",
       "cancel": "Cancel",
       "delete": "Delete",
       "next": "Next",
@@ -97,6 +98,7 @@
           "childrenName": "Friend name",
           "childrenNameError": "Please input friend name",
           "delete": "Delete payer",
+          "deleteFriend": "Delete friend",
           "hasChildren": "a friend came with",
           "name": "Payer name",
           "nameError": "Please input payer name"

@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
+import { TextButton } from '@components';
 import {
   useBlurOnKeyboardClose,
   useBrowserStorage,
@@ -104,16 +105,15 @@ const BankAccount: React.FC = () => {
         >
           {formatAccountNumber(bankAccount.accountNumber)}
         </Text>
-        <span
+        <TextButton
           className="change-bank-account"
-          style={{ fontSize: 12, textDecoration: 'underline' }}
           onClick={() => {
             trackEvent('bank_account_changed');
             setIsSubmit(false);
           }}
         >
           {t('result.payment.bankAccount.change')}
-        </span>
+        </TextButton>
       </Flex>
     );
   }

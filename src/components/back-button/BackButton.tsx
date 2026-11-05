@@ -1,6 +1,7 @@
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { trackEvent } from '@utils';
@@ -10,6 +11,7 @@ interface BackButtonProps {
 }
 
 const BackButton: React.FC<BackButtonProps> = ({ show }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -34,6 +36,7 @@ const BackButton: React.FC<BackButtonProps> = ({ show }) => {
           type="text"
           size="large"
           style={{ fontSize: '1.5rem', color: '#fafafad1' }}
+          aria-label={t('common.button.back')}
           onClick={() => onBack()}
         >
           <ArrowLeftOutlined />

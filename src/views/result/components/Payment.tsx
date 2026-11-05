@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 
+import { TextButton } from '@components';
 import { PaymentMethod } from '@enums';
 import { trackEvent } from '@utils';
 import BankAccount from './bank-account/BankAccount';
@@ -44,17 +45,16 @@ const Payment: React.FC = () => {
           <Flex vertical justify="center" align="center" gap={6}>
             <div>{t('result.payment.selectPaymentMethod')}</div>
             <Flex align="center" gap={16}>
-              <div
-                role="button"
+              <TextButton
                 onClick={() => onPaymentMethodSelected(PaymentMethod.PromptPay)}
               >
                 {/* As tall as the Bank account button */}
                 <img
                   src={PromptPayLogo}
-                  alt="prompt-pay"
+                  alt="PromptPay"
                   style={{ display: 'block', height: 32, width: 'auto' }}
                 />
-              </div>
+              </TextButton>
               <Button
                 icon={<BankOutlined />}
                 onClick={() =>
@@ -72,17 +72,13 @@ const Payment: React.FC = () => {
         {selectedPaymentMethod === PaymentMethod.BankAccount && <BankAccount />}
       </PaymentWrapper>
       {selectedPaymentMethod !== PaymentMethod.None && (
-        <span
+        <TextButton
           className="change-payment-method"
-          style={{
-            marginTop: '1rem',
-            fontSize: 12,
-            textDecoration: 'underline',
-          }}
+          style={{ marginTop: '1rem' }}
           onClick={() => onPaymentMethodSelected(PaymentMethod.None)}
         >
           {t('result.payment.changePaymentMethod')}
-        </span>
+        </TextButton>
       )}
     </>
   );

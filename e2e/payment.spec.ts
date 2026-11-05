@@ -6,7 +6,7 @@ import { buildBill, goToResult } from './helpers';
 const choosePromptPay = (page: Page) =>
   page
     .getByRole('button')
-    .filter({ has: page.getByAltText('prompt-pay') })
+    .filter({ has: page.getByAltText('PromptPay') })
     .click();
 
 const qrButton = (page: Page) => page.getByRole('button', { name: 'qrcode' });

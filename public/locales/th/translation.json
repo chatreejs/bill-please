@@ -1,6 +1,7 @@
 {
   "common": {
     "button": {
+      "back": "ย้อนกลับ",
       "cancel": "ยกเลิก",
       "delete": "ลบ",
       "next": "ต่อไป",
@@ -96,6 +97,7 @@
           "childrenName": "ชื่อเพื่อน",
           "childrenNameError": "กรุณาใส่ชื่อเพื่อน",
           "delete": "ลบคนจ่าย",
+          "deleteFriend": "ลบเพื่อน",
           "hasChildren": "มีเพื่อนมาด้วย",
           "name": "ชื่อคนจ่าย",
           "nameError": "กรุณาใส่ชื่อคนจ่าย"
