@@ -62,14 +62,14 @@ Redux Toolkit + `redux-persist` (key `bp-store`, localStorage). Two slices:
 
 Bill-scan analytics events (GA4 via `trackEvent`, no personal data):
 
-| Event | Params |
-|---|---|
-| `receipt_scan_started` | `file_type`, `file_size_kb` |
-| `receipt_scan_succeeded` | `count`, `duration_ms` |
-| `receipt_scan_failed` | `reason` (`turnstile` client-side, or `getReceiptScanFailureReason`: `busy`, `unavailable`, `unreadable`, `rate_limited`, `turnstile_rejected`, `turnstile_unavailable`, `too_large`, `unsupported_type`, `timeout`, `network`, `server_error`, `unknown`), `duration_ms` |
-| `receipt_scan_cancelled` | `duration_ms` (the user closed the modal while scanning) |
-| `receipt_scanner_busy_shown` | `active`, `waiting` (once each time the button turns busy) |
-| `receipt_items_imported` | `count`, `scanned_count` |
+| Event                        | Params                                                                                                                                                                                                                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `receipt_scan_started`       | `file_type`, `file_size_kb`                                                                                                                                                                                                                                               |
+| `receipt_scan_succeeded`     | `count`, `duration_ms`                                                                                                                                                                                                                                                    |
+| `receipt_scan_failed`        | `reason` (`turnstile` client-side, or `getReceiptScanFailureReason`: `busy`, `unavailable`, `unreadable`, `rate_limited`, `turnstile_rejected`, `turnstile_unavailable`, `too_large`, `unsupported_type`, `timeout`, `network`, `server_error`, `unknown`), `duration_ms` |
+| `receipt_scan_cancelled`     | `duration_ms` (the user closed the modal while scanning)                                                                                                                                                                                                                  |
+| `receipt_scanner_busy_shown` | `active`, `waiting` (once each time the button turns busy)                                                                                                                                                                                                                |
+| `receipt_items_imported`     | `count`, `scanned_count`                                                                                                                                                                                                                                                  |
 
 The scan asks for `Accept: text/event-stream`, and bill-please-mcp streams Server-Sent Events: `progress` (`IReceiptScanProgress`: `stage` `ocr`, `queue` with `position`, or `llm` with `items`), then `result` or `error` (`{ status, code?, error }`). `scanReceipt` uses the axios XHR adapter with `responseType: 'text'`, parses `responseText` with `parseServerSentEvents` in `onDownloadProgress`, adds the `upload` stage from `onUploadProgress`, and throws a stream error as `ReceiptScanError`, which `getReceiptScanFailureReason` maps like the HTTP status. A plain JSON answer from an older backend still works. `ReceiptScanProgress` in the modal shows an image icon with a scan bar that sweeps across it and turns it into pixels, a shimmering line for the current step and the time since the scan started. The animation is CSS keyframes copied from the 21st.dev `analyzing-image` loader. The modal hides its add button while scanning, and it keys `ReceiptScanProgress` by scan because a closed antd Modal keeps its children mounted, which would carry the old timer into the next scan. The step line says "Reading receipt image" for `upload` and `ocr`, "Extracting items" for `queue` and `llm` before the first item, then "Found N items". Playwright's `route.fulfill` can't stream, so e2e only checks a whole SSE body. The status mock answers one `status` event with `retry: 500`, so `EventSource` reconnects and picks up `setBusy` / `setHealthy` / `setAvailable` changes.
 
@@ -81,20 +81,24 @@ Scans are gated by Cloudflare Turnstile: `useTurnstile` (`@hooks`) runs an invis
 
 `Payment` on the Result page offers PromptPay QR (`PromptPayQRCode`) and Thai bank accounts (`BankAccount`). Banks come from `src/config/banks.json`: each has an `id`, a Bank of Thailand `code`, `name` per language, an `icon` (logos are in `public/banks/{id}.png`, taken from the ISC-licensed `thai-banks-logo` package, except CLICX's and SMED's, which are their App Store icons, and precached by the PWA), a fallback badge `color`, and `minDigits` / `maxDigits`. Every bank shares `accountNumberMask` (`XXX-X-XXXXX-XXXXXXX`, each `X` one digit), so the box takes digits only and stops at 19 characters. `@utils/bank.util.ts` formats the number into the mask, and `isValidAccountNumber` checks the digit count against the bank's range. The form checks the number on blur and again when the bank changes, and shows `numberFormatError`. The PromptPay ID and the bank account are saved in localStorage with `useBrowserStorage`, and analytics never gets either number.
 
+### Accessibility
+
+An element that acts as a button but isn't one, such as an antd `Card` or `Tag`, spreads `buttonProps(onPress)` from `@utils` to get a button role, a Tab stop and Enter and Space keys. A toggle also sets `aria-pressed`. Underlined text links that do something are `TextButton` from `@components`. Give every icon-only button an `aria-label`. `src/i18n.ts` keeps `<html lang>` in step with the app language. `e2e/a11y.spec.ts` runs axe against WCAG 2.1 A and AA, with `color-contrast` and `meta-viewport` off until BACKLOG #18 is done. E2E tests find mapping cards with `mappingCard` and payer toggles with `payerToggle` by role.
+
 ### Path aliases
 
 Defined in `tsconfig.json` and resolved by `vite-tsconfig-paths`:
 
-| Alias | Path |
-|---|---|
+| Alias         | Path             |
+| ------------- | ---------------- |
 | `@components` | `src/components` |
-| `@config` | `src/config` |
+| `@config`     | `src/config`     |
 | `@interfaces` | `src/interfaces` |
-| `@enums` | `src/enums` |
-| `@hooks` | `src/hooks` |
-| `@slices` | `src/slices` |
-| `@utils` | `src/utils` |
-| `@views` | `src/views` |
+| `@enums`      | `src/enums`      |
+| `@hooks`      | `src/hooks`      |
+| `@slices`     | `src/slices`     |
+| `@utils`      | `src/utils`      |
+| `@views`      | `src/views`      |
 
 ### i18n
 

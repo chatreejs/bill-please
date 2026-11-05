@@ -62,6 +62,14 @@ Not built: payment methods for other currencies, such as other countries' QR sta
 
 The code is in `Payment`, `BankAccount`, `src/config/banks.json` and `@utils/bank.util.ts`.
 
+### 17. Accessibility
+
+Done, size S.
+
+The item cards on the mapping page and the payer tags in `BillItemMappingModal` responded only to taps. They now use `buttonProps` from `@utils/a11y.util.ts`, which gives them a button role, a Tab stop and Enter and Space keys. Each payer tag has `aria-pressed`. The back button and the friend delete button in `PayerListModal` have an `aria-label`. The underlined "change" links on the Result page, the PromptPay logo and the language switcher are now real buttons (`TextButton` in `@components`). `src/i18n.ts` sets `document.documentElement.lang` when the language changes.
+
+`e2e/a11y.spec.ts` runs `@axe-core/playwright` against WCAG 2.1 A and AA on every page and the mapping modal, and checks the keyboard flow and the page language. The e2e helpers find mapping cards and payer tags by role. Two axe rules stay off until #18 is done.
+
 ## Now
 
 ### 5. Bill-level discount, tip and rounding
@@ -140,12 +148,12 @@ The app supports only English and Thai. Add each language as `public/locales/{la
 
 ## Tech debt
 
-### 17. Accessibility
+### 18. Color contrast and zoom
 
-Idea, size S.
+Idea, size S. Found by the axe check from #17.
 
-Parts of the app don't work with a screen reader or a keyboard. The item cards on the mapping page and the payer tags in `BillItemMappingModal` respond only to taps. A screen reader doesn't announce them as buttons, the Tab key skips them, and the tags don't say whether a payer is selected. The friend delete button in `PayerListModal` shows only an icon, so a screen reader reads it as "button". `index.html` always sets `lang="en"`, so a phone may read Thai text with an English voice. No test checks any of this.
+Axe reports two WCAG AA failures on every page, so `e2e/a11y.spec.ts` turns both rules off for now. The first is `color-contrast`. The theme's grey secondary text, the footer links and the Ko-fi button are too light against their backgrounds. The second is `meta-viewport`. `index.html` sets `maximum-scale=1`, which stops Android users from zooming in. It is there to stop iOS from zooming into inputs with 14px text, so removing it needs 16px inputs first.
 
-Give the cards and tags a button role and a selected state, and add an `aria-label` to each icon-only button. Set `document.documentElement.lang` when the language changes. Add an axe check to the e2e tests with `@axe-core/playwright`. The share controls in `BillItemMappingModal` already have labels to copy.
+Fix the colors in the antd theme tokens and the footer styles, make the inputs 16px, drop `maximum-scale=1`, then remove both rules from `disableRules` in `e2e/a11y.spec.ts`.
 
-It changes `BillItemMapping`, `BillItemMappingModal`, `PayerListModal`, `src/i18n.ts` and the e2e fixtures.
+It changes the antd theme, `Footer`, `index.html` and `e2e/a11y.spec.ts`.

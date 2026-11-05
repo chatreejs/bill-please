@@ -35,6 +35,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The PromptPay ID box opens the number keypad and takes digits only, up to 15
 - Ask "how do you want to get paid" instead of naming the payment method
 - Reword the Thai message shown when bill scanning is unavailable
+- Screen reader and keyboard support:
+  - The item cards on the mapping page and the payers in the payer popup work with Tab, Enter and Space, and a screen reader says whether each payer is selected
+  - The back button and the button that deletes a friend have names a screen reader can read
+  - The "change" links on the result page, the PromptPay logo and the language switcher are buttons that the keyboard can reach
+  - The page language follows the app language, so a screen reader reads Thai text with a Thai voice
 - Mention Cloudflare Turnstile in the privacy policy
 - Upgrade dependencies:
   - eslint: 9.9.0 → 9.39.5
