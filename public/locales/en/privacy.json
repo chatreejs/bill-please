@@ -1,19 +1,19 @@
 {
   "title": "Privacy Policy",
-  "lastUpdated": "Last updated: 1 September 2026",
+  "lastUpdated": "Last updated: 6 November 2026",
   "intro": "This Privacy Policy explains how Bill Please (\"we\", \"our\", or \"the Service\") handles information when you use the Bill Please web application. We are committed to protecting your privacy. By using the Service, you agree to the practices described in this Policy.",
   "sections": [
     {
       "heading": "1. Overview",
       "body": [
-        "Bill Please is a fully client-side application with no backend server. The bill information you create stays on your own device and is never sent to us. We only use a third-party analytics service to understand anonymous, aggregated usage."
+        "Bill Please runs in your browser. The bill you create stays on your own device and is not sent to us. There is one exception: when you use the optional receipt scanning feature, the photo you choose is sent to our receipt scanning server to read the items (see Section 4). We also use a third-party analytics service to understand anonymous, aggregated usage."
       ]
     },
     {
       "heading": "2. Information You Provide",
       "body": [
-        "When you use the Service, you may enter information such as bill titles, item names and prices, payer names, currency settings, and a phone number or national ID used to generate a PromptPay QR code.",
-        "This information is stored locally in your browser (via localStorage) on your device and is not transmitted to or stored on any server operated by us."
+        "When you use the Service, you may enter information such as bill titles, item names and prices, payer names, currency settings, a phone number or national ID used to generate a PromptPay QR code, and a bank account number to show to the people who owe you money.",
+        "This information is stored locally in your browser (via localStorage) on your device and is not sent to or stored on any server operated by us. Receipt photos you choose to scan are the only exception, as described in Section 4."
       ]
     },
     {
@@ -23,49 +23,60 @@
       ]
     },
     {
-      "heading": "4. Analytics",
+      "heading": "4. Receipt Scanning",
       "body": [
-        "We use Google Analytics, a web analytics service provided by Google, to collect anonymous, aggregated statistics about how the Service is used — such as page views, general device and browser type, and approximate region. This information helps us understand usage and improve the Service; it is not used to personally identify you. Google processes this data in accordance with its own privacy policy."
+        "If you use \"Add from bill\", the photo you choose is resized in your browser and sent to our receipt scanning server. The server reads the text on the photo with OCR software and then uses a language model to turn that text into a list of items. Both run on servers we operate. The photo and its text are not sent to any third-party AI service.",
+        "The photo and the text read from it are processed in memory to return the list of items and are not kept after the scan finishes. We do not use them to train any model. The items you import are then stored only on your device, like the rest of your bill.",
+        "Like most web servers, our server records each request in its logs, including your IP address, browser user agent, the time, and whether the request succeeded. We keep these logs for a limited time to keep the Service secure and to fix problems. They do not contain the photo or the receipt contents.",
+        "Receipt scanning is optional. If you do not use it, nothing about your bill leaves your device. Please avoid scanning photos that show personal information you do not want to share, such as a card number or a name printed on the receipt."
       ]
     },
     {
-      "heading": "5. Payment Information (PromptPay)",
+      "heading": "5. Analytics",
       "body": [
-        "Any phone number or national ID you enter to generate a PromptPay QR code is used only within your browser to create the QR code and is stored locally on your device. We do not collect, transmit, or store this information, and we do not process any payment."
+        "We use Google Analytics, a web analytics service provided by Google, to collect anonymous, aggregated statistics about how the Service is used, such as page views, general device and browser type, and approximate region. This information helps us understand usage and improve the Service. It is not used to personally identify you. Google processes this data in accordance with its own privacy policy.",
+        "For the receipt scanning feature, we also record events such as when a scan starts, succeeds, fails, or is cancelled, along with the file type and size, the number of items found, how long the scan took, and the reason for a failure. These events never include the photo, the receipt contents, or your payment details."
       ]
     },
     {
-      "heading": "6. Third-Party Services",
+      "heading": "6. Payment Information (PromptPay and Bank Account)",
       "body": [
-        "The Service is delivered through, and its source code is hosted on, third-party platforms, and it relies on the third-party analytics service described above. These providers may process limited technical data (such as your IP address and device information) as part of delivering their services, subject to their own privacy policies. To protect the receipt scanning feature from automated abuse, we use Cloudflare Turnstile. It processes technical data from your browser and device, including your IP address, to tell people from bots."
+        "Any phone number or national ID you enter to generate a PromptPay QR code, and any bank account number you enter to show your account details, is used only within your browser and is stored locally on your device. We do not collect, send, or store this information, it is never included in analytics, and we do not process any payment."
       ]
     },
     {
-      "heading": "7. Data Security",
+      "heading": "7. Third-Party Services",
       "body": [
-        "We do not hold your bill data on a server, so it is not exposed to any server-side breach on our side. However, no method of electronic storage is completely secure, and data stored in your browser depends on the security of your own device and browser."
+        "The Service is delivered through, and its source code is hosted on, third-party platforms, and it relies on the third-party analytics service described above. These providers may process limited technical data (such as your IP address and device information) as part of delivering their services, subject to their own privacy policies. To protect the receipt scanning feature from automated abuse, we use Cloudflare Turnstile. It processes technical data from your browser and device, including your IP address, to tell people from bots.",
+        "To protect the receipt scanning feature from automated abuse, we use Cloudflare Turnstile. It processes technical data from your browser and device, including your IP address, to tell people from bots. Requests to our receipt scanning server also pass through Cloudflare's network on their way to us."
       ]
     },
     {
-      "heading": "8. Children's Privacy",
+      "heading": "8. Data Security",
+      "body": [
+        "We do not keep your bill data on a server, and receipt photos are not kept after a scan, so a breach on our side would not expose your bills. However, no method of electronic storage or transmission is completely secure, and data stored in your browser depends on the security of your own device and browser."
+      ]
+    },
+    {
+      "heading": "9. Children's Privacy",
       "body": [
         "The Service is not directed to children under the age of 13, and we do not knowingly collect personal information from children."
       ]
     },
     {
-      "heading": "9. Changes to This Policy",
+      "heading": "10. Changes to This Policy",
       "body": [
         "We may update this Privacy Policy from time to time. Changes become effective when the updated Policy is posted within the Service. Your continued use of the Service after changes are posted constitutes acceptance of the revised Policy."
       ]
     },
     {
-      "heading": "10. Governing Law",
+      "heading": "11. Governing Law",
       "body": [
         "This Privacy Policy is governed by and construed in accordance with the laws of Thailand, without regard to its conflict of law principles."
       ]
     },
     {
-      "heading": "11. Contact",
+      "heading": "12. Contact",
       "body": [
         "If you have any questions about this Privacy Policy, please contact us at contact@chatree.dev."
       ]
