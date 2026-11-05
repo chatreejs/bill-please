@@ -134,6 +134,38 @@ test('changing the base currency clears exchange rates', async ({ page }) => {
   await expect(settings(page).locator('.ant-tag')).toHaveCount(0);
 });
 
+test('changing the base currency closes an unsaved rate form', async ({
+  page,
+}) => {
+  // #71: the form has JPY picked when the base currency switches to JPY.
+  await settings(page)
+    .getByRole('button', { name: 'Add Exchange Rate' })
+    .click();
+  await chooseOption(
+    page,
+    settings(page)
+      .locator('.ant-select')
+      .filter({ hasText: 'Target Currency' }),
+    'JPY (¥)',
+  );
+  await settings(page).getByPlaceholder('Rate').fill('10');
+  await expect(page.locator('.ant-select-dropdown:visible')).toHaveCount(0);
+  await chooseOption(
+    page,
+    settings(page).locator('.ant-select').first(),
+    'JPY (¥)',
+  );
+
+  await expect(settings(page).getByPlaceholder('Rate')).toHaveCount(0);
+  await expect(
+    settings(page).getByRole('button', { name: 'Save' }),
+  ).toHaveCount(0);
+  await expect(settings(page).locator('.ant-tag')).toHaveCount(0);
+  await expect(
+    settings(page).getByRole('button', { name: 'Add Exchange Rate' }),
+  ).toBeVisible();
+});
+
 test('converts the result into the display currency', async ({ page }) => {
   await addRate(page, 'USD ($)', 0.03);
   await page.getByRole('button', { name: 'Next' }).click();

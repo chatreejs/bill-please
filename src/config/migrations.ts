@@ -45,4 +45,19 @@ export const migrations: MigrationManifest = {
       },
     } as PersistedState;
   },
+  // Before the fix for #71, a user could open the add rate form, switch the
+  // base currency to the form's target, and save "1 JPY = 10 JPY". Drop
+  // rates for the base currency.
+  3: (state: PersistedState) => {
+    const rootState = state as PersistedRootState;
+    if (!rootState.app?.exchangeRates) return rootState;
+    const { mainCurrency, exchangeRates } = rootState.app;
+    return {
+      ...rootState,
+      app: {
+        ...rootState.app,
+        exchangeRates: exchangeRates.filter((r) => r.currency !== mainCurrency),
+      },
+    } as PersistedState;
+  },
 };

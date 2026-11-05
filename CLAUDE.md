@@ -44,7 +44,7 @@ Routes are defined in `src/config/routes.tsx`; unknown paths redirect to `/`.
 Redux Toolkit + `redux-persist` (key `bp-store`, localStorage). Two slices:
 
 - **`bill`** — title, items (`IBillItem[]`), payers (`IPayer[]`), itemMapping (`IBillItemMapping[]`). Payers support a `friend` array (sub-payers); removing a payer also cleans their friends from `itemMapping`.
-- **`app`** — vatPercentage (default 7%), mainCurrency, displayCurrency, exchangeRates (`ICurrencyExchangeRate[]`). Setting `mainCurrency` resets displayCurrency and clears exchange rates.
+- **`app`** — vatPercentage (default 7%), mainCurrency, displayCurrency, exchangeRates (`ICurrencyExchangeRate[]`). Setting `mainCurrency` resets displayCurrency and clears exchange rates. `addExchangeRate` ignores a rate for `mainCurrency`, and `CurrencySettings` closes its add rate form when the base currency changes (#71).
 
 `RootState` and `AppDispatch` are exported from `@config`.
 

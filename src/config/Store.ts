@@ -7,7 +7,7 @@ import { migrations } from './migrations';
 
 const persistConfig = {
   key: 'bp-store',
-  version: 2,
+  version: 3,
   storage,
   migrate: createMigrate(migrations),
 };

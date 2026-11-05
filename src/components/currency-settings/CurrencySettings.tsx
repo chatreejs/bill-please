@@ -107,6 +107,9 @@ const CurrencySettings: React.FC = () => {
                       to: value,
                     });
                     dispatch(setMainCurrency(value));
+                    // Close the add form. Its target and rate belong to the
+                    // old base currency, and the target may now be the base.
+                    handleCancelAddRate();
                   }}
                   style={{ minWidth: 90 }}
                   showSearch

@@ -24,6 +24,9 @@ const appSlice = createSlice({
       state.displayCurrency = action.payload;
     },
     addExchangeRate(state, action: PayloadAction<ICurrencyExchangeRate>) {
+      // Ignore a rate for the base currency. It would show as "1 JPY = 10 JPY"
+      // (#71).
+      if (action.payload.currency === state.mainCurrency) return;
       const existing = state.exchangeRates.findIndex(
         (r) => r.currency === action.payload.currency,
       );
