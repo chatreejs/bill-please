@@ -25,6 +25,11 @@ void i18n
     },
   });
 
+// Screen readers pick a voice from <html lang>, so set it to the app language
+i18n.on('languageChanged', (lng: string) => {
+  document.documentElement.lang = lng;
+});
+
 i18n.on('failedLoading', (lng: string, ns: string, msg: string) => {
   trackError('i18n', `${lng}/${ns}: ${msg}`);
 });
