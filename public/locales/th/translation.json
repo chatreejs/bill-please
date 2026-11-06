@@ -33,6 +33,7 @@
       "button": {
         "add": "เพิ่มรายการ",
         "addFromBill": "เพิ่มรายการจากบิล",
+        "beta": "Beta",
         "deleteAll": "ลบรายการทั้งหมด",
         "deleteSelected": "ลบรายการที่เลือก",
         "select": "เลือกรายการ"

@@ -33,6 +33,7 @@
       "button": {
         "add": "Add item",
         "addFromBill": "Add from bill",
+        "beta": "Beta",
         "deleteAll": "Delete all items",
         "deleteSelected": "Delete selected item(s)",
         "select": "Select item(s)"

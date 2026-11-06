@@ -1,4 +1,4 @@
-import { Button, ButtonProps } from 'antd';
+import { Button, ButtonProps, Tag } from 'antd';
 import React, { useId } from 'react';
 import styled, { keyframes } from 'styled-components';
 
@@ -111,15 +111,30 @@ const SparklesIcon: React.FC = () => {
   );
 };
 
+// Sits after the gradient label, so it keeps antd's own tag colours
+const BadgeTag = styled(Tag)`
+  && {
+    margin-inline: 0;
+    line-height: 18px;
+  }
+`;
+
+type AiButtonProps = Omit<ButtonProps, 'icon' | 'type'> & {
+  /** Short label shown in an antd Tag after the text, for example "Beta" */
+  badge?: React.ReactNode;
+};
+
 /**
  * Button for AI-powered actions: gradient border and text with a sparkle icon.
  */
-const AiButton: React.FC<Omit<ButtonProps, 'icon' | 'type'>> = ({
-  children,
-  ...props
-}) => (
+const AiButton: React.FC<AiButtonProps> = ({ children, badge, ...props }) => (
   <GradientButton {...props} icon={<SparklesIcon />}>
     <Label>{children}</Label>
+    {badge && (
+      <BadgeTag color="purple" bordered={false}>
+        {badge}
+      </BadgeTag>
+    )}
   </GradientButton>
 );
 

@@ -415,6 +415,7 @@ const ItemTable: React.FC = () => {
                   disabled={!isReceiptScannerAvailable || isReceiptScannerBusy}
                   onClick={() => fileInputRef.current?.click()}
                   block
+                  badge={t('home.itemList.button.beta')}
                 >
                   {t('home.itemList.button.addFromBill')}
                 </AiButton>
