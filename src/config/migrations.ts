@@ -26,9 +26,10 @@ export const migrations: MigrationManifest = {
       },
     };
   },
-  // Migrates a v1 store, as released on main, to the current shape.
+  // Upgrades the store of a user who last used a version before 0.11.0. Those
+  // versions saved it as persist version 1.
   //
-  // Before uneven splits, a mapping listed its payers as `payerId: string[]`
+  // Before 0.11.0 added uneven splits, a mapping listed its payers as `payerId: string[]`
   // and split the item equally. Give each of them weight 1, which splits the
   // same way.
   //
