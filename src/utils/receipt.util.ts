@@ -34,21 +34,21 @@ const resizeImage = async (image: File): Promise<Blob> => {
 };
 
 const getApiUrl = (): string => {
-  const apiUrl = process.env.VITE_APP_BILL_PLEASE_MCP_URL;
+  const apiUrl = process.env.VITE_APP_BILL_PLEASE_API_URL;
   if (!apiUrl) {
-    throw new Error('VITE_APP_BILL_PLEASE_MCP_URL is not set');
+    throw new Error('VITE_APP_BILL_PLEASE_API_URL is not set');
   }
   return apiUrl.replace(/\/$/, '');
 };
 
 /**
- * The URL of the scanner status stream on bill-please-mcp, or undefined when
+ * The URL of the scanner status stream on bill-please-api, or undefined when
  * the API URL is not set. EventSource sends `Accept: text/event-stream`, so
  * the server answers with a `status` event now and another each time its LLM
  * queue changes. `busy` is true while that queue is full.
  */
 export const getReceiptScannerStatusUrl = (): string | undefined => {
-  const apiUrl = process.env.VITE_APP_BILL_PLEASE_MCP_URL;
+  const apiUrl = process.env.VITE_APP_BILL_PLEASE_API_URL;
   return apiUrl
     ? `${apiUrl.replace(/\/$/, '')}/api/receipts/status`
     : undefined;
@@ -95,8 +95,8 @@ const parseBody = (data: unknown): { code?: unknown } | undefined => {
 };
 
 /**
- * Why a scan failed, read from the bill-please-mcp response. It picks the
- * toast message and the analytics reason. bill-please-mcp answers 503 for
+ * Why a scan failed, read from the bill-please-api response. It picks the
+ * toast message and the analytics reason. bill-please-api answers 503 for
  * three causes. A full LLM queue has `code: 'scanner_busy'`, a down OCR or
  * LLM has `code: 'scanner_unavailable'`, and an unreachable Turnstile
  * siteverify has no code.
@@ -194,7 +194,7 @@ const readScanStream = (text: string): unknown => {
 };
 
 /**
- * Send a receipt image to bill-please-mcp and get bill items back.
+ * Send a receipt image to bill-please-api and get bill items back.
  * `turnstileToken` is sent as the `cf-turnstile-response` form field, which
  * the backend checks with Cloudflare's siteverify before running OCR.
  *

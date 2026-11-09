@@ -5,7 +5,7 @@ const PORT = 3100;
 const TURNSTILE_PORT = 3101;
 
 /** Fake receipt backend. e2e/fixtures.ts mocks every request to it. */
-const MOCK_MCP_URL = 'http://mcp.test';
+const MOCK_API_URL = 'http://api.test';
 
 const serverEnv = {
   // Don't open a browser tab
@@ -13,7 +13,7 @@ const serverEnv = {
   // Keep test traffic out of Google Analytics
   VITE_APP_GA_MEASUREMENT_ID: '',
   VITE_APP_ENV: 'local',
-  VITE_APP_BILL_PLEASE_MCP_URL: MOCK_MCP_URL,
+  VITE_APP_BILL_PLEASE_API_URL: MOCK_API_URL,
 };
 
 export default defineConfig({

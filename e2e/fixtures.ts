@@ -1,6 +1,6 @@
 import { test as base, expect, Route } from '@playwright/test';
 
-export const MOCK_MCP_URL = 'http://mcp.test';
+export const MOCK_API_URL = 'http://api.test';
 
 export interface ReceiptApi {
   /** Make the GET /api/receipts/status stream succeed or fail */
@@ -51,7 +51,7 @@ export const test = base.extend<{
 
       // route.fulfill can't stream, so each answer is one status event that ends.
       // EventSource then reconnects after `retry` ms and gets the current state
-      await context.route(`${MOCK_MCP_URL}/api/receipts/status`, (route) =>
+      await context.route(`${MOCK_API_URL}/api/receipts/status`, (route) =>
         healthy
           ? route.fulfill({
               contentType: 'text/event-stream',
@@ -59,7 +59,7 @@ export const test = base.extend<{
             })
           : route.fulfill({ status: 503 }),
       );
-      await context.route(`${MOCK_MCP_URL}/api/receipts/scan`, (route) =>
+      await context.route(`${MOCK_API_URL}/api/receipts/scan`, (route) =>
         scanHandler(route),
       );
       await use({
@@ -75,7 +75,7 @@ export const test = base.extend<{
   // Block every other request that leaves localhost, such as analytics
   context: async ({ context }, use) => {
     await context.route(
-      /^https?:\/\/(?!localhost|127\.0\.0\.1|mcp\.test|api\.github\.com|challenges\.cloudflare\.com)/,
+      /^https?:\/\/(?!localhost|127\.0\.0\.1|api\.test|api\.github\.com|challenges\.cloudflare\.com)/,
       (route) => route.abort(),
     );
     await use(context);

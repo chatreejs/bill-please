@@ -11,7 +11,7 @@ const RECONNECT_MS = 5_000;
 const RECONNECT_GRACE_MS = 10_000;
 
 export interface ReceiptScannerStatusState {
-  /** The latest status from bill-please-mcp */
+  /** The latest status from bill-please-api */
   status?: IReceiptScannerStatus;
   /** The status stream is open, or reconnecting within the grace period */
   isHealthy: boolean;

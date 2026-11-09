@@ -14,17 +14,17 @@ These shipped on `feature/next-0.11.0` and go out in 0.11.0. Move them to the ch
 
 Done, size L.
 
-Typing every item from a long receipt is slow and leads to mistakes. The "Add from bill" button in `ItemTable` sends a receipt photo to bill-please-mcp, which runs OCR and an LLM to extract each item's name, price, quantity, service and VAT. `ReceiptImportModal` shows a preview, then the app appends the items to the bill.
+Typing every item from a long receipt is slow and leads to mistakes. The "Add from bill" button in `ItemTable` sends a receipt photo to bill-please-api, which runs OCR and an LLM to extract each item's name, price, quantity, service and VAT. `ReceiptImportModal` shows a preview, then the app appends the items to the bill.
 
-The code is in `ItemTable`, `ReceiptImportModal`, `@utils/receipt.util.ts`, `receiptItemToBillItem`, `src/interfaces/receipt.ts` and `../bill-please-mcp`. Keep `src/interfaces/receipt.ts` in sync with the backend zod schema.
+The code is in `ItemTable`, `ReceiptImportModal`, `@utils/receipt.util.ts`, `receiptItemToBillItem`, `src/interfaces/receipt.ts` and `../bill-please-api`. Keep `src/interfaces/receipt.ts` in sync with the backend zod schema.
 
 ### 2. Cloudflare Turnstile
 
 Done, size M.
 
-The receipt scan endpoint is public, and every call costs OCR and LLM usage, so bots could run up the bill. `useTurnstile` runs an invisible check when `ItemTable` mounts and falls back to a managed challenge. The "Add from bill" button appears only after the check passes. `scanReceipt` sends the token as the `cf-turnstile-response` form field, and bill-please-mcp checks it with Cloudflare's `siteverify` API before it runs OCR. The app reads the site key from `VITE_APP_TURNSTILE_SITE_KEY` and skips the check when it is unset.
+The receipt scan endpoint is public, and every call costs OCR and LLM usage, so bots could run up the bill. `useTurnstile` runs an invisible check when `ItemTable` mounts and falls back to a managed challenge. The "Add from bill" button appears only after the check passes. `scanReceipt` sends the token as the `cf-turnstile-response` form field, and bill-please-api checks it with Cloudflare's `siteverify` API before it runs OCR. The app reads the site key from `VITE_APP_TURNSTILE_SITE_KEY` and skips the check when it is unset.
 
-The code is in `useTurnstile`, `TurnstileVerifying`, `ItemTable`, `scanReceipt`, `.env.example` and the bill-please-mcp scan route.
+The code is in `useTurnstile`, `TurnstileVerifying`, `ItemTable`, `scanReceipt`, `.env.example` and the bill-please-api scan route.
 
 ### 3. OpenGraph
 
@@ -110,7 +110,7 @@ It changes `PayerTable`, `PayerListModal` and the `app` slice, which would persi
 
 Exploring, size L.
 
-Sharing produces a screenshot, so friends can't open their own breakdown. Compress the bill into the URL hash, which browsers never send to a server, and open it read-only on the Result page. A short link would need bill-please-mcp to store the bill. Bills with many items may exceed URL length limits.
+Sharing produces a screenshot, so friends can't open their own breakdown. Compress the bill into the URL hash, which browsers never send to a server, and open it read-only on the Result page. A short link would need bill-please-api to store the bill. Bills with many items may exceed URL length limits.
 
 It changes the routes, `ShareBill` and a new serializer in `@utils`.
 
@@ -118,7 +118,7 @@ It changes the routes, `ShareBill` and a new serializer in `@utils`.
 
 Idea, size M. Builds on #1.
 
-"Add from bill" fills in items only. A receipt usually also shows the restaurant name, the currency, and bill-level service, VAT and discount. Have bill-please-mcp return these and let the user apply them in `ReceiptImportModal`. Also accept several photos for a long receipt.
+"Add from bill" fills in items only. A receipt usually also shows the restaurant name, the currency, and bill-level service, VAT and discount. Have bill-please-api return these and let the user apply them in `ReceiptImportModal`. Also accept several photos for a long receipt.
 
 It changes `src/interfaces/receipt.ts` and the backend zod schema together, plus `ReceiptImportModal` and `normalizeReceiptItems`.
 
@@ -128,7 +128,7 @@ It changes `src/interfaces/receipt.ts` and the backend zod schema together, plus
 
 Idea, size S.
 
-Users type exchange rates by hand. Offer to fetch the current rate from bill-please-mcp or a free rates API, and let the user edit it before saving.
+Users type exchange rates by hand. Offer to fetch the current rate from bill-please-api or a free rates API, and let the user edit it before saving.
 
 It changes `CurrencySettings` and adds a TanStack Query fetch.
 
