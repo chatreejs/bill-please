@@ -4,13 +4,14 @@ import {
   addItem,
   addPayer,
   assignItem,
+  browserToday,
   goToMapping,
   goToResult,
 } from './helpers';
 
 test('defaults the bill title to today', async ({ page }) => {
   await page.goto('/');
-  const today = new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD
+  const today = await browserToday(page);
   await expect(page.getByRole('heading', { level: 3 })).toHaveText(today);
 });
 
@@ -55,7 +56,7 @@ test('clearing the bill resets the title to today', async ({ page }) => {
     .getByRole('button', { name: 'Clear data' })
     .click();
 
-  const today = new Date().toLocaleDateString('sv-SE');
+  const today = await browserToday(page);
   await expect(title).toHaveText(today);
   await expect(page.getByText('Pizza')).toBeHidden();
 });

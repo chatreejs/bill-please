@@ -176,3 +176,11 @@ export const buildBill = async (
   await goToMapping(page);
   for (const item of items) await assignItem(page, item.name, 'all');
 };
+
+/**
+ * Returns today's date as YYYY-MM-DD in the browser's timezone.
+ * playwright.config.ts sets the browser to Asia/Bangkok. CI runs on UTC, so
+ * from 17:00 UTC the date on the test runner is a day behind the browser.
+ */
+export const browserToday = (page: Page): Promise<string> =>
+  page.evaluate(() => new Date().toLocaleDateString('sv-SE'));

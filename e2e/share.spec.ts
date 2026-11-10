@@ -1,5 +1,5 @@
 import { expect, test } from './fixtures';
-import { buildBill, goToResult } from './helpers';
+import { browserToday, buildBill, goToResult } from './helpers';
 
 test.describe('on mobile', () => {
   test.beforeEach(async ({ page }) => {
@@ -27,7 +27,7 @@ test.describe('on mobile', () => {
     ).toHaveCount(0);
     await page.getByRole('button', { name: 'Share' }).click();
 
-    const today = new Date().toLocaleDateString('sv-SE');
+    const today = await browserToday(page);
     await expect
       .poll(() =>
         page.evaluate(
