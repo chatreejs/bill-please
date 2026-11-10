@@ -2,6 +2,7 @@ version: 2
 updates:
   # Update GitHub Actions
   - package-ecosystem: 'github-actions'
+    target-branch: 'develop'
     labels:
       - 📦 dependencies
     directory: '/' # refers to the location of package.json
