@@ -20,7 +20,7 @@
         "dayjs": "^1.11.13",
         "flag-icons": "^7.2.3",
         "i18next": "^24.2.2",
-        "i18next-http-backend": "^4.0.2",
+        "i18next-http-backend": "^4.0.4",
         "modern-screenshot": "^4.4.39",
         "promptpay-qr": "^0.5.0",
         "react": "^19.0.0",
@@ -935,7 +935,7 @@
 
     "i18next": ["i18next@24.2.2", "", { "dependencies": { "@babel/runtime": "^7.23.2" } }, "sha512-NE6i86lBCKRYZa5TaUDkU5S4HFgLIEJRLr3Whf2psgaxBleQ2LC1YW1Vc+SCgkAW7VEzndT6al6+CzegSUHcTQ=="],
 
-    "i18next-http-backend": ["i18next-http-backend@4.0.2", "", {}, "sha512-oay62dIB2kL7+WHzoUXBjWfL3+mwijD3pQkQkIEaRLhy6kjXxUhrRenV0gInwlCASAaJaDy94+XvYizK+cAGdA=="],
+    "i18next-http-backend": ["i18next-http-backend@4.0.10", "", {}, "sha512-CfdQuwIVijbrS/fmiTAQYcYyje4nMbH9aIjKYhhm5bgVmWKWLOM1F7qrA1o63Jl1JxQcRjdtWhKlvDzyqV9aPg=="],
 
     "idb": ["idb@7.1.1", "", {}, "sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ=="],
 
