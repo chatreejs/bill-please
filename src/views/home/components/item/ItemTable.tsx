@@ -118,6 +118,9 @@ const ItemTable: React.FC = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const scanRequestRef = useRef(0);
+  // Aborts the scan request, so the server stops OCR and the LLM too
+  const scanAbortRef = useRef<AbortController>(undefined);
+  useEffect(() => () => scanAbortRef.current?.abort(), []);
   // When the current scan started, for duration_ms in analytics
   const scanStartedAtRef = useRef(0);
   const scanDurationMs = () =>
@@ -198,6 +201,9 @@ const ItemTable: React.FC = () => {
     if (!file) return;
 
     const requestId = ++scanRequestRef.current;
+    scanAbortRef.current?.abort();
+    const scanAbort = new AbortController();
+    scanAbortRef.current = scanAbort;
     scanStartedAtRef.current = performance.now();
     trackEvent('receipt_scan_started', {
       file_type: file.type || 'unknown',
@@ -227,9 +233,14 @@ const ItemTable: React.FC = () => {
 
     setIsImportModalVisible(true);
     try {
-      const receiptItems = await scanReceipt(file, turnstileToken, (next) => {
-        if (requestId === scanRequestRef.current) setScanProgress(next);
-      });
+      const receiptItems = await scanReceipt(
+        file,
+        turnstileToken,
+        (next) => {
+          if (requestId === scanRequestRef.current) setScanProgress(next);
+        },
+        scanAbort.signal,
+      );
       // Ignore results from a scan the user already cancelled
       if (requestId !== scanRequestRef.current) return;
       trackEvent('receipt_scan_succeeded', {
@@ -266,6 +277,7 @@ const ItemTable: React.FC = () => {
       trackEvent('receipt_scan_cancelled', { duration_ms: scanDurationMs() });
     }
     scanRequestRef.current++;
+    scanAbortRef.current?.abort();
     setIsScanning(false);
     setIsImportModalVisible(false);
   };

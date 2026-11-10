@@ -201,11 +201,15 @@ const readScanStream = (text: string): unknown => {
  * It asks for Server-Sent Events, so `onProgress` gets the upload, then each
  * step on the server. An older server answers with one JSON body, and then
  * onProgress gets only the upload.
+ *
+ * Aborting `signal` closes the request. bill-please-api then stops its OCR
+ * and LLM calls and leaves the LLM queue.
  */
 export const scanReceipt = async (
   image: File,
   turnstileToken?: string,
   onProgress?: (progress: IReceiptScanProgress) => void,
+  signal?: AbortSignal,
 ): Promise<IReceiptItem[]> => {
   const apiUrl = getApiUrl();
 
@@ -225,6 +229,7 @@ export const scanReceipt = async (
     formData,
     {
       timeout: 60_000,
+      signal,
       // XHR exposes the response text while it arrives. The axios fetch adapter doesn't
       adapter: 'xhr',
       responseType: 'text',
