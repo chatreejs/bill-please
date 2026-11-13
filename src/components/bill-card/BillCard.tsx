@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { ThemeCardDecoration } from '../theme-decorations/ThemeDecorations';
+
 interface BillCardProps {
   top: React.ReactNode;
   bottom: React.ReactNode;
@@ -15,6 +17,7 @@ const CardWrapper = styled.div`
 `;
 
 const CardBody = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -38,6 +41,7 @@ const BillCard: React.FC<BillCardProps> = ({ top, bottom }) => {
   return (
     <CardWrapper>
       <CardBody>
+        <ThemeCardDecoration />
         <CardTop>{top}</CardTop>
         <CardBottom>{bottom}</CardBottom>
       </CardBody>

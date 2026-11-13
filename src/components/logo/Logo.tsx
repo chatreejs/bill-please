@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import DebugInfoModal from '../debug-info/DebugInfoModal';
+import { ThemeLogoDecoration } from '../theme-decorations/ThemeDecorations';
 
 const DEBUG_TAP_COUNT = 10;
 const DEBUG_TAP_TIMEOUT_MS = 500;
@@ -21,10 +22,12 @@ const LogoWrapper = styled.div`
 `;
 
 const LogoText = styled.div`
+  position: relative;
+  isolation: isolate;
   font-family: 'Pacifico', sans-serif;
   font-size: 32px;
   font-weight: 500;
-  color: #fafafa;
+  color: var(--app-logo, #fafafa);
 `;
 
 const EnvBadge = styled.div`
@@ -71,7 +74,10 @@ const Logo: React.FC<LogoProps> = ({ systemName, showEnvBadge = true }) => {
   return (
     <>
       <LogoWrapper onClick={handleTap}>
-        <LogoText>{systemName}</LogoText>
+        <LogoText>
+          <ThemeLogoDecoration />
+          {systemName}
+        </LogoText>
         {!isProduction && showEnvBadge && (
           <EnvBadge>{getEnvironmentText(env)}</EnvBadge>
         )}

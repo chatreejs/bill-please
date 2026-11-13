@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import { ThemeCardDecoration, getCardOverhang } from '@components';
 import { RootState } from '@config';
 import { getCurrencySymbol } from '@enums';
 import { setDisplayCurrency } from '@slices';
@@ -20,6 +21,7 @@ const CardWrapper = styled.div`
 `;
 
 const CardTop = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   background: #fafafa;
@@ -29,6 +31,7 @@ const CardTop = styled.div`
 `;
 
 const CardBottom = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   background: #fafafa;
@@ -187,8 +190,11 @@ const Result: React.FC = () => {
   }, []);
 
   return (
-    <CardWrapper>
-      <CardTop>
+    // Room above the card so the share image keeps the whole decoration,
+    // and below its top edge so it clears the title
+    <CardWrapper style={{ paddingTop: getCardOverhang() }}>
+      <CardTop style={{ paddingTop: 20 + getCardOverhang() }}>
+        <ThemeCardDecoration part="top" />
         <Flex justify="center" align="center">
           <Typography.Title level={3} style={{ marginBottom: '1rem' }}>
             {billTitle}
@@ -256,6 +262,7 @@ const Result: React.FC = () => {
       </CardTop>
       <Separator />
       <CardBottom>
+        <ThemeCardDecoration part="bottom" />
         <Payment />
       </CardBottom>
     </CardWrapper>

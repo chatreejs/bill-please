@@ -85,6 +85,12 @@ Scans are gated by Cloudflare Turnstile: `useTurnstile` (`@hooks`) runs an invis
 
 An element that acts as a button but isn't one, such as an antd `Card` or `Tag`, spreads `buttonProps(onPress)` from `@utils` to get a button role, a Tab stop and Enter and Space keys. A toggle also sets `aria-pressed`. Underlined text links that do something are `TextButton` from `@components`. Give every icon-only button an `aria-label`. `src/i18n.ts` keeps `<html lang>` in step with the app language. `e2e/a11y.spec.ts` runs axe against WCAG 2.1 A and AA, with `color-contrast` and `meta-viewport` off until BACKLOG #18 is done. E2E tests find mapping cards with `mappingCard` and payer toggles with `payerToggle` by role.
 
+### Theming
+
+`src/config/theme.ts` (`@config`) holds the app themes: `default`, `loy-krathong`, `christmas`, `new-year`, `chinese-new-year` and `songkran`. `resolveAppTheme` picks one from a `?theme=` URL parameter, then `VITE_APP_THEME`, then `default`, and `main.tsx` calls `applyAppTheme` before the first render. That sets `data-theme` on `<html>`, the browser bar color and CSS variables (`--app-primary`, `--app-background`, `--app-primary-tint`, `--app-primary-shimmer`, `--app-logo`, `--app-ai-gradient-1..3`). Styled components use those variables instead of hard-coded teal, and antd's `colorPrimary` comes from `APP_THEME_COLORS[getAppTheme()]`. The theme is fixed for the visit. The `app-theme` Vercel flag will pick the theme later.
+
+Each seasonal theme gets decorations from `src/components/theme-decorations/`, mapped per theme in `ThemeDecorations.tsx`: `ThemeSky` (behind `MainWrapper`: `Particles` of snow, rising lanterns, confetti, gold glints or water drops, and `GoldLattice` for Chinese New Year), `ThemeLogoDecoration` (`SantaHat`, `PartyHat` or `FullMoon` on the logo) and `ThemeCardDecoration` (on `BillCard`: a `Garland` of lights, marigolds or bunting, or the Chinese New Year `RedEnvelope` gold frame and 福 seal). The Result page's ticket passes `part="top"` and `part="bottom"`, and adds `getCardOverhang()` above the card so the share image keeps the seal. Particles hide and garlands stop moving under `prefers-reduced-motion`. A new theme needs a name in `APP_THEMES`, its colors in `APP_THEME_COLORS` and, optionally, entries in the three maps.
+
 ### Path aliases
 
 Defined in `tsconfig.json` and resolved by `vite-tsconfig-paths`:
