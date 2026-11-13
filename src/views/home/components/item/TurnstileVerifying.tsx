@@ -51,10 +51,10 @@ const Placeholder = styled.div<{ $isInteractive: boolean }>`
   gap: 8px;
   height: 40px;
   padding: 0 15px;
-  border: 1px dashed #2c9c91;
+  border: 1px dashed var(--app-primary);
   border-radius: 8px;
   background: #ffffff;
-  color: #2c9c91;
+  color: var(--app-primary);
   font-size: 14px;
   user-select: none;
 
@@ -66,7 +66,7 @@ const Placeholder = styled.div<{ $isInteractive: boolean }>`
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(44, 156, 145, 0.18),
+      var(--app-primary-shimmer),
       transparent
     );
     animation: ${shimmer} 1.4s ease-in-out infinite;
@@ -76,7 +76,7 @@ const Placeholder = styled.div<{ $isInteractive: boolean }>`
     $isInteractive &&
     css`
       border-style: solid;
-      background: #f0faf9;
+      background: var(--app-primary-tint);
 
       &::after {
         display: none;

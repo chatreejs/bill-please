@@ -7,6 +7,8 @@ export { default as LanguageSwitcher } from './language-switcher/LanguageSwitche
 export { default as Logo } from './logo/Logo';
 export { default as ShareBill } from './share-bill/ShareBill';
 export { default as SplashSpinner } from './splash-spinner/SplashSpinner';
+export * from './theme-decorations/card';
+export * from './theme-decorations/ThemeDecorations';
 export * from './ui/ActionButtonWrapper';
 export * from './ui/ButtonWrapper';
 export * from './ui/PayerTag';

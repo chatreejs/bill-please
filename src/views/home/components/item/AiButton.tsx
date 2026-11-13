@@ -2,8 +2,13 @@ import { Button, ButtonProps, Tag } from 'antd';
 import React, { useId } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-// Starts at the app's primary teal so the button still fits the theme
-const GRADIENT_STOPS = ['#2c9c91', '#3b82f6', '#a855f7'];
+// Each theme sets these stops in applyAppTheme (@config/theme). The default
+// theme starts at the primary teal so the button fits the rest of the app
+const GRADIENT_STOPS = [
+  'var(--app-ai-gradient-1)',
+  'var(--app-ai-gradient-2)',
+  'var(--app-ai-gradient-3)',
+];
 const GRADIENT = `linear-gradient(90deg, ${GRADIENT_STOPS.join(', ')})`;
 
 const twinkle = keyframes`
@@ -98,8 +103,8 @@ const SparklesIcon: React.FC = () => {
     <SparkleSvg viewBox="0 0 24 24" aria-hidden focusable="false">
       <defs>
         <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={GRADIENT_STOPS[0]} />
-          <stop offset="100%" stopColor={GRADIENT_STOPS[1]} />
+          <stop offset="0%" style={{ stopColor: GRADIENT_STOPS[0] }} />
+          <stop offset="100%" style={{ stopColor: GRADIENT_STOPS[1] }} />
         </linearGradient>
       </defs>
       <g fill={`url(#${gradientId})`}>

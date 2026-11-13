@@ -14,12 +14,21 @@ import {
   Logo,
   ShareBill,
   SplashSpinner,
+  ThemeSky,
 } from '@components';
-import { AppRoutes, persistor, store } from '@config';
+import {
+  APP_THEME_COLORS,
+  AppRoutes,
+  getAppTheme,
+  persistor,
+  store,
+} from '@config';
 import { trackError, trackEvent, trackPageView } from '@utils';
 import packageJson from '../package.json';
 
 const MainWrapper = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -45,7 +54,7 @@ const LanguageSwitcherWrapper = styled.div`
 
 const BillRefStyled = styled.div`
   padding: 0.5rem;
-  background-color: #2c9c91;
+  background-color: var(--app-background);
 `;
 
 const App: React.FC = () => {
@@ -94,7 +103,7 @@ const App: React.FC = () => {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: '#2C9C91',
+            colorPrimary: APP_THEME_COLORS[getAppTheme()].primary,
             fontFamily: 'Outfit, Kanit',
             fontSize: 14,
             fontWeightStrong: 700,
@@ -105,6 +114,7 @@ const App: React.FC = () => {
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <AntApp>
+                <ThemeSky />
                 <MainWrapper>
                   <CheckForUpdate />
                   <ProductLogoWrapper>
