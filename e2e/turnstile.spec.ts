@@ -18,7 +18,10 @@ const FAKE_TURNSTILE = `
         sitekey: opts.sitekey,
         action: opts.action,
         appearance: opts.appearance,
+        theme: opts.theme,
+        refreshExpired: opts['refresh-expired'],
       };
+      window.__TS_RESETS__ = 0;
       const run = () => {
         const mode = window.__TS_MODE__ || 'pass';
         if (mode === 'pass') {
@@ -29,7 +32,7 @@ const FAKE_TURNSTILE = `
           opts['before-interactive-callback']();
           el.innerHTML = '<button id="ts-widget">I am human</button>';
           el.querySelector('#ts-widget').onclick = () => {
-            el.innerHTML = '';
+            el.innerHTML = '<span>Success!</span>';
             window.__TS_MODE__ = 'pass';
             opts.callback('token-' + ++n);
           };
@@ -39,7 +42,10 @@ const FAKE_TURNSTILE = `
       run();
       return 'widget-1';
     },
-    reset() { window.__TS_RUN__ && window.__TS_RUN__(); },
+    reset() {
+      window.__TS_RESETS__++;
+      window.__TS_RUN__ && window.__TS_RUN__();
+    },
     remove() {},
   };
 })();
@@ -83,6 +89,8 @@ test('shows the button once verified', async ({ page }) => {
     sitekey: 'e2e-site-key',
     action: 'receipt_scan',
     appearance: 'interaction-only',
+    theme: 'light',
+    refreshExpired: 'never',
   });
 });
 
@@ -140,4 +148,69 @@ test('sends a fresh single-use token with each scan', async ({
   await modal.getByRole('button', { name: 'Add 1 item(s)' }).click();
 
   expect(tokens).toEqual(['token-1', 'token-2']);
+});
+
+const resets = (page: Page) =>
+  page.evaluate(
+    () => (window as unknown as { __TS_RESETS__: number }).__TS_RESETS__,
+  );
+
+test('runs a new challenge only when the next scan needs a token', async ({
+  page,
+  receiptApi,
+}) => {
+  receiptApi.onScan((route) =>
+    route.fulfill({
+      json: { items: [{ name: 'Coke', quantity: 1, price: 20 }] },
+    }),
+  );
+  await setup(page, 'pass');
+  const receipt = new URL('./assets/receipt.png', import.meta.url).pathname;
+  const modal = page.getByRole('dialog', { name: 'Add from bill' });
+
+  await addFromBill(page).waitFor();
+  await page.locator('input[type="file"]').setInputFiles(receipt);
+  await modal.getByRole('button', { name: 'Add 1 item(s)' }).click();
+  await expect(modal).toBeHidden();
+  // No challenge runs between scans
+  expect(await resets(page)).toBe(0);
+
+  await page.locator('input[type="file"]').setInputFiles(receipt);
+  await expect(
+    modal.getByRole('button', { name: 'Add 1 item(s)' }),
+  ).toBeVisible();
+  expect(await resets(page)).toBe(1);
+});
+
+test('shows a challenge for a later scan, then hides it', async ({
+  page,
+  receiptApi,
+}) => {
+  receiptApi.onScan((route) =>
+    route.fulfill({
+      json: { items: [{ name: 'Coke', quantity: 1, price: 20 }] },
+    }),
+  );
+  await setup(page, 'pass');
+  const receipt = new URL('./assets/receipt.png', import.meta.url).pathname;
+  const modal = page.getByRole('dialog', { name: 'Add from bill' });
+
+  await addFromBill(page).waitFor();
+  await page.locator('input[type="file"]').setInputFiles(receipt);
+  await modal.getByRole('button', { name: 'Add 1 item(s)' }).click();
+  await expect(modal).toBeHidden();
+
+  await page.evaluate(() => {
+    (window as unknown as { __TS_MODE__: string }).__TS_MODE__ = 'interactive';
+  });
+  await page.locator('input[type="file"]').setInputFiles(receipt);
+  await expect(page.locator('#ts-widget')).toBeVisible();
+  await expect(addFromBill(page)).toBeVisible();
+
+  await page.locator('#ts-widget').click();
+  await expect(
+    modal.getByRole('button', { name: 'Add 1 item(s)' }),
+  ).toBeVisible();
+  // The "Success!" box that Cloudflare leaves behind is hidden
+  await expect(page.getByText('Success!')).toBeHidden();
 });

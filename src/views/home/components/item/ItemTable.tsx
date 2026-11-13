@@ -57,9 +57,18 @@ const TooltipTarget = styled.div`
   }
 `;
 
-const TurnstileContainer = styled.div`
+// The widget's iframe must stay in the DOM for Cloudflare to run, so hide the
+// container instead of removing it, unless the visitor has to tap the widget
+const TurnstileContainer = styled.div<{ $isVisible: boolean }>`
   display: flex;
   justify-content: center;
+  ${({ $isVisible }) =>
+    !$isVisible &&
+    `
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+  `}
 
   &:empty {
     display: none;
@@ -100,6 +109,7 @@ const ItemTable: React.FC = () => {
     containerRef: turnstileRef,
     getToken: getTurnstileToken,
     status: turnstileStatus,
+    isWidgetVisible: isTurnstileVisible,
   } = useTurnstile('receipt_scan');
 
   // Count how often visitors find "Add from bill" disabled by a full queue,
@@ -444,7 +454,7 @@ const ItemTable: React.FC = () => {
           onChange={(event) => void onReceiptSelected(event)}
         />
       </ButtonWrapper>
-      <TurnstileContainer ref={turnstileRef} />
+      <TurnstileContainer ref={turnstileRef} $isVisible={isTurnstileVisible} />
       <ItemListModal
         mode={modalMode}
         isOpen={isModalVisible}
