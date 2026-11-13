@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.1] - 2026-11-13
+
+### Changed
+
+- Closing the "Add from bill" window during a scan now stops the scan on the server too, so it no longer keeps reading a receipt nobody will use
+- Bump GitHub Actions:
+  - actions/setup-node: 6 → 7
+  - actions/upload-artifact: 5 → 7
+- Upgrade dependencies:
+  - i18next-http-backend: 4.0.2 → 4.0.10
+
+### Fixed
+
+- The Cloudflare "Verify you are human" box no longer appears under the "Add from bill" button while you aren't scanning, such as after leaving the app open or coming back to it:
+  - The check runs again only when you pick a photo, and asks for a tap only then
+  - The "Success!" box disappears after you tap the check
+  - The box uses the light theme even when the phone is in dark mode
+  - When a check fails during a scan, the error shows at once instead of after 60 seconds, and the button stays so you can try again
+
 ## [0.11.0] - 2026-11-06
 
 ### Added
@@ -245,6 +264,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Full Changelog**: https://github.com/chatreejs/bill-please/commits/v0.4.5
 
+[0.11.1]: https://github.com/chatreejs/bill-please/compare/v0.11.0...v0.11.1
 [0.11.0]: https://github.com/chatreejs/bill-please/compare/v0.10.1...v0.11.0
 [0.10.1]: https://github.com/chatreejs/bill-please/compare/v0.10.0...v0.10.1
 [0.10.0]: https://github.com/chatreejs/bill-please/compare/v0.9.1...v0.10.0

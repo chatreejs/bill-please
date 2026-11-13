@@ -29,3 +29,6 @@ yarn.lock
 /blob-report
 /playwright/.cache
 *.tsbuildinfo
+
+# Local reports (screenshots, write-ups)
+/reports
