@@ -74,9 +74,14 @@ const ensureInitialized = (): boolean => {
   const gaMeasurementId = process.env.VITE_APP_GA_MEASUREMENT_ID;
   if (!gaMeasurementId) return false;
   ReactGA.initialize(gaMeasurementId, {
-    // Only set debug_mode in dev: GA treats any value, even false, as debug.
-    // Debug events are excluded by the GA4 "Developer traffic" data filter.
-    gtagOptions: import.meta.env.DEV ? { debug_mode: true } : undefined,
+    gtagOptions: {
+      // trackPageView sends every page view, the first one included. Without
+      // this, gtag also sends one on init and the first page counts twice
+      send_page_view: false,
+      // Only set debug_mode in dev, because GA treats any value, even false,
+      // as debug. The GA4 "Developer traffic" data filter drops debug events
+      ...(import.meta.env.DEV ? { debug_mode: true } : {}),
+    },
   });
   isInitialized = true;
   return true;
@@ -89,8 +94,10 @@ export const trackEvent = (name: AnalyticsEvent, params?: AnalyticsParams) => {
 
 export const trackPageView = (path: string) => {
   if (!ensureInitialized()) return;
+  // react-ga4 names the hit 'pageview' and sends it to GA4 as page_view. It
+  // drops any other name with "Send command doesn't exist"
   ReactGA.send({
-    hitType: 'page_view',
+    hitType: 'pageview',
     page: path,
     title: PAGE_TITLES[path] ?? path,
   });
