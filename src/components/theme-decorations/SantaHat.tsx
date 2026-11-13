@@ -4,26 +4,31 @@ import styled from 'styled-components';
 // Tilted onto the "B" of the logo. Logo's text is position: relative
 const Hat = styled.svg`
   position: absolute;
-  top: -15px;
-  left: -13px;
-  width: 38px;
-  height: 32px;
-  transform: rotate(-22deg);
+  top: -13px;
+  left: -14px;
+  width: 44px;
+  height: 36px;
+  transform: rotate(-16deg);
   pointer-events: none;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
 `;
 
 const SantaHat: React.FC = () => (
-  <Hat viewBox="0 0 38 32" aria-hidden="true" data-testid="santa-hat">
-    {/* Red cap that flops over to the right */}
+  <Hat viewBox="0 0 44 36" aria-hidden="true" data-testid="santa-hat">
+    {/* Red cap, its tip folding over to the right */}
     <path
-      d="M5 24 C7 12 15 4 25 5 C31 6 34 11 33 17 L30 16 C29 12 26 10 22 11 C16 13 13 18 12 24 Z"
+      d="M5 28 C6 15 14 6 24 5 C32 4.5 37 10 38 20 L34.5 21 C33 16 30.5 14 27.5 14.5 C29.5 19 30.5 23.5 31 28 Z"
       fill="#c0283a"
     />
+    {/* The darker underside of the fold */}
+    <path
+      d="M27.5 14.5 C30.5 14 33 16 34.5 21 L32 21.5 C31 18 29.5 16 27.5 14.5 Z"
+      fill="#8f1c2b"
+    />
     {/* White fur band */}
-    <rect x="2" y="21" width="22" height="7" rx="3.5" fill="#fafafa" />
+    <rect x="2" y="25" width="32" height="8" rx="4" fill="#fafafa" />
     {/* Pompom */}
-    <circle cx="32" cy="19" r="4" fill="#fafafa" />
+    <circle cx="37" cy="21.5" r="4.5" fill="#fafafa" />
   </Hat>
 );
 
