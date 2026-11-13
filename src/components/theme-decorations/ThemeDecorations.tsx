@@ -8,6 +8,7 @@ import GoldLattice from './GoldLattice';
 import PartyHat from './PartyHat';
 import Particles from './Particles';
 import RedEnvelope from './RedEnvelope';
+import RiverKrathong from './RiverKrathong';
 import SantaHat from './SantaHat';
 
 type Decorations = Partial<Record<AppTheme, React.ReactNode>>;
@@ -35,7 +36,7 @@ const LOGO: Decorations = {
 };
 
 const CARD: Partial<Record<AppTheme, (part: CardPart) => React.ReactNode>> = {
-  'loy-krathong': (part) => part !== 'bottom' && <Garland kind="marigolds" />,
+  'loy-krathong': (part) => part !== 'bottom' && <RiverKrathong />,
   christmas: (part) => part !== 'bottom' && <Garland kind="lights" />,
   'new-year': (part) =>
     part !== 'bottom' && (

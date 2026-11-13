@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
-export type GarlandKind = 'lights' | 'marigolds' | 'bunting';
+export type GarlandKind = 'lights' | 'bunting';
 
 // The wire hangs from y = WIRE_TOP and dips WIRE_SAG px between hooks. A
 // quadratic curve with its control point at 2 × sag reaches the sag at the
@@ -75,12 +75,6 @@ const itemStyles: Record<GarlandKind, ReturnType<typeof css>> = {
       background: #3d4a3f;
     }
   `,
-  marigolds: css`
-    width: 11px;
-    height: 11px;
-    margin-left: -5.5px;
-    border-radius: 50%;
-  `,
   bunting: css`
     width: 14px;
     height: 15px;
@@ -110,7 +104,6 @@ interface Spec {
 const pick = (colors: string[], index: number) => colors[index % colors.length];
 
 const BULB_COLORS = ['#e23b3b', '#f2b630', '#2fa866', '#4f9be8'];
-const MARIGOLD_COLORS = ['#f59e0b', '#fbbf24', '#ea580c'];
 
 const SPECS: Record<GarlandKind, Spec> = {
   lights: {
@@ -124,20 +117,6 @@ const SPECS: Record<GarlandKind, Spec> = {
         background: color,
         boxShadow: `0 0 8px 2px ${color}88`,
         animationDelay: `${(i % 3) * 0.6}s`,
-      };
-    },
-  },
-  // A phuang malai, with flowers all along the string
-  marigolds: {
-    spans: 5,
-    items: 31,
-    wire: '#3f7d3a',
-    offset: -5,
-    look: (i) => {
-      const color = pick(MARIGOLD_COLORS, i);
-      return {
-        background: `radial-gradient(circle at 40% 40%, #fff3c4 0 15%, ${color} 45%)`,
-        boxShadow: `0 0 0 1px ${color}`,
       };
     },
   },
