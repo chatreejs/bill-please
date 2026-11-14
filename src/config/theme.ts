@@ -83,18 +83,31 @@ export const APP_THEME_COLORS: Record<AppTheme, AppThemeColors> = {
 export const isAppTheme = (value: unknown): value is AppTheme =>
   APP_THEMES.includes(value as AppTheme);
 
+/** The Vercel flag that picks the theme */
+export const APP_THEME_FLAG = 'app-theme';
+
+/** The cookie in which `middleware.ts` saves the flag's theme */
+export const APP_THEME_COOKIE = 'bp-theme';
+
+/** The theme in a `document.cookie` string, if any */
+export const readThemeCookie = (cookie: string): string | undefined =>
+  cookie
+    .split(';')
+    .map((part) => part.trim().split('='))
+    .find(([name]) => name === APP_THEME_COOKIE)?.[1];
+
 /**
  * Pick the theme for this visit. A `?theme=` URL parameter, for previews,
- * wins over `VITE_APP_THEME`, and `default` is the fallback. An unknown name counts as
- * unset. The `app-theme` Vercel flag will take the place of the env var.
+ * wins over the `app-theme` flag's cookie, and `default` is the fallback. An
+ * unknown name counts as unset.
  */
 export const resolveAppTheme = (
   search: string,
-  envTheme: string | undefined,
+  flagTheme: string | undefined,
 ): AppTheme => {
   const fromUrl = new URLSearchParams(search).get('theme');
   if (isAppTheme(fromUrl)) return fromUrl;
-  if (isAppTheme(envTheme)) return envTheme;
+  if (isAppTheme(flagTheme)) return flagTheme;
   return DEFAULT_APP_THEME;
 };
 
@@ -125,3 +138,11 @@ export const applyAppTheme = (theme: AppTheme) => {
     .querySelector('meta[name="theme-color"]')
     ?.setAttribute('content', colors.background);
 };
+
+/**
+ * Ask `middleware.ts` for the flag's current theme. It saves it in the cookie,
+ * so a change shows on the next visit. Only a Vercel deployment runs the
+ * middleware, so call it in production builds only.
+ */
+export const refreshAppTheme = () =>
+  fetch('/api/theme', { cache: 'no-store' }).catch(() => undefined);
