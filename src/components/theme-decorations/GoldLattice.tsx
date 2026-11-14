@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // A diamond lattice with a small ring at each crossing, in gold. It doesn't
-// move, so it stays under prefers-reduced-motion
+// move, so it still shows under prefers-reduced-motion
 const TILE = encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44">` +
     `<g fill="none" stroke="#e2b04a" stroke-width="1">` +
