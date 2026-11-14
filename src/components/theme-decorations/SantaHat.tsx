@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// Tilted onto the "B" of the logo. Logo's text is position: relative
+// Tilted onto the "B" of the logo. The logo text is position: relative, so
+// the hat is placed against it
 const Hat = styled.svg`
   position: absolute;
   top: -13px;

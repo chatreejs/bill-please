@@ -2,8 +2,8 @@ import { Button, ButtonProps, Tag } from 'antd';
 import React, { useId } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-// Each theme sets these stops in applyAppTheme (@config/theme). The default
-// theme starts at the primary teal so the button fits the rest of the app
+// applyAppTheme (@config/theme) sets these stops from the theme's colors. The
+// default theme's first stop is the primary teal, to match the rest of the app
 const GRADIENT_STOPS = [
   'var(--app-ai-gradient-1)',
   'var(--app-ai-gradient-2)',
