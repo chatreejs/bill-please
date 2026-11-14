@@ -1,12 +1,14 @@
 import { createClient, Reason } from '@vercel/flags-core';
 import { next } from '@vercel/functions';
 
+// Vercel compiles this file without bundling it. Node then needs the .js
+// extension to find the compiled theme.ts
 import {
   APP_THEME_COOKIE,
   APP_THEME_FLAG,
   DEFAULT_APP_THEME,
   isAppTheme,
-} from './src/config/theme';
+} from './src/config/theme.js';
 
 // Vercel runs this before its cache, on the app's pages and on /api/theme.
 // After the first visit the service worker answers page loads from its cache,
