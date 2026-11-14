@@ -6,12 +6,17 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import { applyAppTheme, resolveAppTheme } from './config/theme';
+import {
+  applyAppTheme,
+  readThemeCookie,
+  refreshAppTheme,
+  resolveAppTheme,
+} from './config/theme';
 import './i18n';
 import './index.css';
 
 applyAppTheme(
-  resolveAppTheme(window.location.search, process.env.VITE_APP_THEME),
+  resolveAppTheme(window.location.search, readThemeCookie(document.cookie)),
 );
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -20,3 +25,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <App />
   </BrowserRouter>,
 );
+
+if (import.meta.env.PROD) void refreshAppTheme();
