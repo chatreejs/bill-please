@@ -1,7 +1,13 @@
 import React, { useMemo } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-export type ParticleKind = 'snow' | 'lantern' | 'confetti' | 'glint' | 'drop';
+export type ParticleKind =
+  | 'snow'
+  | 'lantern'
+  | 'confetti'
+  | 'glint'
+  | 'drop'
+  | 'bat';
 
 // Each particle moves from --from to --to on the y axis, drifting --drift px
 // sideways and turning --spin on the way
@@ -135,6 +141,26 @@ const KINDS: Record<ParticleKind, KindSpec> = {
         background:
           'linear-gradient(rgba(255, 255, 255, 0.95), rgba(165, 225, 255, 0.75))',
         opacity: between(random, 0.5, 0.9),
+      };
+    },
+  },
+  // Bats in Dracula's #6272a4 comment color that rise up the page
+  bat: {
+    count: 14,
+    rises: true,
+    duration: [12, 22],
+    drift: 60,
+    spin: 25,
+    look: (random) => {
+      const width = between(random, 18, 30);
+      return {
+        width,
+        height: width * 0.5,
+        background: '#6272a4',
+        clipPath:
+          'polygon(50% 35%, 55% 12%, 58% 35%, 70% 8%, 100% 18%, 92% 48%, 88% 80%, 78% 62%, 68% 78%, 58% 70%, 50% 100%, 42% 70%, 32% 78%, 22% 62%, 12% 80%, 8% 48%, 0 18%, 30% 8%, 42% 35%, 45% 12%)',
+        filter: 'drop-shadow(0 0 4px rgba(189, 147, 249, 0.5))',
+        opacity: between(random, 0.55, 0.9),
       };
     },
   },

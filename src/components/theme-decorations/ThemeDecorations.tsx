@@ -10,6 +10,7 @@ import Particles from './Particles';
 import RedEnvelope from './RedEnvelope';
 import RiverKrathong from './RiverKrathong';
 import SantaHat from './SantaHat';
+import WitchHat from './WitchHat';
 
 type Decorations = Partial<Record<AppTheme, React.ReactNode>>;
 
@@ -27,12 +28,14 @@ const SKY: Decorations = {
     </>
   ),
   songkran: <Particles kind="drop" />,
+  halloween: <Particles kind="bat" />,
 };
 
 const LOGO: Decorations = {
   'loy-krathong': <FullMoon />,
   christmas: <SantaHat />,
   'new-year': <PartyHat />,
+  halloween: <WitchHat />,
 };
 
 const CARD: Partial<Record<AppTheme, (part: CardPart) => React.ReactNode>> = {
@@ -51,6 +54,13 @@ const CARD: Partial<Record<AppTheme, (part: CardPart) => React.ReactNode>> = {
       <Garland
         kind="bunting"
         colors={['#06b6d4', '#fbbf24', '#f472b6', '#22c55e', '#0369a1']}
+      />
+    ),
+  halloween: (part) =>
+    part !== 'bottom' && (
+      <Garland
+        kind="lights"
+        colors={['#ffb86c', '#bd93f9', '#50fa7b', '#ff79c6']}
       />
     ),
 };

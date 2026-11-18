@@ -98,7 +98,7 @@ interface Spec {
   wire: string;
   /** Px from the wire to the item's top */
   offset: number;
-  look: (index: number) => React.CSSProperties;
+  look: (index: number, colors: string[]) => React.CSSProperties;
 }
 
 const pick = (colors: string[], index: number) => colors[index % colors.length];
@@ -111,8 +111,8 @@ const SPECS: Record<GarlandKind, Spec> = {
     items: 9,
     wire: '#2f3b31',
     offset: -1,
-    look: (i) => {
-      const color = pick(BULB_COLORS, i);
+    look: (i, colors) => {
+      const color = pick(colors.length ? colors : BULB_COLORS, i);
       return {
         background: color,
         boxShadow: `0 0 8px 2px ${color}88`,
@@ -131,7 +131,7 @@ const SPECS: Record<GarlandKind, Spec> = {
 
 interface GarlandProps {
   kind: GarlandKind;
-  /** Flag colors, for `bunting` */
+  /** Flag colors for `bunting`, or bulb colors for `lights` */
   colors?: string[];
 }
 
@@ -160,7 +160,7 @@ const Garland: React.FC<GarlandProps> = ({ kind, colors = [] }) => {
               top: wireY(position, spec.spans) + spec.offset,
               ...(kind === 'bunting'
                 ? { background: pick(colors, i) }
-                : spec.look(i)),
+                : spec.look(i, colors)),
             }}
           />
         );
