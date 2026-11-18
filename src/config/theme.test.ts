@@ -19,8 +19,8 @@ describe('resolveAppTheme', () => {
   });
 
   it('ignores unknown theme names', () => {
-    expect(resolveAppTheme('?theme=halloween', undefined)).toBe('default');
-    expect(resolveAppTheme('?theme=halloween', 'christmas')).toBe('christmas');
+    expect(resolveAppTheme('?theme=easter', undefined)).toBe('default');
+    expect(resolveAppTheme('?theme=easter', 'christmas')).toBe('christmas');
     expect(resolveAppTheme('', 'Christmas')).toBe('default');
   });
 });

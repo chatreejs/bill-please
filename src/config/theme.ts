@@ -5,6 +5,7 @@ export const APP_THEMES = [
   'new-year',
   'chinese-new-year',
   'songkran',
+  'halloween',
 ] as const;
 export type AppTheme = (typeof APP_THEMES)[number];
 
@@ -77,6 +78,16 @@ export const APP_THEME_COLORS: Record<AppTheme, AppThemeColors> = {
     primaryShimmer: 'rgba(3, 105, 161, 0.16)',
     logo: '#fafafa',
     aiGradient: ['#06b6d4', '#0369a1', '#f472b6'],
+  },
+  // Colors from the Dracula palette. Its #bd93f9 purple is too light behind
+  // white button text, so primary is a darker purple
+  halloween: {
+    primary: '#7c4dff',
+    background: '#282a36',
+    primaryTint: '#f5f0ff',
+    primaryShimmer: 'rgba(124, 77, 255, 0.16)',
+    logo: '#ffb86c',
+    aiGradient: ['#bd93f9', '#ff79c6', '#ffb86c'],
   },
 };
 
