@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.11.2] - 2026-11-23
+
+### Added
+
+- Seasonal app themes: Loy Krathong, Christmas, New Year, Chinese New Year, Songkran and Halloween ([#76](https://github.com/chatreejs/bill-please/pull/76)):
+  - Each theme sets its own main color, page background, browser bar color, logo color and "Add from bill" button gradient
+  - Particles drift behind the app: rising lanterns, snow, confetti, gold glints, water drops or bats
+  - The logo wears an accessory: a Santa hat, a party hat, a witch hat or a full moon
+  - The bill card gets string lights, bunting, a red envelope frame with a 福 seal, or waves with a floating krathong, and the shared bill image keeps them
+  - Particles hide and lights stop moving when the phone asks for reduced motion
+  - The Halloween theme uses colors from the Dracula palette
+- The theme changes without a new release, through the `app-theme` Vercel flag, and shows on the visit after a change
+
+### Changed
+
+- Upgrade dependencies:
+  - @vercel/flags-core: added at 1.11.0
+  - @vercel/functions: added at 3.11.3
+
 ## [0.11.1] - 2026-11-13
 
 ### Changed
@@ -264,6 +283,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Full Changelog**: https://github.com/chatreejs/bill-please/commits/v0.4.5
 
+[0.11.2]: https://github.com/chatreejs/bill-please/compare/v0.11.1...v0.11.2
 [0.11.1]: https://github.com/chatreejs/bill-please/compare/v0.11.0...v0.11.1
 [0.11.0]: https://github.com/chatreejs/bill-please/compare/v0.10.1...v0.11.0
 [0.10.1]: https://github.com/chatreejs/bill-please/compare/v0.10.0...v0.10.1
