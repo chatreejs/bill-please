@@ -190,12 +190,27 @@ test.describe('bank account', () => {
     await accountNumber(page).fill('12345');
     const size = page.viewportSize() ?? { width: 412, height: 839 };
 
-    // The keyboard opens and closes, and the box keeps its focus
-    const viewportHeight = () =>
-      page.evaluate(() => window.visualViewport?.height ?? 0);
-    await page.setViewportSize({ ...size, height: size.height - 300 });
-    await expect.poll(viewportHeight).toBeLessThan(size.height - 200);
-    await page.setViewportSize(size);
+    // The keyboard opens and closes, and the box keeps its focus.
+    // visualViewport.height changes at once, but its resize event fires on
+    // the next frame. Wait for each event. Otherwise Chrome can merge two
+    // quick resizes into one that leaves the height unchanged, and the hook
+    // never blurs the box.
+    const resizeTo = async (height: number) => {
+      await page.evaluate(() => {
+        (window as { viewportResized?: Promise<void> }).viewportResized =
+          new Promise((resolve) =>
+            window.visualViewport?.addEventListener('resize', () => resolve(), {
+              once: true,
+            }),
+          );
+      });
+      await page.setViewportSize({ ...size, height });
+      await page.evaluate(
+        () => (window as { viewportResized?: Promise<void> }).viewportResized,
+      );
+    };
+    await resizeTo(size.height - 300);
+    await resizeTo(size.height);
     await expect(accountNumber(page)).not.toBeFocused();
     await expect(formatError(page)).toBeVisible();
   });
